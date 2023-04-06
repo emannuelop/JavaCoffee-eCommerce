@@ -43,7 +43,7 @@ public class Usuario extends DefaultEntity {
     private Endereco endereco;
 
     @OneToMany
-    @JoinColumn(name = "id_pagamento", nullable = false)
+    @JoinColumn(name = "id_usuario", nullable = false)
     private List<Pagamento> pagamento;
 
     @OneToOne
@@ -51,7 +51,7 @@ public class Usuario extends DefaultEntity {
     private Telefone telefonePrincipal;
 
     @OneToMany
-    @JoinColumn(name = "id_telefones_opcionais", nullable = false)
+    @JoinColumn(name = "id_usuario_telefone_opcional", nullable = false)
     private List<Telefone> telefonesOpcionais;
 
     public String getNome() {

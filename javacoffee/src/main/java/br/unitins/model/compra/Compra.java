@@ -37,7 +37,7 @@ public class Compra extends DefaultEntity {
     private Usuario usuario;
 
     @OneToMany
-    @JoinColumn(name = "id_item_compra", nullable = false)
+    @JoinColumn(name = "id_compra", nullable = false)
     private List<ItemCompra> itemCompra;
 
     public Date getDataDaCompra() {
