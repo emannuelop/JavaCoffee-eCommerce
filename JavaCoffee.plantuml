@@ -11,13 +11,13 @@
 
     class Cafe {
 
-        - metodoDePreparo: String
+        - metodoPreparo: String
         - tipo: String
     }
 
     class Cafeteira {
 
-        - tipoDeCafeteira: String
+        - tipoCafeteira: String
     }
 
     enum Intensidade {
@@ -59,7 +59,7 @@
     class Compra {
 
         - id: Long
-        - dataDaCompra: Date
+        - dataCompra: Date
         - totalCompra: Double
     }
 
@@ -101,13 +101,13 @@
 
         - id: Long
         - confirmacaoPagamento: Boolean
-        - dataDeConfirmacaoPagamento: Date
+        - dataConfirmacaoPagamento: Date
     }
 
     class BoletoBancario {
 
         - codigoDeBarra: String
-        - dataDeGeracaoDoBoleto: Date
+        - dataGeracaoDoBoleto: Date
         - valor: Double
         - dataVencimento: Date
     }
@@ -118,14 +118,12 @@
         - valor: Double
     }
 
-    class CartaoDeCredito {
+    class CartaoCredito {
 
         - valor: Double
-        - numeroDoCartao: String
+        - numeroCartao: String
         - nomeImpressoCartao: String
-        - validadeCartao: Date
-        - codigoDeSeguranca: String
-        - cpfDoTitular: String
+        - cpfTitular: String
     }
 
     enum BandeiraCartao {
@@ -175,8 +173,8 @@
 
     Pix -up-|> Pagamento
 
-    CartaoDeCredito -up-|> Pagamento
-    CartaoDeCredito "*" --> "1" BandeiraCartao
+    CartaoCredito -up-|> Pagamento
+    CartaoCredito "*" --> "1" BandeiraCartao
 
     Compra "*" --> "1" Usuario
     Compra "1" *--> "*" ItemCompra
