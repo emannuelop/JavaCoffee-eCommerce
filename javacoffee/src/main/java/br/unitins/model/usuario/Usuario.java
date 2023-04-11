@@ -13,7 +13,6 @@ import javax.persistence.OneToOne;
 
 import br.unitins.model.DefaultEntity;
 import br.unitins.model.endereco.Endereco;
-import br.unitins.model.pagamento.Pagamento;
 import br.unitins.model.produto.Produto;
 
 @Entity
@@ -41,10 +40,6 @@ public class Usuario extends DefaultEntity {
     @ManyToOne
     @JoinColumn(name = "id_endereco")
     private Endereco endereco;
-
-    @OneToMany
-    @JoinColumn(name = "id_usuario", nullable = false)
-    private List<Pagamento> pagamento;
 
     @OneToOne
     @JoinColumn(name = "id_telefone_principal", unique = true, nullable = false)
@@ -100,14 +95,6 @@ public class Usuario extends DefaultEntity {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
-    }
-
-    public List<Pagamento> getPagamento() {
-        return pagamento;
-    }
-
-    public void setPagamento(List<Pagamento> pagamento) {
-        this.pagamento = pagamento;
     }
 
     public Telefone getTelefonePrincipal() {

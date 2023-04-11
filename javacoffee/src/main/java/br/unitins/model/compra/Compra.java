@@ -19,7 +19,7 @@ import br.unitins.model.usuario.Usuario;
 public class Compra extends DefaultEntity {
 
     @Column(nullable = false)
-    private Date dataDaCompra;
+    private Date dataCompra;
 
     @Column(nullable = false)
     private Double totalCompra;
@@ -41,11 +41,11 @@ public class Compra extends DefaultEntity {
     private List<ItemCompra> itemCompra;
 
     public Date getDataDaCompra() {
-        return dataDaCompra;
+        return dataCompra;
     }
 
     public void setDataDaCompra(Date dataDaCompra) {
-        this.dataDaCompra = dataDaCompra;
+        this.dataCompra = dataDaCompra;
     }
 
     public Double getTotalCompra() {

@@ -11,17 +11,17 @@ import br.unitins.model.produto.Produto;
 public class Cafeteira extends Produto {
 
     @Column(nullable = false)
-    private String tipoDeCafeteira;
+    private String tipoCafeteira;
 
     @Column(nullable = false)
     private Voltagem voltagem;
 
     public String getTipoDeCafeteira() {
-        return tipoDeCafeteira;
+        return tipoCafeteira;
     }
 
     public void setTipoDeCafeteira(String tipoDeCafeteira) {
-        this.tipoDeCafeteira = tipoDeCafeteira;
+        this.tipoCafeteira = tipoDeCafeteira;
     }
 
     public Voltagem getVoltagem() {

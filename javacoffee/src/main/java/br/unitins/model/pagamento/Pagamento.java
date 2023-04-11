@@ -16,7 +16,7 @@ public abstract class Pagamento extends DefaultEntity {
     @Column(nullable = false)
     private Boolean confirmacaoPagamento;
 
-    private Date dataDeConfirmacaoPagamento;
+    private Date dataConfirmacaoPagamento;
 
     public Boolean getConfirmacaoPagamento() {
         return confirmacaoPagamento;
@@ -27,11 +27,11 @@ public abstract class Pagamento extends DefaultEntity {
     }
 
     public Date getDataDeConfirmacaoPagamento() {
-        return dataDeConfirmacaoPagamento;
+        return dataConfirmacaoPagamento;
     }
 
     public void setDataDeConfirmacaoPagamento(Date dataDeConfirmacaoPagamento) {
-        this.dataDeConfirmacaoPagamento = dataDeConfirmacaoPagamento;
+        this.dataConfirmacaoPagamento = dataDeConfirmacaoPagamento;
     }
 
 }

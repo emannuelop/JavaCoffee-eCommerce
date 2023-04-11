@@ -14,8 +14,8 @@ INSERT INTO produto (nome, preco, estoque, id_marca) VALUES ('Cafe Fazenda Flore
 
 INSERT INTO produto (nome, preco, estoque, id_marca) VALUES ('Cafe Orfeu', 29.00, 60, 2);
 
-INSERT INTO cafe (metododepreparo, tipo, intensidade, id) VALUES ('sdfsgsdf', 'sfdgxdgxd', 1, 1);
+INSERT INTO cafe (metodopreparo, tipo, intensidade, id) VALUES ('sdfsgsdf', 'sfdgxdgxd', 1, 1);
 
-INSERT INTO cafe (metododepreparo, tipo, intensidade, id) VALUES ('sdfsgsdf', 'sfdgxdgxd', 1, 2);
+INSERT INTO cafe (metodopreparo, tipo, intensidade, id) VALUES ('sdfsgsdf', 'sfdgxdgxd', 1, 2);
 
-INSERT INTO cafe (metododepreparo, tipo, intensidade, id) VALUES ('sdfsgsdf', 'sfdgxdgxd', 2, 3);
+INSERT INTO cafe (metodopreparo, tipo, intensidade, id) VALUES ('sdfsgsdf', 'sfdgxdgxd', 2, 3);

@@ -106,7 +106,7 @@
 
     class BoletoBancario {
 
-        - codigoDeBarra: String
+        - codigoBarra: String
         - dataGeracaoDoBoleto: Date
         - valor: Double
         - dataVencimento: Date
@@ -165,7 +165,6 @@
     Usuario "1" *--> "1" Telefone: telefonePrincipal
     Usuario "1" *--> "*" Telefone: telefoneOpcional
     Usuario "*" *--> "1" Endereco: endereçoPrincipal
-    Usuario "1" --> "*" Pagamento
 
     ItemCompra "*" --> "1" Produto
 
@@ -179,7 +178,7 @@
     Compra "*" --> "1" Usuario
     Compra "1" *--> "*" ItemCompra
     Compra "*" --> "1" Endereco
-    Compra "1" --> "1" Pagamento
+    Compra "1" *--> "1" Pagamento
 
     Avaliacao "*" --> "1" Estrela
     Avaliacao "1" o--> "1" Usuario

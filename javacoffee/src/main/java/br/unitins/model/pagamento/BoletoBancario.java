@@ -11,10 +11,10 @@ import javax.persistence.PrimaryKeyJoinColumn;
 public class BoletoBancario extends Pagamento {
 
     @Column(nullable = false)
-    private String codigoDeBarra;
+    private String codigoBarra;
 
     @Column(nullable = false)
-    private Date dataDeGeracaoDoBoleto;
+    private Date dataGeracaoDoBoleto;
 
     @Column(nullable = false)
     private Double valor;
@@ -23,19 +23,19 @@ public class BoletoBancario extends Pagamento {
     private Date dataVencimento;
 
     public String getCodigoDeBarra() {
-        return codigoDeBarra;
+        return codigoBarra;
     }
 
     public void setCodigoDeBarra(String codigoDeBarra) {
-        this.codigoDeBarra = codigoDeBarra;
+        this.codigoBarra = codigoDeBarra;
     }
 
     public Date getDataDeGeracaoDoBoleto() {
-        return dataDeGeracaoDoBoleto;
+        return dataGeracaoDoBoleto;
     }
 
     public void setDataDeGeracaoDoBoleto(Date dataDeGeracaoDoBoleto) {
-        this.dataDeGeracaoDoBoleto = dataDeGeracaoDoBoleto;
+        this.dataGeracaoDoBoleto = dataDeGeracaoDoBoleto;
     }
 
     public Double getValor() {

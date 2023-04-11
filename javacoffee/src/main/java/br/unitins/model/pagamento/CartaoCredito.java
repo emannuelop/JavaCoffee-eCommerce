@@ -1,32 +1,24 @@
 package br.unitins.model.pagamento;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
-public class CartaoDeCredito extends Pagamento {
+public class CartaoCredito extends Pagamento {
 
     @Column(nullable = false)
     private Double valor;
 
     @Column(nullable = false)
-    private String numeroDoCartao;
+    private String numeroCartao;
 
     @Column(nullable = false)
     private String nomeImpressoCartao;
 
     @Column(nullable = false)
-    private Date validadeCartao;
-
-    @Column(nullable = false)
-    private String codigoDeSeguranca;
-
-    @Column(nullable = false)
-    private String cpfDoTitular;
+    private String cpfTitular;
 
     private BandeiraCartao bandeiraCartao;
 
@@ -39,11 +31,11 @@ public class CartaoDeCredito extends Pagamento {
     }
 
     public String getNumeroDoCartao() {
-        return numeroDoCartao;
+        return numeroCartao;
     }
 
     public void setNumeroDoCartao(String numeroDoCartao) {
-        this.numeroDoCartao = numeroDoCartao;
+        this.numeroCartao = numeroDoCartao;
     }
 
     public String getNomeImpressoCartao() {
@@ -54,28 +46,12 @@ public class CartaoDeCredito extends Pagamento {
         this.nomeImpressoCartao = nomeImpressoCartao;
     }
 
-    public Date getValidadeCartao() {
-        return validadeCartao;
-    }
-
-    public void setValidadeCartao(Date validadeCartao) {
-        this.validadeCartao = validadeCartao;
-    }
-
-    public String getCodigoDeSeguranca() {
-        return codigoDeSeguranca;
-    }
-
-    public void setCodigoDeSeguranca(String codigoDeSeguranca) {
-        this.codigoDeSeguranca = codigoDeSeguranca;
-    }
-
     public String getCpfDoTitular() {
-        return cpfDoTitular;
+        return cpfTitular;
     }
 
     public void setCpfDoTitular(String cpfDoTitular) {
-        this.cpfDoTitular = cpfDoTitular;
+        this.cpfTitular = cpfDoTitular;
     }
 
     public BandeiraCartao getBandeiraCartao() {

@@ -11,7 +11,7 @@ import br.unitins.model.produto.Produto;
 public class Cafe extends Produto {
 
     @Column(nullable = false)
-    private String metodoDePreparo;
+    private String metodoPreparo;
 
     @Column(nullable = false)
     private String tipo;
@@ -19,11 +19,11 @@ public class Cafe extends Produto {
     private Intensidade intensidade;
 
     public String getMetodoDePreparo() {
-        return metodoDePreparo;
+        return metodoPreparo;
     }
 
     public void setMetodoDePreparo(String metodoDePreparo) {
-        this.metodoDePreparo = metodoDePreparo;
+        this.metodoPreparo = metodoDePreparo;
     }
 
     public String getTipo() {
