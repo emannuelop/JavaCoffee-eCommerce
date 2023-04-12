@@ -1,10 +1,10 @@
-package br.unitins.model.produto.cafeteira;
+package br.unitins.ecommerce.model.produto.cafeteira;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 
-import br.unitins.model.produto.Produto;
+import br.unitins.ecommerce.model.produto.Produto;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "id")

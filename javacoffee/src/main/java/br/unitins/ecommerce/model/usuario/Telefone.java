@@ -1,9 +1,9 @@
-package br.unitins.model.usuario;
+package br.unitins.ecommerce.model.usuario;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-import br.unitins.model.DefaultEntity;
+import br.unitins.ecommerce.model.DefaultEntity;
 
 @Entity
 public class Telefone extends DefaultEntity {

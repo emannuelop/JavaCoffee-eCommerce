@@ -1,4 +1,4 @@
-package br.unitins.model.compra;
+package br.unitins.ecommerce.model.compra;
 
 import java.util.Date;
 import java.util.List;
@@ -10,10 +10,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import br.unitins.model.DefaultEntity;
-import br.unitins.model.endereco.Endereco;
-import br.unitins.model.pagamento.Pagamento;
-import br.unitins.model.usuario.Usuario;
+import br.unitins.ecommerce.model.DefaultEntity;
+import br.unitins.ecommerce.model.endereco.Endereco;
+import br.unitins.ecommerce.model.pagamento.Pagamento;
+import br.unitins.ecommerce.model.usuario.Usuario;
 
 @Entity
 public class Compra extends DefaultEntity {

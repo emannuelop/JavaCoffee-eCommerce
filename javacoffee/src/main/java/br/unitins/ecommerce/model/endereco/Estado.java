@@ -1,9 +1,9 @@
-package br.unitins.model.endereco;
+package br.unitins.ecommerce.model.endereco;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-import br.unitins.model.DefaultEntity;
+import br.unitins.ecommerce.model.DefaultEntity;
 
 @Entity
 public class Estado extends DefaultEntity {

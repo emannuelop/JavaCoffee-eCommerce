@@ -3,7 +3,7 @@ package br.unitins.ecommerce.converterjpa;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
-import br.unitins.model.produto.cafe.Intensidade;
+import br.unitins.ecommerce.model.produto.cafe.Intensidade;
 
 @Converter(autoApply = true)
 public class IntensidadeConverter implements AttributeConverter<Intensidade, Integer> {

@@ -1,4 +1,4 @@
-package br.unitins.resource;
+package br.unitins.ecommerce.resource;
 
 import java.util.List;
 
@@ -18,10 +18,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import br.unitins.application.Result;
-import br.unitins.dto.CafeDTO;
-import br.unitins.dto.CafeResponseDTO;
-import br.unitins.service.CafeService;
+import br.unitins.ecommerce.application.Result;
+import br.unitins.ecommerce.dto.CafeDTO;
+import br.unitins.ecommerce.dto.CafeResponseDTO;
+import br.unitins.ecommerce.service.CafeService;
 
 @Path("/cafes")
 @Produces(MediaType.APPLICATION_JSON)

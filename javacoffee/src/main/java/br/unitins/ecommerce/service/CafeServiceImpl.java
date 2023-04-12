@@ -1,4 +1,4 @@
-package br.unitins.service;
+package br.unitins.ecommerce.service;
 
 import java.util.List;
 import java.util.Set;
@@ -11,12 +11,12 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import javax.ws.rs.NotFoundException;
 
-import br.unitins.dto.CafeDTO;
-import br.unitins.dto.CafeResponseDTO;
-import br.unitins.model.produto.cafe.Cafe;
-import br.unitins.model.produto.cafe.Intensidade;
-import br.unitins.repository.CafeRepository;
-import br.unitins.repository.MarcaRepository;
+import br.unitins.ecommerce.dto.CafeDTO;
+import br.unitins.ecommerce.dto.CafeResponseDTO;
+import br.unitins.ecommerce.model.produto.cafe.Cafe;
+import br.unitins.ecommerce.model.produto.cafe.Intensidade;
+import br.unitins.ecommerce.repository.CafeRepository;
+import br.unitins.ecommerce.repository.MarcaRepository;
 
 @ApplicationScoped
 public class CafeServiceImpl implements CafeService {

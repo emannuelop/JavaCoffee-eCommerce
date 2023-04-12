@@ -3,7 +3,7 @@ package br.unitins.ecommerce.converterjpa;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
-import br.unitins.model.produto.cafeteira.Voltagem;
+import br.unitins.ecommerce.model.produto.cafeteira.Voltagem;
 
 @Converter(autoApply = true)
 public class VoltagemConverter implements AttributeConverter<Voltagem, Integer> {

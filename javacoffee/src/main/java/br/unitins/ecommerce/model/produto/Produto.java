@@ -1,4 +1,4 @@
-package br.unitins.model.produto;
+package br.unitins.ecommerce.model.produto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,7 +7,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import br.unitins.model.DefaultEntity;
+import br.unitins.ecommerce.model.DefaultEntity;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) // Herança

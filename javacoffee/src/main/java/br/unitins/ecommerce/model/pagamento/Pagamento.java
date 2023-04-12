@@ -1,4 +1,4 @@
-package br.unitins.model.pagamento;
+package br.unitins.ecommerce.model.pagamento;
 
 import java.util.Date;
 
@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
-import br.unitins.model.DefaultEntity;
+import br.unitins.ecommerce.model.DefaultEntity;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)

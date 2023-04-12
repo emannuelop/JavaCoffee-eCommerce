@@ -1,4 +1,4 @@
-package br.unitins.model.produto.cafe;
+package br.unitins.ecommerce.model.produto.cafe;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

@@ -1,10 +1,10 @@
-package br.unitins.repository;
+package br.unitins.ecommerce.repository;
 
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 
-import br.unitins.model.produto.cafe.Cafe;
+import br.unitins.ecommerce.model.produto.cafe.Cafe;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 @ApplicationScoped

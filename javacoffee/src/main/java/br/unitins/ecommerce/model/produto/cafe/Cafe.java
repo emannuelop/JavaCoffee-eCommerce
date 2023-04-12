@@ -1,10 +1,10 @@
-package br.unitins.model.produto.cafe;
+package br.unitins.ecommerce.model.produto.cafe;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 
-import br.unitins.model.produto.Produto;
+import br.unitins.ecommerce.model.produto.Produto;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "id") // Herança de produto

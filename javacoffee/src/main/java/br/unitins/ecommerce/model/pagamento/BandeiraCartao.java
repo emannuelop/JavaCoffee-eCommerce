@@ -1,4 +1,4 @@
-package br.unitins.model.pagamento;
+package br.unitins.ecommerce.model.pagamento;
 
 public enum BandeiraCartao {
 

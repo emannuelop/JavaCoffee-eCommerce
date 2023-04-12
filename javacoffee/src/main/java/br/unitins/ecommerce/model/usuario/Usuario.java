@@ -1,4 +1,4 @@
-package br.unitins.model.usuario;
+package br.unitins.ecommerce.model.usuario;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import br.unitins.model.DefaultEntity;
-import br.unitins.model.endereco.Endereco;
-import br.unitins.model.produto.Produto;
+import br.unitins.ecommerce.model.DefaultEntity;
+import br.unitins.ecommerce.model.endereco.Endereco;
+import br.unitins.ecommerce.model.produto.Produto;
 
 @Entity
 public class Usuario extends DefaultEntity {
