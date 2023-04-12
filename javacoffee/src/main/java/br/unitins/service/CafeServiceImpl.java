@@ -132,7 +132,10 @@ public class CafeServiceImpl implements CafeService {
 
     @Override
     public List<CafeResponseDTO> getByIntensidade(Integer id) {
-        throw new UnsupportedOperationException("Unimplemented method 'getByIntensidade'");
+
+        List<Cafe> list = cafeRepository.findByIntensidade(id);
+
+        return list.stream().map(CafeResponseDTO::new).collect(Collectors.toList());
     }
 
     private void validar(CafeDTO cafeDTO) throws ConstraintViolationException {
