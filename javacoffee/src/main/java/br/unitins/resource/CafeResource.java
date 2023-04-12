@@ -18,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import br.unitins.application.Result;
 import br.unitins.dto.CafeDTO;
 import br.unitins.dto.CafeResponseDTO;
 import br.unitins.service.CafeService;
@@ -38,31 +39,53 @@ public class CafeResource {
 
     @GET
     @Path("/{id}")
-    public CafeResponseDTO findById(@PathParam("id") Long id) throws NotFoundException {
+    public CafeResponseDTO getById(@PathParam("id") Long id) throws NotFoundException {
 
         return cafeService.getById(id);
     }
 
     @POST
     @Transactional
-    public Response insert(CafeDTO cafeDto) throws ConstraintViolationException {
+    public Response insert(CafeDTO cafeDto) {
 
-        return Response
-                .status(Status.CREATED) // 201
-                .entity(cafeService.insert(cafeDto))
-                .build();
+        try {
+
+            return Response
+                    .status(Status.CREATED) // 201
+                    .entity(cafeService.insert(cafeDto))
+                    .build();
+        } catch (ConstraintViolationException e) {
+
+            Result result = new Result(e.getConstraintViolations());
+
+            return Response
+                    .status(Status.NOT_FOUND)
+                    .entity(result)
+                    .build();
+        }
     }
 
     @PUT
     @Path("/{id}")
     @Transactional
-    public Response update(@PathParam("id") Long id, CafeDTO cafeDto) throws ConstraintViolationException {
+    public Response update(@PathParam("id") Long id, CafeDTO cafeDto) {
 
-        cafeService.update(id, cafeDto);
+        try {
 
-        return Response
+            cafeService.update(id, cafeDto);
+
+            return Response
                     .status(Status.NO_CONTENT) // 204
                     .build();
+        } catch (ConstraintViolationException e) {
+
+            Result result = new Result(e.getConstraintViolations());
+
+            return Response
+                    .status(Status.NOT_FOUND)
+                    .entity(result)
+                    .build();
+        }
     }
 
     @DELETE
@@ -73,8 +96,8 @@ public class CafeResource {
         cafeService.delete(id);
 
         return Response
-                    .status(Status.NO_CONTENT)
-                    .build();
+                .status(Status.NO_CONTENT)
+                .build();
     }
 
     @GET
@@ -82,5 +105,12 @@ public class CafeResource {
     public Long count() {
 
         return cafeService.count();
+    }
+
+    @GET
+    @Path("/search/{nome}")
+    public List<CafeResponseDTO> getByNome(@PathParam("nome") String nome) {
+
+        return cafeService.getByNome(nome);
     }
 }

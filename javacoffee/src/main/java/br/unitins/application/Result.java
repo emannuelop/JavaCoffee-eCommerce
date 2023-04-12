@@ -11,11 +11,13 @@ public class Result {
     private boolean success;
 
     public Result(String message) {
+       
         this.success = true;
         this.message = message;
     }
 
     public Result(Set<? extends ConstraintViolation<?>> violations) {
+       
         this.success = false;
         this.message = violations.stream()
              .map(cv -> cv.getMessage())

@@ -21,5 +21,9 @@ public interface CafeService {
 
     // Metodos extras
 
+    List<CafeResponseDTO> getByNome(String nome);
+
+    List<CafeResponseDTO> getByIntensidade(Integer id);
+
     Long count();
 }

@@ -2,6 +2,7 @@ package br.unitins.service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -121,11 +122,26 @@ public class CafeServiceImpl implements CafeService {
         return cafeRepository.count();
     }
 
+    @Override
+    public List<CafeResponseDTO> getByNome(String nome) {
+
+        List<Cafe> list = cafeRepository.findByNome(nome);
+
+        return list.stream().map(CafeResponseDTO::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CafeResponseDTO> getByIntensidade(Integer id) {
+        throw new UnsupportedOperationException("Unimplemented method 'getByIntensidade'");
+    }
+
     private void validar(CafeDTO cafeDTO) throws ConstraintViolationException {
 
         Set<ConstraintViolation<CafeDTO>> violations = validator.validate(cafeDTO);
 
         if (!violations.isEmpty())
             throw new ConstraintViolationException(violations);
+
     }
+
 }
