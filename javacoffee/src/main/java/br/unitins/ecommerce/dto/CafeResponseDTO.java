@@ -1,9 +1,9 @@
-package br.unitins.dto;
+package br.unitins.ecommerce.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import br.unitins.model.produto.cafe.Cafe;
-import br.unitins.model.produto.cafe.Intensidade;
+import br.unitins.ecommerce.model.produto.cafe.Cafe;
+import br.unitins.ecommerce.model.produto.cafe.Intensidade;
 
 public class CafeResponseDTO {
 

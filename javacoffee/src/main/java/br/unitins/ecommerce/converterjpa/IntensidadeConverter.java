@@ -1,4 +1,4 @@
-package br.unitins.converterjpa;
+package br.unitins.ecommerce.converterjpa;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

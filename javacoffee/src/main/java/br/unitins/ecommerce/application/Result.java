@@ -1,4 +1,4 @@
-package br.unitins.application;
+package br.unitins.ecommerce.application;
 
 import java.util.Set;
 import java.util.stream.Collectors;
