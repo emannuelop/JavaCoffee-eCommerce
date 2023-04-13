@@ -1,4 +1,4 @@
-package br.unitins.ecommerce.dto;
+package br.unitins.ecommerce.dto.produto.cafe;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

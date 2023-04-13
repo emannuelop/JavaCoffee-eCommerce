@@ -11,8 +11,8 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import javax.ws.rs.NotFoundException;
 
-import br.unitins.ecommerce.dto.CafeDTO;
-import br.unitins.ecommerce.dto.CafeResponseDTO;
+import br.unitins.ecommerce.dto.produto.cafe.CafeDTO;
+import br.unitins.ecommerce.dto.produto.cafe.CafeResponseDTO;
 import br.unitins.ecommerce.model.produto.Marca;
 import br.unitins.ecommerce.model.produto.cafe.Cafe;
 import br.unitins.ecommerce.model.produto.cafe.Intensidade;

@@ -19,8 +19,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import br.unitins.ecommerce.application.Result;
-import br.unitins.ecommerce.dto.CafeDTO;
-import br.unitins.ecommerce.dto.CafeResponseDTO;
+import br.unitins.ecommerce.dto.produto.cafe.CafeDTO;
+import br.unitins.ecommerce.dto.produto.cafe.CafeResponseDTO;
 import br.unitins.ecommerce.service.CafeService;
 
 @Path("/cafes")

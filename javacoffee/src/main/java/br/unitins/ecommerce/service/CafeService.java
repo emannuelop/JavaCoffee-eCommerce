@@ -2,8 +2,8 @@ package br.unitins.ecommerce.service;
 
 import java.util.List;
 
-import br.unitins.ecommerce.dto.CafeDTO;
-import br.unitins.ecommerce.dto.CafeResponseDTO;
+import br.unitins.ecommerce.dto.produto.cafe.CafeDTO;
+import br.unitins.ecommerce.dto.produto.cafe.CafeResponseDTO;
 
 public interface CafeService {
     

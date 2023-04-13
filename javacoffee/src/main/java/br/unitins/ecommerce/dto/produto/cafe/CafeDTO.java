@@ -1,4 +1,4 @@
-package br.unitins.ecommerce.dto;
+package br.unitins.ecommerce.dto.produto.cafe;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
