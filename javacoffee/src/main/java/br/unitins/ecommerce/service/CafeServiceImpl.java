@@ -13,6 +13,7 @@ import javax.ws.rs.NotFoundException;
 
 import br.unitins.ecommerce.dto.CafeDTO;
 import br.unitins.ecommerce.dto.CafeResponseDTO;
+import br.unitins.ecommerce.model.produto.Marca;
 import br.unitins.ecommerce.model.produto.cafe.Cafe;
 import br.unitins.ecommerce.model.produto.cafe.Intensidade;
 import br.unitins.ecommerce.repository.CafeRepository;
@@ -123,19 +124,86 @@ public class CafeServiceImpl implements CafeService {
     }
 
     @Override
-    public List<CafeResponseDTO> getByNome(String nome) {
+    public List<CafeResponseDTO> getByNome(String nome) throws NullPointerException {
 
         List<Cafe> list = cafeRepository.findByNome(nome);
 
-        return list.stream().map(CafeResponseDTO::new).collect(Collectors.toList());
+        if (list == null)
+            throw new NullPointerException("nenhum Café encontrado");
+
+        return list.stream()
+                    .map(CafeResponseDTO::new)
+                    .collect(Collectors.toList());
     }
 
     @Override
-    public List<CafeResponseDTO> getByIntensidade(Integer id) {
+    public List<CafeResponseDTO> getByIntensidade(Integer id) throws IndexOutOfBoundsException, NullPointerException {
 
-        List<Cafe> list = cafeRepository.findByIntensidade(id);
+        if (id < 0 || id > 3)
+            throw new IndexOutOfBoundsException("número fora das opções");
 
-        return list.stream().map(CafeResponseDTO::new).collect(Collectors.toList());
+        List<Cafe> list = cafeRepository.findByIntensidade(Intensidade.valueOf(id));
+
+        if (list == null)
+            throw new NullPointerException("Nenhum Café encontrada");
+
+        return list.stream()
+                    .map(CafeResponseDTO::new)
+                    .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CafeResponseDTO> getByMarca(String nome) throws NullPointerException {
+        
+        Marca marca = marcaRepository.findByNome(nome);
+
+        List<Cafe> list = cafeRepository.findByMarca(marca);
+
+        if (list == null)
+            throw new NullPointerException("Nenhuma marca encontrada");
+
+        return list.stream()
+                    .map(CafeResponseDTO::new)
+                    .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CafeResponseDTO> filterByPrecoMin(Double preco) throws NullPointerException {
+        
+        List<Cafe> list = cafeRepository.filterByPrecoMinimo(preco);
+
+        if (list == null)
+            throw new NullPointerException("Nenhum Café encontrada");
+
+        return list.stream()
+                    .map(CafeResponseDTO::new)
+                    .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CafeResponseDTO> filterByPrecoMax(Double preco) {
+        
+        List<Cafe> list = cafeRepository.filterByPrecoMaximo(preco);
+
+        if (list == null)
+            throw new NullPointerException("Nenhum Café encontrada");
+
+        return list.stream()
+                    .map(CafeResponseDTO::new)
+                    .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CafeResponseDTO> filterByEntrePreco(Double precoMin, Double precoMax) {
+        
+        List<Cafe> list = cafeRepository.filterByEntrePreco(precoMin, precoMax);
+
+        if (list == null)
+            throw new NullPointerException("Nenhum Café encontrada");
+
+        return list.stream()
+                    .map(CafeResponseDTO::new)
+                    .collect(Collectors.toList());
     }
 
     private void validar(CafeDTO cafeDTO) throws ConstraintViolationException {
@@ -146,5 +214,4 @@ public class CafeServiceImpl implements CafeService {
             throw new ConstraintViolationException(violations);
 
     }
-
 }

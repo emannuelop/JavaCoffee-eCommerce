@@ -108,9 +108,44 @@ public class CafeResource {
     }
 
     @GET
-    @Path("/search/{nome}")
+    @Path("/searchByNome/{nome}")
     public List<CafeResponseDTO> getByNome(@PathParam("nome") String nome) {
 
         return cafeService.getByNome(nome);
+    }
+
+    @GET
+    @Path("/searchByIntensidade/{intensidade}")
+    public List<CafeResponseDTO> getByIntensidade(@PathParam("intensidade") Integer id) throws IndexOutOfBoundsException {
+
+        return cafeService.getByIntensidade(id);
+    }
+
+    @GET
+    @Path("/searchByMarca/{marca}")
+    public List<CafeResponseDTO> getByMarca (@PathParam("marca") String nomeMarca) {
+
+        return cafeService.getByMarca(nomeMarca);
+    }
+
+    @GET
+    @Path("/filterByPrecoMin/{precoMin}")
+    public List<CafeResponseDTO> filterByPrecoMin (@PathParam("precoMin") Double preco) {
+
+        return cafeService.filterByPrecoMin(preco);
+    }
+
+    @GET
+    @Path("/filterByPrecoMax/{precoMax}")
+    public List<CafeResponseDTO> filterByPrecoMax (@PathParam("precoMax") Double preco) {
+
+        return cafeService.filterByPrecoMax(preco);
+    }
+
+    @GET
+    @Path("/filterByEntrePreco/{precoMin}&{precoMax}")
+    public List<CafeResponseDTO> filterByEntrePreco (@PathParam("precoMin") Double precoMin, @PathParam("precoMax") Double precoMax) {
+
+        return cafeService.filterByEntrePreco(precoMin, precoMax);
     }
 }

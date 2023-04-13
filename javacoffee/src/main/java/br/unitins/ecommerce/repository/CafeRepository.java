@@ -4,7 +4,9 @@ import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 
+import br.unitins.ecommerce.model.produto.Marca;
 import br.unitins.ecommerce.model.produto.cafe.Cafe;
+import br.unitins.ecommerce.model.produto.cafe.Intensidade;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 @ApplicationScoped
@@ -15,17 +17,46 @@ public class CafeRepository implements PanacheRepository<Cafe> {
         if (nome == null)
             return null;
 
-        return find("FROM cafe WHERE UPPER(UNNACENT(nome)) LIKE UNNACENT(?1)", "%" + nome.toUpperCase() + "%").list();
+        return find("FROM Cafe WHERE UPPER(UNACCENT(nome)) LIKE UNACCENT(?1)", "%" + nome.toUpperCase() + "%").list();
     }
 
-    public List<Cafe> findByIntensidade (Integer id) throws IndexOutOfBoundsException {
+    public List<Cafe> findByIntensidade (Intensidade intensidade) {
 
-        if (id == null)
+        if (intensidade == null)
             return null;
 
-        if (id < 1 || id > 3)
-            throw new IndexOutOfBoundsException("número fora das opções");
+        return find("FROM Cafe WHERE intensidade = ?1", intensidade).list();
+    }
 
-        return find("FROM cafe WHERE intensidade = ?1", id).list();
+    public List<Cafe> findByMarca (Marca marca) {
+
+        if (marca == null)
+            return null;
+
+        return find("FROM Cafe WHERE marca = ?1", marca).list();
+    }
+
+    public List<Cafe> filterByPrecoMaximo (Double preco) {
+
+        if (preco == null)
+            return null;
+
+        return find("FROM Cafe WHERE preco < ?1", preco).list();
+    }
+
+    public List<Cafe> filterByPrecoMinimo (Double preco) {
+
+        if (preco == null)
+            return null;
+
+        return find("FROM Cafe WHERE preco > ?1", preco).list();
+    }
+
+    public List<Cafe> filterByEntrePreco (Double precoMin, Double precoMax) {
+
+        if (precoMin == null || precoMax == null)
+            return null;
+
+        return find("FROM Cafe WHERE preco > ?1 AND preco < ?2", precoMin, precoMax).list();
     }
 }
