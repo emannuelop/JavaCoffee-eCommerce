@@ -1,4 +1,4 @@
-package br.unitins.ecommerce.service;
+package br.unitins.ecommerce.service.cafe;
 
 import java.util.List;
 import java.util.Set;
@@ -11,8 +11,8 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import javax.ws.rs.NotFoundException;
 
-import br.unitins.ecommerce.dto.produto.cafe.CafeDTO;
-import br.unitins.ecommerce.dto.produto.cafe.CafeResponseDTO;
+import br.unitins.ecommerce.dto.cafe.CafeDTO;
+import br.unitins.ecommerce.dto.cafe.CafeResponseDTO;
 import br.unitins.ecommerce.model.produto.Marca;
 import br.unitins.ecommerce.model.produto.cafe.Cafe;
 import br.unitins.ecommerce.model.produto.cafe.Intensidade;

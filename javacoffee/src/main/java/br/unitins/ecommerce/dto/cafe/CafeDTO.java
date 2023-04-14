@@ -1,17 +1,19 @@
-package br.unitins.ecommerce.dto.produto.cafe;
+package br.unitins.ecommerce.dto.cafe;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class CafeDTO {
 
-    @NotBlank
+    @NotBlank(message = "Campo nome não pode estar vazio")
     private String nome;
 
     private String descricao;
 
     @NotNull
+    @Min(1)
     private Long idMarca;
 
     @NotNull
@@ -27,6 +29,8 @@ public class CafeDTO {
     private String tipo;
 
     @NotNull
+    @Min(1)
+    @Max(3)
     private Integer intensidade;
 
     public String getNome() {

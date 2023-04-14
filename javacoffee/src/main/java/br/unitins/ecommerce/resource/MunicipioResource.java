@@ -19,40 +19,40 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import br.unitins.ecommerce.application.Result;
-import br.unitins.ecommerce.dto.cafe.CafeDTO;
-import br.unitins.ecommerce.dto.cafe.CafeResponseDTO;
-import br.unitins.ecommerce.service.cafe.CafeService;
+import br.unitins.ecommerce.dto.municipio.MunicipioDTO;
+import br.unitins.ecommerce.dto.municipio.MunicipioResponseDTO;
+import br.unitins.ecommerce.service.muncipio.MunicipioService;
 
-@Path("/cafes")
+@Path("/muncipios")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class CafeResource {
-
+public class MunicipioResource {
+    
     @Inject
-    CafeService cafeService;
+    MunicipioService municipioService;
 
     @GET
-    public List<CafeResponseDTO> getAll() {
+    public List<MunicipioResponseDTO> getAll() {
 
-        return cafeService.getAll();
+        return municipioService.getAll();
     }
 
     @GET
     @Path("/{id}")
-    public CafeResponseDTO getById(@PathParam("id") Long id) throws NotFoundException {
+    public MunicipioResponseDTO getById(@PathParam("id") Long id) throws NotFoundException {
 
-        return cafeService.getById(id);
+        return municipioService.getById(id);
     }
 
     @POST
     @Transactional
-    public Response insert(CafeDTO cafeDto) {
+    public Response insert(MunicipioDTO municipioDto) {
 
         try {
 
             return Response
                     .status(Status.CREATED) // 201
-                    .entity(cafeService.insert(cafeDto))
+                    .entity(municipioService.insert(municipioDto))
                     .build();
         } catch (ConstraintViolationException e) {
 
@@ -68,11 +68,11 @@ public class CafeResource {
     @PUT
     @Path("/{id}")
     @Transactional
-    public Response update(@PathParam("id") Long id, CafeDTO cafeDto) {
+    public Response update(@PathParam("id") Long id, MunicipioDTO municipioDto) {
 
         try {
 
-            cafeService.update(id, cafeDto);
+            municipioService.update(id, municipioDto);
 
             return Response
                     .status(Status.NO_CONTENT) // 204
@@ -93,7 +93,7 @@ public class CafeResource {
     @Transactional
     public Response delete(@PathParam("id") Long id) throws IllegalArgumentException {
 
-        cafeService.delete(id);
+        municipioService.delete(id);
 
         return Response
                 .status(Status.NO_CONTENT)
@@ -104,48 +104,27 @@ public class CafeResource {
     @Path("/count")
     public Long count() {
 
-        return cafeService.count();
+        return municipioService.count();
     }
 
     @GET
     @Path("/searchByNome/{nome}")
-    public List<CafeResponseDTO> getByNome(@PathParam("nome") String nome) {
+    public List<MunicipioResponseDTO> getByNome(@PathParam("nome") String nome) throws NullPointerException {
 
-        return cafeService.getByNome(nome);
+        return municipioService.getByNome(nome);
     }
 
     @GET
-    @Path("/searchByIntensidade/{intensidade}")
-    public List<CafeResponseDTO> getByIntensidade(@PathParam("intensidade") Integer id) throws IndexOutOfBoundsException {
+    @Path("/searchByNomeEstado/{nomeEstado}")
+    public List<MunicipioResponseDTO> getByNomeEstado(@PathParam("nomeEstado") String nomeEstado) throws NullPointerException {
 
-        return cafeService.getByIntensidade(id);
+        return municipioService.getByNomeEstado(nomeEstado);
     }
 
     @GET
-    @Path("/searchByMarca/{marca}")
-    public List<CafeResponseDTO> getByMarca (@PathParam("marca") String nomeMarca) {
+    @Path("/searchBySiglaEstado/{siglaEstado}")
+    public List<MunicipioResponseDTO> getBySiglaEstado(@PathParam("siglaEstado") String siglaEstado) throws NullPointerException {
 
-        return cafeService.getByMarca(nomeMarca);
-    }
-
-    @GET
-    @Path("/filterByPrecoMin/{precoMin}")
-    public List<CafeResponseDTO> filterByPrecoMin (@PathParam("precoMin") Double preco) {
-
-        return cafeService.filterByPrecoMin(preco);
-    }
-
-    @GET
-    @Path("/filterByPrecoMax/{precoMax}")
-    public List<CafeResponseDTO> filterByPrecoMax (@PathParam("precoMax") Double preco) {
-
-        return cafeService.filterByPrecoMax(preco);
-    }
-
-    @GET
-    @Path("/filterByEntrePreco/{precoMin}&{precoMax}")
-    public List<CafeResponseDTO> filterByEntrePreco (@PathParam("precoMin") Double precoMin, @PathParam("precoMax") Double precoMax) {
-
-        return cafeService.filterByEntrePreco(precoMin, precoMax);
+        return municipioService.getBySiglaEstado(siglaEstado);
     }
 }

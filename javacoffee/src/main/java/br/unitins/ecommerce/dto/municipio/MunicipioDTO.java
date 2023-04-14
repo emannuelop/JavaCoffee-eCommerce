@@ -1,15 +1,16 @@
-package br.unitins.ecommerce.dto.endereco;
+package br.unitins.ecommerce.dto.municipio;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-
-import io.smallrye.common.constraint.NotNull;
+import javax.validation.constraints.NotNull;
 
 public class MunicipioDTO {
 
-    @NotBlank
+    @NotBlank(message = "Campo nome não pode estar vazio")
     private String nome;
 
     @NotNull
+    @Min(1)
     private Long idestado;
 
     public String getNome() {

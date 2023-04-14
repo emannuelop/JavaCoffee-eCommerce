@@ -1,4 +1,4 @@
-package br.unitins.ecommerce.dto.endereco;
+package br.unitins.ecommerce.dto.municipio;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,11 +7,14 @@ import br.unitins.ecommerce.model.endereco.Municipio;
 
 public class MunicipioResponseDTO {
 
+    private Long id;
     private String nome;
 
     private Map<String, Object> estado;
 
     public MunicipioResponseDTO(Municipio municipio) {
+        
+        this.id = municipio.getId();
         this.nome = municipio.getNome();
 
         this.estado = new HashMap<>();
@@ -20,19 +23,15 @@ public class MunicipioResponseDTO {
         estado.put("sigla:", municipio.getEstado().getSigla());
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getNome() {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public Map<String, Object> getEstado() {
         return estado;
-    }
-
-    public void setEstado(Map<String, Object> estado) {
-        this.estado = estado;
     }
 }

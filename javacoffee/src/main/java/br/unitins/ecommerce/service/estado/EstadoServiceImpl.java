@@ -1,7 +1,8 @@
-package br.unitins.ecommerce.service;
+package br.unitins.ecommerce.service.estado;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -10,7 +11,8 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import javax.ws.rs.NotFoundException;
 
-import br.unitins.ecommerce.dto.endereco.EstadoDTO;
+import br.unitins.ecommerce.dto.estado.EstadoDTO;
+import br.unitins.ecommerce.dto.estado.EstadoResponseDTO;
 import br.unitins.ecommerce.model.endereco.Estado;
 import br.unitins.ecommerce.repository.EstadoRepository;
 
@@ -24,24 +26,27 @@ public class EstadoServiceImpl implements EstadoService {
     Validator validator;
 
     @Override
-    public List<Estado> getAll() {
+    public List<EstadoResponseDTO> getAll() {
 
-        return estadoRepository.findAll().list();
+        return estadoRepository.findAll()
+                                .stream()
+                                .map(EstadoResponseDTO::new)
+                                .collect(Collectors.toList());
     }
 
     @Override
-    public Estado getById(Long id) throws NotFoundException {
+    public EstadoResponseDTO getById(Long id) throws NotFoundException {
 
         Estado estado = estadoRepository.findById(id);
 
         if (estado == null)
             throw new NotFoundException("Não encontrado");
 
-        return estado;
+        return new EstadoResponseDTO(estado);
     }
 
     @Override
-    public Estado insert(EstadoDTO estadoDto) throws ConstraintViolationException {
+    public EstadoResponseDTO insert(EstadoDTO estadoDto) throws ConstraintViolationException {
 
         validar(estadoDto);
 
@@ -49,15 +54,15 @@ public class EstadoServiceImpl implements EstadoService {
 
         entity.setNome(estadoDto.getNome());
 
-        entity.setSigla(estadoDto.getSigla());
+        entity.setSigla(estadoDto.getSigla().toUpperCase());
 
         estadoRepository.persist(entity);
 
-        return entity;
+        return new EstadoResponseDTO(entity);
     }
 
     @Override
-    public Estado update(Long id, EstadoDTO estadoDto) throws ConstraintViolationException {
+    public EstadoResponseDTO update(Long id, EstadoDTO estadoDto) throws ConstraintViolationException {
 
         validar(estadoDto);
 
@@ -65,9 +70,9 @@ public class EstadoServiceImpl implements EstadoService {
 
         entity.setNome(estadoDto.getNome());
 
-        entity.setSigla(estadoDto.getSigla());
+        entity.setSigla(estadoDto.getSigla().toUpperCase());
 
-        return entity;
+        return new EstadoResponseDTO(entity);
     }
 
     @Override
@@ -83,14 +88,29 @@ public class EstadoServiceImpl implements EstadoService {
     }
 
     @Override
-    public List<Estado> getByNome(String nome) throws NullPointerException {
+    public List<EstadoResponseDTO> getByNome(String nome) throws NullPointerException {
 
         List<Estado> list = estadoRepository.findByNome(nome);
 
         if (list == null)
-            throw new NullPointerException("nenhum Café encontrado");
+            throw new NullPointerException("nenhum Estado encontrado");
 
-        return list;
+        return list.stream()
+                    .map(EstadoResponseDTO::new)
+                    .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<EstadoResponseDTO> getBySigla(String sigla) throws NullPointerException {
+        
+        List<Estado> list = estadoRepository.findBySigla(sigla);
+
+        if (list == null)
+            throw new NullPointerException("nenhum Estado encontrado");
+
+        return list.stream()
+                    .map(EstadoResponseDTO::new)
+                    .collect(Collectors.toList());
     }
 
     @Override
