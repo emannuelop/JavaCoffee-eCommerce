@@ -19,40 +19,40 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import br.unitins.ecommerce.application.Result;
-import br.unitins.ecommerce.dto.estado.EstadoDTO;
-import br.unitins.ecommerce.dto.estado.EstadoResponseDTO;
-import br.unitins.ecommerce.service.estado.EstadoService;
+import br.unitins.ecommerce.dto.endereco.EnderecoDTO;
+import br.unitins.ecommerce.dto.endereco.EnderecoResponseDTO;
+import br.unitins.ecommerce.service.endereco.EnderecoService;
 
-@Path("/estados")
+@Path("/enderecos")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class EstadoResource {
+public class EnderecoResource {
     
     @Inject
-    EstadoService estadoService;
+    EnderecoService enderecoService;
 
     @GET
-    public List<EstadoResponseDTO> getAll() {
+    public List<EnderecoResponseDTO> getAll() {
 
-        return estadoService.getAll();
+        return enderecoService.getAll();
     }
 
     @GET
     @Path("/{id}")
-    public EstadoResponseDTO getById(@PathParam("id") Long id) throws NotFoundException {
+    public EnderecoResponseDTO getById(@PathParam("id") Long id) throws NotFoundException {
 
-        return estadoService.getById(id);
+        return enderecoService.getById(id);
     }
 
     @POST
     @Transactional
-    public Response insert(EstadoDTO estadoDto) {
+    public Response insert(EnderecoDTO enderecoDto) {
 
         try {
 
             return Response
                     .status(Status.CREATED) // 201
-                    .entity(estadoService.insert(estadoDto))
+                    .entity(enderecoService.insert(enderecoDto))
                     .build();
         } catch (ConstraintViolationException e) {
 
@@ -68,11 +68,11 @@ public class EstadoResource {
     @PUT
     @Path("/{id}")
     @Transactional
-    public Response update(@PathParam("id") Long id, EstadoDTO estadoDto) {
+    public Response update(@PathParam("id") Long id, EnderecoDTO enderecoDto) {
 
         try {
 
-            estadoService.update(id, estadoDto);
+            enderecoService.update(id, enderecoDto);
 
             return Response
                     .status(Status.NO_CONTENT) // 204
@@ -93,7 +93,7 @@ public class EstadoResource {
     @Transactional
     public Response delete(@PathParam("id") Long id) throws IllegalArgumentException, NotFoundException {
 
-        estadoService.delete(id);
+        enderecoService.delete(id);
 
         return Response
                 .status(Status.NO_CONTENT)
@@ -104,20 +104,34 @@ public class EstadoResource {
     @Path("/count")
     public Long count() {
 
-        return estadoService.count();
+        return enderecoService.count();
     }
 
     @GET
-    @Path("/searchByNome/{nome}")
-    public List<EstadoResponseDTO> getByNome(@PathParam("nome") String nome) throws NullPointerException {
+    @Path("/searchByLogradouro/{logradouro}")
+    public List<EnderecoResponseDTO> getByLogradouro(@PathParam("logradouro") String logradouro) throws NullPointerException {
 
-        return estadoService.getByNome(nome);
+        return enderecoService.getByLogradouro(logradouro);
     }
 
     @GET
-    @Path("/searchBySigla/{sigla}")
-    public List<EstadoResponseDTO> getBySigla(@PathParam("sigla") String sigla) throws NullPointerException {
+    @Path("/searchByBairro/{bairro}")
+    public List<EnderecoResponseDTO> getByBairro(@PathParam("bairro") String bairro) throws NullPointerException {
 
-        return estadoService.getBySigla(sigla);
+        return enderecoService.getByBairro(bairro);
+    }
+
+    @GET
+    @Path("/searchByCep/{cep}")
+    public List<EnderecoResponseDTO> getByCep(@PathParam("cep") String cep) throws NullPointerException {
+
+        return enderecoService.getByCep(cep);
+    }
+
+    @GET
+    @Path("/searchByNomeMunicipio/{nomeMunicipio}")
+    public List<EnderecoResponseDTO> getByNomeMunicipio(@PathParam("nomeMunicipio") String nomeMunicipio) throws NullPointerException {
+
+        return enderecoService.getByNomeMunicipio(nomeMunicipio);
     }
 }

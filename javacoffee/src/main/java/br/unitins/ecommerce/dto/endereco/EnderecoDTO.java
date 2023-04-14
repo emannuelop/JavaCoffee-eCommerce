@@ -1,32 +1,28 @@
-package br.unitins.ecommerce.model.endereco;
+package br.unitins.ecommerce.dto.endereco;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
-import br.unitins.ecommerce.model.DefaultEntity;
+public class EnderecoDTO {
 
-@Entity
-public class Endereco extends DefaultEntity {
-
-    @Column(nullable = false)
+    @NotBlank(message = "O campo logradouro não pode estar vazio")
     private String logradouro;
 
-    @Column(nullable = false)
+    @NotBlank(message = "O campo bairro não pode estar vazio")
     private String bairro;
 
-    @Column(nullable = false)
+    @NotBlank(message = "O campo número não pode estar vazio")
     private String numero;
 
     private String complemento;
 
-    @Column(nullable = false)
+    @NotBlank(message = "O campo cep não pode estar vazio")
     private String cep;
 
-    @ManyToOne
-    @JoinColumn(name = "id_municipio", nullable = false)
-    private Municipio municipio;
+    @NotNull
+    @Min(1)
+    private Long idMunicipio;
 
     public String getLogradouro() {
         return logradouro;
@@ -68,11 +64,11 @@ public class Endereco extends DefaultEntity {
         this.cep = cep;
     }
 
-    public Municipio getMunicipio() {
-        return municipio;
+    public Long getIdMunicipio() {
+        return idMunicipio;
     }
 
-    public void setMunicipio(Municipio municipio) {
-        this.municipio = municipio;
+    public void setIdMunicipio(Long idMunicipio) {
+        this.idMunicipio = idMunicipio;
     }
 }

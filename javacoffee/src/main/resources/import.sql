@@ -24,3 +24,7 @@ INSERT INTO municipio (nome, id_estado) VALUES ('Manaus', 2);
 INSERT INTO municipio (nome, id_estado) VALUES ('Palmas', 4);
 INSERT INTO municipio (nome, id_estado) VALUES ('Guaraí', 4);
 INSERT INTO municipio (nome, id_estado) VALUES ('Belém', 3);
+
+INSERT INTO endereco (logradouro, bairro, numero, cep, id_municipio) VALUES ('alameda 12', 'Quadra 708 Sul', 'lote 10', '77082-012', 2);
+INSERT INTO endereco (logradouro, bairro, numero, cep, id_municipio) VALUES ('avenida Bernado Sayão', 'Setor Aeroporto', 'número 3564', '77700-001', 3);
+INSERT INTO endereco (logradouro, bairro, numero, cep, id_municipio) VALUES ('rua Piauí', 'Quadra 301 Norte', 'numero 102', '77030-030', 1);

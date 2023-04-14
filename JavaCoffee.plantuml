@@ -73,7 +73,6 @@
     class Endereco {
 
         - id: Long
-        - principal: Boolean
         - logradouro: String
         - bairro: String
         - numero: String

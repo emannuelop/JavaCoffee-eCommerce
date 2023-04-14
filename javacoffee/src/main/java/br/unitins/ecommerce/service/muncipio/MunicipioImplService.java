@@ -19,7 +19,7 @@ import br.unitins.ecommerce.repository.EstadoRepository;
 import br.unitins.ecommerce.repository.MunicipioRepository;
 
 @ApplicationScoped
-public class MunicipioServiceImpl implements MunicipioService {
+public class MunicipioImplService implements MunicipioService {
 
     @Inject
     Validator validator;
@@ -34,9 +34,9 @@ public class MunicipioServiceImpl implements MunicipioService {
     public List<MunicipioResponseDTO> getAll() {
         
         return municipioRepository.findAll()
-                .stream()
-                .map(MunicipioResponseDTO::new)
-                .toList();
+                                    .stream()
+                                    .map(MunicipioResponseDTO::new)
+                                    .toList();
     }
 
     @Override
@@ -84,7 +84,7 @@ public class MunicipioServiceImpl implements MunicipioService {
     }
 
     @Override
-    public void delete(Long id) throws IllegalArgumentException {
+    public void delete(Long id) throws IllegalArgumentException, NotFoundException {
         
         if (id == null)
             throw new IllegalArgumentException("Número inválido");
@@ -93,6 +93,8 @@ public class MunicipioServiceImpl implements MunicipioService {
 
         if (municipioRepository.isPersistent(municipio))
             municipioRepository.delete(municipio);
+
+        throw new NotFoundException("Nenhum municipio encontrado");
     }
 
     @Override

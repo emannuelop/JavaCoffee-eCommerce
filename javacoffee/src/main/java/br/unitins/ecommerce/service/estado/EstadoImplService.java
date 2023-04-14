@@ -17,7 +17,7 @@ import br.unitins.ecommerce.model.endereco.Estado;
 import br.unitins.ecommerce.repository.EstadoRepository;
 
 @ApplicationScoped
-public class EstadoServiceImpl implements EstadoService {
+public class EstadoImplService implements EstadoService {
 
     @Inject
     EstadoRepository estadoRepository;
@@ -76,7 +76,7 @@ public class EstadoServiceImpl implements EstadoService {
     }
 
     @Override
-    public void delete(Long id) throws IllegalArgumentException {
+    public void delete(Long id) throws IllegalArgumentException, NotFoundException {
 
         if (id == null)
             throw new IllegalArgumentException("Número inválido");
@@ -85,6 +85,8 @@ public class EstadoServiceImpl implements EstadoService {
 
         if (estadoRepository.isPersistent(estado))
             estadoRepository.delete(estado);
+
+        throw new NotFoundException("Nenhum municipio encontrado");
     }
 
     @Override

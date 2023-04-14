@@ -9,14 +9,12 @@ public class MunicipioResponseDTO {
 
     private Long id;
     private String nome;
-
     private Map<String, Object> estado;
 
     public MunicipioResponseDTO(Municipio municipio) {
         
         this.id = municipio.getId();
         this.nome = municipio.getNome();
-
         this.estado = new HashMap<>();
 
         estado.put("nome:", municipio.getEstado().getNome());

@@ -91,7 +91,7 @@ public class MunicipioResource {
     @DELETE
     @Path("/{id}")
     @Transactional
-    public Response delete(@PathParam("id") Long id) throws IllegalArgumentException {
+    public Response delete(@PathParam("id") Long id) throws IllegalArgumentException, NotFoundException {
 
         municipioService.delete(id);
 

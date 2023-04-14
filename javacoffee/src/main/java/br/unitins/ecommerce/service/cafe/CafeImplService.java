@@ -13,14 +13,13 @@ import javax.ws.rs.NotFoundException;
 
 import br.unitins.ecommerce.dto.cafe.CafeDTO;
 import br.unitins.ecommerce.dto.cafe.CafeResponseDTO;
-import br.unitins.ecommerce.model.produto.Marca;
 import br.unitins.ecommerce.model.produto.cafe.Cafe;
 import br.unitins.ecommerce.model.produto.cafe.Intensidade;
 import br.unitins.ecommerce.repository.CafeRepository;
 import br.unitins.ecommerce.repository.MarcaRepository;
 
 @ApplicationScoped
-public class CafeServiceImpl implements CafeService {
+public class CafeImplService implements CafeService {
 
     @Inject
     CafeRepository cafeRepository;
@@ -106,7 +105,7 @@ public class CafeServiceImpl implements CafeService {
     }
 
     @Override
-    public void delete(Long id) throws IllegalArgumentException {
+    public void delete(Long id) throws IllegalArgumentException, NotFoundException {
 
         if (id == null)
             throw new IllegalArgumentException("Número inválido");
@@ -115,6 +114,8 @@ public class CafeServiceImpl implements CafeService {
 
         if (cafeRepository.isPersistent(cafe))
             cafeRepository.delete(cafe);
+
+        throw new NotFoundException("Nenhum municipio encontrado");
     }
 
     @Override
@@ -154,10 +155,8 @@ public class CafeServiceImpl implements CafeService {
 
     @Override
     public List<CafeResponseDTO> getByMarca(String nome) throws NullPointerException {
-        
-        Marca marca = marcaRepository.findByNome(nome);
 
-        List<Cafe> list = cafeRepository.findByMarca(marca);
+        List<Cafe> list = cafeRepository.findByMarca(marcaRepository.findByNome(nome).get(0));
 
         if (list == null)
             throw new NullPointerException("Nenhuma marca encontrada");
