@@ -15,22 +15,11 @@
         - tipo: String
     }
 
-    class Cafeteira {
-
-        - tipoCafeteira: String
-    }
-
     enum Intensidade {
 
         + SUAVE: int
         + MEDIA: int
         + INTENSA: int
-    }
-
-    enum Voltagem {
-
-        + VOLTZ_127: int
-        + VOLTZ_220: int
     }
 
     class Marca {
@@ -152,9 +141,6 @@
 
     Cafe -up-|> Produto
     Cafe "*" o--> "1" Intensidade
-
-    Cafeteira -up-|> Produto
-    Cafeteira "*" o--> "1" Voltagem
 
     Municipio "*" *--> "1" Estado
 
