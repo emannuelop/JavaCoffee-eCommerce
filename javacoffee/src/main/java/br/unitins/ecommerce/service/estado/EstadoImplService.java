@@ -52,9 +52,9 @@ public class EstadoImplService implements EstadoService {
 
         Estado entity = new Estado();
 
-        entity.setNome(estadoDto.getNome());
+        entity.setNome(estadoDto.nome());
 
-        entity.setSigla(estadoDto.getSigla().toUpperCase());
+        entity.setSigla(estadoDto.sigla().toUpperCase());
 
         estadoRepository.persist(entity);
 
@@ -68,9 +68,9 @@ public class EstadoImplService implements EstadoService {
 
         Estado entity = estadoRepository.findById(id);
 
-        entity.setNome(estadoDto.getNome());
+        entity.setNome(estadoDto.nome());
 
-        entity.setSigla(estadoDto.getSigla().toUpperCase());
+        entity.setSigla(estadoDto.sigla().toUpperCase());
 
         return new EstadoResponseDTO(entity);
     }

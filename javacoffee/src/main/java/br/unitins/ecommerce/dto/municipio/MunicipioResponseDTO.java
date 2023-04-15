@@ -5,31 +5,26 @@ import java.util.Map;
 
 import br.unitins.ecommerce.model.endereco.Municipio;
 
-public class MunicipioResponseDTO {
-
-    private Long id;
-    private String nome;
-    private Map<String, Object> estado;
+public record MunicipioResponseDTO (
+    Long id,
+    String nome,
+    Map<String, Object> estado
+) {
 
     public MunicipioResponseDTO(Municipio municipio) {
         
-        this.id = municipio.getId();
-        this.nome = municipio.getNome();
-        this.estado = new HashMap<>();
-
-        estado.put("nome:", municipio.getEstado().getNome());
-        estado.put("sigla:", municipio.getEstado().getSigla());
+        this(municipio.getId(),
+            municipio.getNome(),
+            viewEstado(municipio.getEstado().getNome(), municipio.getEstado().getSigla()));
     }
 
-    public Long getId() {
-        return id;
-    }
+    private static Map<String, Object> viewEstado(String nome, String sigla) {
 
-    public String getNome() {
-        return nome;
-    }
+        Map<String, Object> estado = new HashMap<>();
 
-    public Map<String, Object> getEstado() {
+        estado.put("nome:", nome);
+        estado.put("sigla:", sigla);
+
         return estado;
     }
 }

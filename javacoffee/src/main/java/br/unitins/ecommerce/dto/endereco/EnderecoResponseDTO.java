@@ -5,56 +5,37 @@ import java.util.Map;
 
 import br.unitins.ecommerce.dto.estado.EstadoResponseDTO;
 import br.unitins.ecommerce.model.endereco.Endereco;
+import br.unitins.ecommerce.model.endereco.Estado;
 
-public class EnderecoResponseDTO {
+public record EnderecoResponseDTO (
+    Long id,
+    String logradouro,
+    String bairro,
+    String numero,
+    String complemento,
+    String cep,
+    Map<String, Object> municipio
+) {
     
-    private Long id;
-    private String logradouro;
-    private String bairro;
-    private String numero;
-    private String complemento;
-    private String cep;
-    private Map<String, Object> municipio;
-
     public EnderecoResponseDTO(Endereco endereco) {
 
-        this.id = endereco.getId();
-        this.logradouro = endereco.getLogradouro();
-        this.bairro = endereco.getBairro();
-        this.numero = endereco.getNumero();
-        this.complemento = endereco.getComplemento();
-        this.cep = endereco.getCep();
-        this.municipio = new HashMap<>();
-
-        municipio.put("nome:", endereco.getMunicipio().getNome());
-        municipio.put("estado:", new EstadoResponseDTO(endereco.getMunicipio().getEstado()));
+        this(endereco.getId(),
+            endereco.getLogradouro(),
+            endereco.getBairro(),
+            endereco.getNumero(),
+            endereco.getComplemento(),
+            endereco.getCep(),
+            viewMunicipio(endereco.getMunicipio().getNome(),
+            endereco.getMunicipio().getEstado()));
     }
 
-    public Long getId() {
-        return id;
-    }
+    private static Map<String, Object> viewMunicipio(String nome, Estado estado) {
 
-    public String getLogradouro() {
-        return logradouro;
-    }
+        Map<String, Object> municipio = new HashMap<>();
 
-    public String getBairro() {
-        return bairro;
-    }
+        municipio.put("nome:", nome);
+        municipio.put("estado:", new EstadoResponseDTO(estado));
 
-    public String getNumero() {
-        return numero;
-    }
-
-    public String getComplemento() {
-        return complemento;
-    }
-
-    public String getCep() {
-        return cep;
-    }
-
-    public Map<String, Object> getMunicipio() {
         return municipio;
     }
 }

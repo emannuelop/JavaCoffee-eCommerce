@@ -56,17 +56,17 @@ public class EnderecoImplService implements EnderecoService {
 
         Endereco entity = new Endereco();
 
-        entity.setLogradouro(enderecoDto.getLogradouro());
+        entity.setLogradouro(enderecoDto.logradouro());
 
-        entity.setBairro(enderecoDto.getBairro());
+        entity.setBairro(enderecoDto.bairro());
 
-        entity.setNumero(enderecoDto.getNumero());
+        entity.setNumero(enderecoDto.numero());
 
-        entity.setComplemento(enderecoDto.getComplemento());
+        entity.setComplemento(enderecoDto.complemento());
 
-        entity.setCep(enderecoDto.getCep());
+        entity.setCep(enderecoDto.cep());
 
-        entity.setMunicipio(municipioRepository.findById(enderecoDto.getIdMunicipio()));
+        entity.setMunicipio(municipioRepository.findById(enderecoDto.idMunicipio()));
 
         enderecoRepository.persist(entity);
 
@@ -83,17 +83,17 @@ public class EnderecoImplService implements EnderecoService {
         if (entity == null)
             throw new NotFoundException("Número fora das opções disponíveis");
 
-        entity.setLogradouro(enderecoDto.getLogradouro());
+        entity.setLogradouro(enderecoDto.logradouro());
 
-        entity.setBairro(enderecoDto.getBairro());
+        entity.setBairro(enderecoDto.bairro());
 
-        entity.setNumero(enderecoDto.getNumero());
+        entity.setNumero(enderecoDto.numero());
 
-        entity.setComplemento(enderecoDto.getComplemento());
+        entity.setComplemento(enderecoDto.complemento());
 
-        entity.setCep(enderecoDto.getCep());
+        entity.setCep(enderecoDto.cep());
 
-        entity.setMunicipio(municipioRepository.findById(enderecoDto.getIdMunicipio()));
+        entity.setMunicipio(municipioRepository.findById(enderecoDto.idMunicipio()));
 
         return new EnderecoResponseDTO(entity);
     }

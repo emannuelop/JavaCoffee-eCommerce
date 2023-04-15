@@ -57,21 +57,21 @@ public class CafeImplService implements CafeService {
 
         Cafe entity = new Cafe();
 
-        entity.setNome(cafeDto.getNome());
+        entity.setNome(cafeDto.nome());
 
-        entity.setDescricao(cafeDto.getDescricao());
+        entity.setDescricao(cafeDto.descricao());
 
-        entity.setMarca(marcaRepository.findById(cafeDto.getIdMarca()));
+        entity.setMarca(marcaRepository.findById(cafeDto.idMarca()));
 
-        entity.setPreco(cafeDto.getPreco());
+        entity.setPreco(cafeDto.preco());
 
-        entity.setEstoque(cafeDto.getEstoque());
+        entity.setEstoque(cafeDto.estoque());
 
-        entity.setMetodoDePreparo(cafeDto.getModoPreparo());
+        entity.setMetodoDePreparo(cafeDto.modoPreparo());
 
-        entity.setTipo(cafeDto.getTipo());
+        entity.setTipo(cafeDto.tipo());
 
-        entity.setIntensidade(Intensidade.valueOf(cafeDto.getIntensidade()));
+        entity.setIntensidade(Intensidade.valueOf(cafeDto.intensidade()));
 
         cafeRepository.persist(entity);
 
@@ -85,21 +85,21 @@ public class CafeImplService implements CafeService {
 
         Cafe entity = cafeRepository.findById(id);
 
-        entity.setNome(cafeDto.getNome());
+        entity.setNome(cafeDto.nome());
 
-        entity.setDescricao(cafeDto.getDescricao());
+        entity.setDescricao(cafeDto.descricao());
 
-        entity.setMarca(marcaRepository.findById(cafeDto.getIdMarca()));
+        entity.setMarca(marcaRepository.findById(cafeDto.idMarca()));
 
-        entity.setPreco(cafeDto.getPreco());
+        entity.setPreco(cafeDto.preco());
 
-        entity.setEstoque(cafeDto.getEstoque());
+        entity.setEstoque(cafeDto.estoque());
 
-        entity.setMetodoDePreparo(cafeDto.getModoPreparo());
+        entity.setMetodoDePreparo(cafeDto.modoPreparo());
 
-        entity.setTipo(cafeDto.getTipo());
+        entity.setTipo(cafeDto.tipo());
 
-        entity.setIntensidade(Intensidade.valueOf(cafeDto.getIntensidade()));
+        entity.setIntensidade(Intensidade.valueOf(cafeDto.intensidade()));
 
         return new CafeResponseDTO(entity);
     }

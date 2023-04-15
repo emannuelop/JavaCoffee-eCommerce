@@ -57,9 +57,9 @@ public class MunicipioImplService implements MunicipioService {
 
         Municipio entity = new Municipio();
 
-        entity.setNome(municipioDto.getNome());
+        entity.setNome(municipioDto.nome());
 
-        entity.setEstado(estadoRepository.findById(municipioDto.getIdestado()));
+        entity.setEstado(estadoRepository.findById(municipioDto.idestado()));
 
         municipioRepository.persist(entity);
 
@@ -76,9 +76,9 @@ public class MunicipioImplService implements MunicipioService {
         if (entity == null)
             throw new NotFoundException("Número fora das opções disponíveis");
 
-        entity.setNome(municipioDto.getNome());
+        entity.setNome(municipioDto.nome());
 
-        entity.setEstado(estadoRepository.findById(municipioDto.getIdestado()));
+        entity.setEstado(estadoRepository.findById(municipioDto.idestado()));
 
         return new MunicipioResponseDTO(entity);
     }
