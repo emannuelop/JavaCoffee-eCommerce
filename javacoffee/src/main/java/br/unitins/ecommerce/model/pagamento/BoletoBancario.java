@@ -14,7 +14,7 @@ public class BoletoBancario extends Pagamento {
     private String codigoBarra;
 
     @Column(nullable = false)
-    private Date dataGeracaoDoBoleto;
+    private Date dataGeracaoBoleto;
 
     @Column(nullable = false)
     private Double valor;
@@ -31,11 +31,11 @@ public class BoletoBancario extends Pagamento {
     }
 
     public Date getDataDeGeracaoDoBoleto() {
-        return dataGeracaoDoBoleto;
+        return dataGeracaoBoleto;
     }
 
     public void setDataDeGeracaoDoBoleto(Date dataDeGeracaoDoBoleto) {
-        this.dataGeracaoDoBoleto = dataDeGeracaoDoBoleto;
+        this.dataGeracaoBoleto = dataDeGeracaoDoBoleto;
     }
 
     public Double getValor() {

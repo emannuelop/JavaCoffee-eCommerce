@@ -95,7 +95,7 @@
     class BoletoBancario {
 
         - codigoBarra: String
-        - dataGeracaoDoBoleto: Date
+        - dataGeracaoBoleto: Date
         - valor: Double
         - dataVencimento: Date
     }
