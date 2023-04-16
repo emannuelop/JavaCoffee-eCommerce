@@ -3,7 +3,7 @@ package br.unitins.ecommerce.dto.endereco;
 import java.util.HashMap;
 import java.util.Map;
 
-import br.unitins.ecommerce.dto.estado.EstadoResponseDTO;
+import br.unitins.ecommerce.dto.municipio.MunicipioResponseDTO;
 import br.unitins.ecommerce.model.endereco.Endereco;
 import br.unitins.ecommerce.model.endereco.Estado;
 
@@ -25,16 +25,15 @@ public record EnderecoResponseDTO (
             endereco.getNumero(),
             endereco.getComplemento(),
             endereco.getCep(),
-            viewMunicipio(endereco.getMunicipio().getNome(),
-            endereco.getMunicipio().getEstado()));
+            viewMunicipio(endereco.getMunicipio().getNome(), endereco.getMunicipio().getEstado()));
     }
 
-    private static Map<String, Object> viewMunicipio(String nome, Estado estado) {
+    public static Map<String, Object> viewMunicipio(String nome, Estado estado) {
 
         Map<String, Object> municipio = new HashMap<>();
 
         municipio.put("nome:", nome);
-        municipio.put("estado:", new EstadoResponseDTO(estado));
+        municipio.put("estado:", MunicipioResponseDTO.viewEstado(estado.getNome(), estado.getSigla()));
 
         return municipio;
     }

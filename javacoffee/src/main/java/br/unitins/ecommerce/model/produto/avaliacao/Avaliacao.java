@@ -1,4 +1,4 @@
-package br.unitins.ecommerce.model.produto;
+package br.unitins.ecommerce.model.produto.avaliacao;
 
 import java.util.Date;
 
@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import br.unitins.ecommerce.model.DefaultEntity;
+import br.unitins.ecommerce.model.produto.Produto;
 import br.unitins.ecommerce.model.usuario.Usuario;
 
 @Entity

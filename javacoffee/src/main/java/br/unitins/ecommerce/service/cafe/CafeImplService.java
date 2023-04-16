@@ -115,7 +115,8 @@ public class CafeImplService implements CafeService {
         if (cafeRepository.isPersistent(cafe))
             cafeRepository.delete(cafe);
 
-        throw new NotFoundException("Nenhum municipio encontrado");
+        else
+            throw new NotFoundException("Nenhum Café encontrado");
     }
 
     @Override

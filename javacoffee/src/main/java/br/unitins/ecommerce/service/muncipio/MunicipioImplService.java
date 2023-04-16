@@ -94,7 +94,8 @@ public class MunicipioImplService implements MunicipioService {
         if (municipioRepository.isPersistent(municipio))
             municipioRepository.delete(municipio);
 
-        throw new NotFoundException("Nenhum municipio encontrado");
+        else
+            throw new NotFoundException("Nenhum municipio encontrado");
     }
 
     @Override

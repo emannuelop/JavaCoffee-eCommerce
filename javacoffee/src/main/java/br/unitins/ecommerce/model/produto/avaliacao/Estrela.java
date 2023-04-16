@@ -1,17 +1,20 @@
-package br.unitins.ecommerce.model.produto.cafeteira;
+package br.unitins.ecommerce.model.produto.avaliacao;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum Voltagem {
+public enum Estrela {
 
-    VOLTZ_127(1, "127V"),
-    VOLTZ_220(2, "220V");
+    ESTRELA1(1, "⭐"),
+    ESTRELA2(2, "⭐⭐"),
+    ESTRELA3(3, "⭐⭐⭐"),
+    ESTRELA4(4, "⭐⭐⭐⭐"),
+    ESTRELA5(5, "⭐⭐⭐⭐⭐");
 
     private int id;
     private String label;
 
-    Voltagem(int id, String label) {
+    Estrela(int id, String label) {
         this.id = id;
         this.label = label;
     }
@@ -24,14 +27,14 @@ public enum Voltagem {
         return label;
     }
 
-    public static Voltagem valueOf(Integer id) throws IllegalArgumentException {
+    public static Estrela valueOf(Integer id) throws IllegalArgumentException {
         if (id == null) {
             return null;
         }
 
-        for (Voltagem voltagem : Voltagem.values()) {
-            if (id.equals(voltagem.getId())) {
-                return voltagem;
+        for (Estrela estrela : Estrela.values()) {
+            if (id.equals(estrela.getId())) {
+                return estrela;
             }
         }
         throw new IllegalArgumentException("Id inválido: " + id);

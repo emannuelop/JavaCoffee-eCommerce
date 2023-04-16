@@ -18,7 +18,7 @@ public record MunicipioResponseDTO (
             viewEstado(municipio.getEstado().getNome(), municipio.getEstado().getSigla()));
     }
 
-    private static Map<String, Object> viewEstado(String nome, String sigla) {
+    public static Map<String, Object> viewEstado(String nome, String sigla) {
 
         Map<String, Object> estado = new HashMap<>();
 

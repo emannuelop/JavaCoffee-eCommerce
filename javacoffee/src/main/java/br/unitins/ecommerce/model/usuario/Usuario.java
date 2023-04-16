@@ -8,7 +8,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import br.unitins.ecommerce.model.DefaultEntity;
@@ -38,16 +37,16 @@ public class Usuario extends DefaultEntity {
     private List<Produto> produtos;
 
     @ManyToOne
-    @JoinColumn(name = "id_endereco")
+    @JoinColumn(name = "id_endereco", nullable = false)
     private Endereco endereco;
 
     @OneToOne
     @JoinColumn(name = "id_telefone_principal", unique = true, nullable = false)
     private Telefone telefonePrincipal;
 
-    @OneToMany
-    @JoinColumn(name = "id_usuario_telefone_opcional", nullable = false)
-    private List<Telefone> telefonesOpcionais;
+    @OneToOne
+    @JoinColumn(name = "id_telefone_opcional", unique = true)
+    private Telefone telefoneOpcional;
 
     public String getNome() {
         return nome;
@@ -105,12 +104,12 @@ public class Usuario extends DefaultEntity {
         this.telefonePrincipal = telefonePrincipal;
     }
 
-    public List<Telefone> getTelefonesOpcionais() {
-        return telefonesOpcionais;
+    public Telefone getTelefoneOpcional() {
+        return telefoneOpcional;
     }
 
-    public void setTelefonesOpcionais(List<Telefone> telefonesOpcionais) {
-        this.telefonesOpcionais = telefonesOpcionais;
+    public void setTelefoneOpcional(Telefone telefoneOpcional) {
+        this.telefoneOpcional = telefoneOpcional;
     }
 
 }

@@ -110,7 +110,7 @@ public class EnderecoImplService implements EnderecoService {
             enderecoRepository.delete(endereco);
 
         else
-            throw new NotFoundException("Nenhum municipio encontrado");
+            throw new NotFoundException("Nenhum endereco encontrado");
     }
 
     @Override

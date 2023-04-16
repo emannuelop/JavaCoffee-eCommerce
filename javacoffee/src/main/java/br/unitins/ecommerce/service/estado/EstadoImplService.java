@@ -86,7 +86,8 @@ public class EstadoImplService implements EstadoService {
         if (estadoRepository.isPersistent(estado))
             estadoRepository.delete(estado);
 
-        throw new NotFoundException("Nenhum municipio encontrado");
+        else
+            throw new NotFoundException("Nenhum estado encontrado");
     }
 
     @Override

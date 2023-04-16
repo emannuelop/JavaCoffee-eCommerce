@@ -148,7 +148,7 @@
 
     Usuario "*" --> "*" Produto: listaDesejo
     Usuario "1" *--> "1" Telefone: telefonePrincipal
-    Usuario "1" *--> "*" Telefone: telefoneOpcional
+    Usuario "1" *--> "1" Telefone: telefoneOpcional
     Usuario "*" *--> "1" Endereco: endereçoPrincipal
 
     ItemCompra "*" --> "1" Produto

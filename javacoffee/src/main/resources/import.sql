@@ -28,3 +28,21 @@ INSERT INTO municipio (nome, id_estado) VALUES ('Belém', 3);
 INSERT INTO endereco (logradouro, bairro, numero, cep, id_municipio) VALUES ('alameda 12', 'Quadra 708 Sul', 'lote 10', '77082-012', 2);
 INSERT INTO endereco (logradouro, bairro, numero, cep, id_municipio) VALUES ('avenida Bernado Sayão', 'Setor Aeroporto', 'número 3564', '77700-001', 3);
 INSERT INTO endereco (logradouro, bairro, numero, cep, id_municipio) VALUES ('rua Piauí', 'Quadra 301 Norte', 'numero 102', '77030-030', 1);
+
+INSERT INTO telefone (codigoarea, numero) VALUES ('011', '98456-7812');
+INSERT INTO telefone (codigoarea, numero) VALUES ('061', '99901-5842');
+INSERT INTO telefone (codigoarea, numero) VALUES ('061', '99933-0572');
+INSERT INTO telefone (codigoarea, numero) VALUES ('063', '99933-0572');
+INSERT INTO telefone (codigoarea, numero) VALUES ('078', '98203-3301');
+
+INSERT INTO usuario (nome, email, senha, cpf, id_endereco, id_telefone_principal, id_telefone_opcional)
+            VALUES ('João Aguiar', 'joao_aguia@gmail.com', 'joao1234', '091.123.321-45',
+                    1, 2, 1);
+
+INSERT INTO usuario (nome, email, senha, cpf, id_endereco, id_telefone_principal)
+            VALUES ('Maria Fernanda', 'mariaF@gmail.com', 'senha1234', '891.141.823-45',
+                    2, 3);
+
+INSERT INTO usuario (nome, email, senha, cpf, id_endereco, id_telefone_principal, id_telefone_opcional)
+            VALUES ('Paulo Vitor', 'paulo_gaymer@gmail.com', 'pa1000ulo', '194.293.012-84',
+                    1, 4, 5);
