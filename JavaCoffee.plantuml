@@ -90,25 +90,23 @@
         - id: Long
         - confirmacaoPagamento: Boolean
         - dataConfirmacaoPagamento: Date
+        - valor: Double
     }
 
     class BoletoBancario {
 
         - codigoBarra: String
         - dataGeracaoBoleto: Date
-        - valor: Double
         - dataVencimento: Date
     }
 
     class Pix {
 
         - chavePix: String
-        - valor: Double
     }
 
     class CartaoCredito {
 
-        - valor: Double
         - numeroCartao: String
         - nomeImpressoCartao: String
         - cpfTitular: String
@@ -166,6 +164,6 @@
     Compra "1" *--> "1" Pagamento
 
     Avaliacao "*" --> "1" Estrela
-    Avaliacao "1" o--> "1" Usuario
+    Avaliacao "*" o--> "1" Usuario
     Avaliacao "*" --> "1" Produto
 @enduml
