@@ -14,6 +14,9 @@ import br.unitins.ecommerce.model.DefaultEntity;
 import br.unitins.ecommerce.model.endereco.Endereco;
 import br.unitins.ecommerce.model.produto.Produto;
 
+// IMPLEMENTAR O LISTA DESEJO
+// IMPLEMENTAR O CRUD DE AVALIACAO
+
 @Entity
 public class Usuario extends DefaultEntity {
 

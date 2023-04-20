@@ -3,6 +3,7 @@ package br.unitins.ecommerce.dto.usuario;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import br.unitins.ecommerce.dto.endereco.EnderecoDTO;
 import br.unitins.ecommerce.dto.telefone.TelefoneDTO;
 
 public record UsuarioDTO(
@@ -20,7 +21,7 @@ public record UsuarioDTO(
     String cpf,
 
     @NotNull
-    Long idEndereco,
+    EnderecoDTO endereco,
 
     @NotNull
     TelefoneDTO telefonePrincipal,

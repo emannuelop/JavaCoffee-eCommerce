@@ -3,7 +3,8 @@ package br.unitins.ecommerce.dto.usuario;
 import java.util.HashMap;
 import java.util.Map;
 
-import br.unitins.ecommerce.dto.endereco.EnderecoResponseDTO;
+import br.unitins.ecommerce.dto.municipio.MunicipioResponseDTO;
+import br.unitins.ecommerce.model.endereco.Estado;
 import br.unitins.ecommerce.model.endereco.Municipio;
 import br.unitins.ecommerce.model.usuario.Usuario;
 
@@ -46,9 +47,19 @@ public record UsuarioResponseDTO(
         endereco.put("Numero:", numero);
         endereco.put("Complemento:", complemento);
         endereco.put("Cep:", cep);
-        endereco.put("Municipio:", EnderecoResponseDTO.viewMunicipio(municipio.getNome(), municipio.getEstado()));
+        endereco.put("Municipio:", viewMunicipio(municipio.getNome(), municipio.getEstado()));
 
         return endereco;
+    }
+
+    public static Map<String, Object> viewMunicipio(String nome, Estado estado) {
+
+        Map<String, Object> municipio = new HashMap<>();
+
+        municipio.put("nome:", nome);
+        municipio.put("estado:", MunicipioResponseDTO.viewEstado(estado.getNome(), estado.getSigla()));
+
+        return municipio;
     }
 
     private static Map<String, Object> viewTelefone (String codigoArea, String numero) {

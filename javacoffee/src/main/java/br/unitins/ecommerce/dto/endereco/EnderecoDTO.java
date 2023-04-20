@@ -4,7 +4,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public record EnderecoDTO (
+public record EnderecoDTO(
     @NotBlank(message = "O campo logradouro não pode estar vazio")
     String logradouro,
 

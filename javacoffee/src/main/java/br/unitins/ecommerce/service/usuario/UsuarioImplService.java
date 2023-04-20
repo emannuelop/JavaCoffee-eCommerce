@@ -11,12 +11,15 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import javax.ws.rs.NotFoundException;
 
+import br.unitins.ecommerce.dto.endereco.EnderecoDTO;
 import br.unitins.ecommerce.dto.telefone.TelefoneDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioResponseDTO;
+import br.unitins.ecommerce.model.endereco.Endereco;
 import br.unitins.ecommerce.model.usuario.Telefone;
 import br.unitins.ecommerce.model.usuario.Usuario;
 import br.unitins.ecommerce.repository.EnderecoRepository;
+import br.unitins.ecommerce.repository.MunicipioRepository;
 import br.unitins.ecommerce.repository.TelefoneRepository;
 import br.unitins.ecommerce.repository.UsuarioRepository;
 
@@ -34,6 +37,9 @@ public class UsuarioImplService implements UsuarioService {
 
     @Inject
     EnderecoRepository enderecoRepository;
+
+    @Inject
+    MunicipioRepository municipioRepository;
 
     @Override
     public List<UsuarioResponseDTO> getAll() {
@@ -70,7 +76,7 @@ public class UsuarioImplService implements UsuarioService {
 
         entity.setCpf(usuarioDto.cpf());
 
-        entity.setEndereco(enderecoRepository.findById(usuarioDto.idEndereco()));
+        entity.setEndereco(insertEndereco(usuarioDto.endereco()));
 
         entity.setTelefonePrincipal(insertTelefone(usuarioDto.telefonePrincipal()));
 
@@ -100,7 +106,7 @@ public class UsuarioImplService implements UsuarioService {
 
         entity.setCpf(usuarioDto.cpf());
 
-        entity.setEndereco(enderecoRepository.findById(usuarioDto.idEndereco()));
+        entity.setEndereco(insertEndereco(usuarioDto.endereco()));
 
         entity.setTelefonePrincipal(insertTelefone(usuarioDto.telefonePrincipal()));
 
@@ -147,7 +153,9 @@ public class UsuarioImplService implements UsuarioService {
                     .collect(Collectors.toList());
     }
 
-    private Telefone insertTelefone (TelefoneDTO telefoneDTO) {
+    private Telefone insertTelefone (TelefoneDTO telefoneDTO) throws ConstraintViolationException {
+
+        validar(telefoneDTO);
 
         Telefone telefone = new Telefone();
 
@@ -158,10 +166,51 @@ public class UsuarioImplService implements UsuarioService {
 
         return telefone;
     }
+
+    private Endereco insertEndereco(EnderecoDTO enderecoDto) throws ConstraintViolationException {
+        
+        validar(enderecoDto);
+
+        Endereco endereco = new Endereco();
+
+        endereco.setLogradouro(enderecoDto.logradouro());
+
+        endereco.setBairro(enderecoDto.bairro());
+
+        endereco.setNumero(enderecoDto.numero());
+
+        endereco.setComplemento(enderecoDto.complemento());
+
+        endereco.setCep(enderecoDto.cep());
+
+        endereco.setMunicipio(municipioRepository.findById(enderecoDto.idMunicipio()));
+
+        enderecoRepository.persist(endereco);
+
+        return endereco;
+    }
     
     private void validar(UsuarioDTO usuarioDTO) throws ConstraintViolationException {
 
         Set<ConstraintViolation<UsuarioDTO>> violations = validator.validate(usuarioDTO);
+
+        if (!violations.isEmpty())
+            throw new ConstraintViolationException(violations);
+
+    }
+
+    private void validar(TelefoneDTO telefoneDTO) throws ConstraintViolationException {
+
+        Set<ConstraintViolation<TelefoneDTO>> violations = validator.validate(telefoneDTO);
+
+        if (!violations.isEmpty())
+            throw new ConstraintViolationException(violations);
+
+    }
+
+    private void validar(EnderecoDTO enderecoDTO) throws ConstraintViolationException {
+
+        Set<ConstraintViolation<EnderecoDTO>> violations = validator.validate(enderecoDTO);
 
         if (!violations.isEmpty())
             throw new ConstraintViolationException(violations);
