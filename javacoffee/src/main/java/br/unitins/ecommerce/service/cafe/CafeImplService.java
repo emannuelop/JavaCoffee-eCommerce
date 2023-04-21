@@ -17,6 +17,8 @@ import br.unitins.ecommerce.model.produto.cafe.Cafe;
 import br.unitins.ecommerce.model.produto.cafe.Intensidade;
 import br.unitins.ecommerce.repository.CafeRepository;
 import br.unitins.ecommerce.repository.MarcaRepository;
+import br.unitins.ecommerce.service.avaliacao.AvaliacaoService;
+import br.unitins.ecommerce.service.usuario.UsuarioService;
 
 @ApplicationScoped
 public class CafeImplService implements CafeService {
@@ -26,6 +28,12 @@ public class CafeImplService implements CafeService {
 
     @Inject
     MarcaRepository marcaRepository;
+
+    @Inject
+    AvaliacaoService avaliacaoService;
+
+    @Inject
+    UsuarioService usuarioService;
 
     @Inject
     Validator validator;
@@ -111,6 +119,10 @@ public class CafeImplService implements CafeService {
             throw new IllegalArgumentException("Número inválido");
 
         Cafe cafe = cafeRepository.findById(id);
+
+        avaliacaoService.delete(cafe);
+
+        usuarioService.deleteProdutoFromListaDesejo(cafe);
 
         if (cafeRepository.isPersistent(cafe))
             cafeRepository.delete(cafe);
