@@ -29,7 +29,7 @@ public interface CafeService {
 
     List<CafeResponseDTO> getByMarca(String nome);
 
-        // metodos de filtragem
+    // metodos de filtragem
 
     List<CafeResponseDTO> filterByPrecoMin(Double preco);
 
