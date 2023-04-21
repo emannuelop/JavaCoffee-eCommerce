@@ -148,11 +148,23 @@ public class UsuarioImplService implements UsuarioService {
 
         deleteTelefone(idTelefone);
 
-        if (usuarioDto.telefoneOpcional() != null)
+        if (usuarioDto.telefoneOpcional() != null) {
+         
+            idTelefone = entity.getTelefoneOpcional().getId();
+
             entity.setTelefoneOpcional(insertTelefone(usuarioDto.telefoneOpcional()));
 
-        else if (entity.getTelefoneOpcional() != null)
+            deleteTelefone(idTelefone);
+        }
+        
+        else if (entity.getTelefoneOpcional() != null) {
+         
+            idTelefone = entity.getTelefoneOpcional().getId();
+
             entity.setTelefoneOpcional(null);
+
+            deleteTelefone(idTelefone);
+        }
 
         return new UsuarioResponseDTO(entity);
     }

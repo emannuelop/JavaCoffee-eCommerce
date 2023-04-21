@@ -41,11 +41,11 @@ INSERT INTO usuario (nome, email, senha, cpf, id_endereco, id_telefone_principal
 
 INSERT INTO usuario (nome, email, senha, cpf, id_endereco, id_telefone_principal)
             VALUES ('Maria Fernanda', 'mariaF@gmail.com', 'senha1234', '89114182345',
-                    2, 3);
+                    3, 3);
 
 INSERT INTO usuario (nome, email, senha, cpf, id_endereco, id_telefone_principal, id_telefone_opcional)
             VALUES ('Paulo Vitor', 'paulo_gaymer@gmail.com', 'pa1000ulo', '19429301284',
-                    1, 4, 5);
+                    2, 4, 5);
 
 INSERT INTO avaliacao (data, estrela, id_produto, id_usuario) VALUES ('2023-01-22', 3, 1, 1);
 INSERT INTO avaliacao (comentario, data, estrela, id_produto, id_usuario)
