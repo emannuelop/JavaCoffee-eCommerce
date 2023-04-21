@@ -1,12 +1,11 @@
 package br.unitins.ecommerce.model.produto.avaliacao;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 import br.unitins.ecommerce.model.DefaultEntity;
 import br.unitins.ecommerce.model.produto.Produto;
@@ -18,18 +17,17 @@ public class Avaliacao extends DefaultEntity {
     private String comentario;
 
     @Column(nullable = false)
-    private Date data;
+    private LocalDate data;
 
     @Column(nullable = false)
     private Estrela estrela;
 
     @ManyToOne
-    @JoinColumn(name = "id_produto")
+    @JoinColumn(name = "id_produto", nullable = false)
     private Produto produto;
 
-    @OneToOne
-    @JoinColumn(name = "id_usuario", unique = true) // Quando é OneToOne precisa colocar unique pois o usuario não pode
-                                                    // se repetir
+    @ManyToOne
+    @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
     public String getComentario() {
@@ -40,11 +38,11 @@ public class Avaliacao extends DefaultEntity {
         this.comentario = comentario;
     }
 
-    public Date getData() {
+    public LocalDate getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 
@@ -71,5 +69,4 @@ public class Avaliacao extends DefaultEntity {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-
 }

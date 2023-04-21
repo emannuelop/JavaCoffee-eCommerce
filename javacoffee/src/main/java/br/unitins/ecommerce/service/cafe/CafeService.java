@@ -21,13 +21,13 @@ public interface CafeService {
 
     // Metodos extras
 
+    Long count();
+
     List<CafeResponseDTO> getByNome(String nome);
 
     List<CafeResponseDTO> getByIntensidade(Integer id);
 
     List<CafeResponseDTO> getByMarca(String nome);
-
-    Long count();
 
         // metodos de filtragem
 

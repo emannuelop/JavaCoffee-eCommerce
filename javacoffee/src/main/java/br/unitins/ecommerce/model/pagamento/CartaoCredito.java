@@ -9,9 +9,6 @@ import javax.persistence.PrimaryKeyJoinColumn;
 public class CartaoCredito extends Pagamento {
 
     @Column(nullable = false)
-    private Double valor;
-
-    @Column(nullable = false)
     private String numeroCartao;
 
     @Column(nullable = false)
@@ -21,14 +18,6 @@ public class CartaoCredito extends Pagamento {
     private String cpfTitular;
 
     private BandeiraCartao bandeiraCartao;
-
-    public Double getValor() {
-        return valor;
-    }
-
-    public void setValor(Double valor) {
-        this.valor = valor;
-    }
 
     public String getNumeroDoCartao() {
         return numeroCartao;

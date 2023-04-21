@@ -4,6 +4,8 @@ import java.util.List;
 
 import br.unitins.ecommerce.dto.usuario.UsuarioDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioResponseDTO;
+import br.unitins.ecommerce.dto.usuario.listadesejo.ListaDesejoDTO;
+import br.unitins.ecommerce.dto.usuario.listadesejo.ListaDesejoResponseDTO;
 
 public interface UsuarioService {
     
@@ -19,9 +21,17 @@ public interface UsuarioService {
 
     void delete(Long id);
 
+    void insertListaDesejo(ListaDesejoDTO listaDto);
+
+    ListaDesejoResponseDTO getListaDesejo(Long id);
+
+    void deleteProdutoFromListaDesejo(Long id, Long idProduto);
+
     // Metodos extras
 
     Long count();
 
     List<UsuarioResponseDTO> getByNome(String nome);
+
+    Integer countListaDesejo(Long id);
 }

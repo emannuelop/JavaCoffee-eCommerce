@@ -5,9 +5,10 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public record CafeDTO (
+public record CafeDTO(
     @NotBlank(message = "Campo nome não pode estar vazio")
     String nome,
+
     String descricao,
 
     @NotNull

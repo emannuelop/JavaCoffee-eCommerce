@@ -21,6 +21,8 @@ import javax.ws.rs.core.Response.Status;
 import br.unitins.ecommerce.application.Result;
 import br.unitins.ecommerce.dto.usuario.UsuarioDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioResponseDTO;
+import br.unitins.ecommerce.dto.usuario.listadesejo.ListaDesejoDTO;
+import br.unitins.ecommerce.dto.usuario.listadesejo.ListaDesejoResponseDTO;
 import br.unitins.ecommerce.service.usuario.UsuarioService;
 
 @Path("/usuarios")
@@ -44,6 +46,13 @@ public class UsuarioResource {
         return usuarioService.getById(id);
     }
 
+    @GET
+    @Path("/lista_desejo/{idUsuario}")
+    public ListaDesejoResponseDTO getListaDesejo(@PathParam("idUsuario") Long idUsuario) {
+
+        return usuarioService.getListaDesejo(idUsuario);
+    }
+
     @POST
     @Transactional
     public Response insert(UsuarioDTO usuarioDto) {
@@ -53,6 +62,29 @@ public class UsuarioResource {
             return Response
                     .status(Status.CREATED) // 201
                     .entity(usuarioService.insert(usuarioDto))
+                    .build();
+        } catch (ConstraintViolationException e) {
+
+            Result result = new Result(e.getConstraintViolations());
+
+            return Response
+                    .status(Status.NOT_FOUND)
+                    .entity(result)
+                    .build();
+        }
+    }
+
+    @POST
+    @Path("/lista_desejo")
+    @Transactional
+    public Response insertListaDesejo(ListaDesejoDTO listaDto) {
+
+        try {
+
+            usuarioService.insertListaDesejo(listaDto);
+
+            return Response
+                    .status(Status.CREATED) // 201
                     .build();
         } catch (ConstraintViolationException e) {
 
@@ -100,11 +132,30 @@ public class UsuarioResource {
                 .build();
     }
 
+    @DELETE
+    @Path("/lista_desejo/{idUsuario}&{idProduto}")
+    @Transactional
+    public Response deleteProdutoFromListaDesejo(@PathParam("idUsuario") Long idUsuario, @PathParam("idProduto") Long idProdutoListaDesejo) {
+
+        usuarioService.deleteProdutoFromListaDesejo(idUsuario, idProdutoListaDesejo);
+
+        return Response
+                .status(Status.NO_CONTENT)
+                .build();
+    }
+
     @GET
     @Path("/count")
     public Long count() {
 
         return usuarioService.count();
+    }
+
+    @GET
+    @Path("/lista_desejo/count/{id}")
+    public Integer countListaDesejo(@PathParam("id") Long id) {
+
+        return usuarioService.countListaDesejo(id);
     }
 
     @GET

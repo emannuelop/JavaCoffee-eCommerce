@@ -36,13 +36,18 @@ INSERT INTO telefone (codigoarea, numero) VALUES ('063', '99933-0572');
 INSERT INTO telefone (codigoarea, numero) VALUES ('078', '98203-3301');
 
 INSERT INTO usuario (nome, email, senha, cpf, id_endereco, id_telefone_principal, id_telefone_opcional)
-            VALUES ('João Aguiar', 'joao_aguia@gmail.com', 'joao1234', '091.123.321-45',
+            VALUES ('João Aguiar', 'joao_aguia@gmail.com', 'joao1234', '09112332145',
                     1, 2, 1);
 
 INSERT INTO usuario (nome, email, senha, cpf, id_endereco, id_telefone_principal)
-            VALUES ('Maria Fernanda', 'mariaF@gmail.com', 'senha1234', '891.141.823-45',
+            VALUES ('Maria Fernanda', 'mariaF@gmail.com', 'senha1234', '89114182345',
                     2, 3);
 
 INSERT INTO usuario (nome, email, senha, cpf, id_endereco, id_telefone_principal, id_telefone_opcional)
-            VALUES ('Paulo Vitor', 'paulo_gaymer@gmail.com', 'pa1000ulo', '194.293.012-84',
+            VALUES ('Paulo Vitor', 'paulo_gaymer@gmail.com', 'pa1000ulo', '19429301284',
                     1, 4, 5);
+
+INSERT INTO avaliacao (data, estrela, id_produto, id_usuario) VALUES ('2023-01-22', 3, 1, 1);
+INSERT INTO avaliacao (comentario, data, estrela, id_produto, id_usuario)
+                VALUES ('muito bão', '2022-11-09', 5, 3, 2);
+INSERT INTO avaliacao (data, estrela, id_produto, id_usuario) VALUES ('2023-02-08', 1, 2, 1);

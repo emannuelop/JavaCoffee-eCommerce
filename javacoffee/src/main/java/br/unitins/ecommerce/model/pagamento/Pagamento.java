@@ -14,6 +14,9 @@ import br.unitins.ecommerce.model.DefaultEntity;
 public abstract class Pagamento extends DefaultEntity {
 
     @Column(nullable = false)
+    private Double valor;
+
+    @Column(nullable = false)
     private Boolean confirmacaoPagamento;
 
     private Date dataConfirmacaoPagamento;
@@ -32,6 +35,22 @@ public abstract class Pagamento extends DefaultEntity {
 
     public void setDataDeConfirmacaoPagamento(Date dataDeConfirmacaoPagamento) {
         this.dataConfirmacaoPagamento = dataDeConfirmacaoPagamento;
+    }
+
+    public Double getValor() {
+        return valor;
+    }
+
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
+
+    public Date getDataConfirmacaoPagamento() {
+        return dataConfirmacaoPagamento;
+    }
+
+    public void setDataConfirmacaoPagamento(Date dataConfirmacaoPagamento) {
+        this.dataConfirmacaoPagamento = dataConfirmacaoPagamento;
     }
 
 }

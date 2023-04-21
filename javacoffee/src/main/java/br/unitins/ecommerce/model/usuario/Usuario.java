@@ -29,7 +29,7 @@ public class Usuario extends DefaultEntity {
     @Column(nullable = false)
     private String senha;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 11)
     private String cpf;
 
     @ManyToMany
@@ -87,8 +87,8 @@ public class Usuario extends DefaultEntity {
         return produtos;
     }
 
-    public void setProdutos(List<Produto> produtos) {
-        this.produtos = produtos;
+    public void setProdutos(Produto produto) {
+        this.produtos.add(produto);
     }
 
     public Endereco getEndereco() {

@@ -14,6 +14,7 @@ public record CafeResponseDTO (
     String nomeMarca,
     String modoPreparo,
     String tipo,
+    
     @JsonInclude(JsonInclude.Include.NON_NULL)
     Intensidade intensidade
 ) {

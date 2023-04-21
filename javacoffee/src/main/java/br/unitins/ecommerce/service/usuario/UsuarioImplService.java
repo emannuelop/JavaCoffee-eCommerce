@@ -15,9 +15,12 @@ import br.unitins.ecommerce.dto.endereco.EnderecoDTO;
 import br.unitins.ecommerce.dto.telefone.TelefoneDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioResponseDTO;
+import br.unitins.ecommerce.dto.usuario.listadesejo.ListaDesejoDTO;
+import br.unitins.ecommerce.dto.usuario.listadesejo.ListaDesejoResponseDTO;
 import br.unitins.ecommerce.model.endereco.Endereco;
 import br.unitins.ecommerce.model.usuario.Telefone;
 import br.unitins.ecommerce.model.usuario.Usuario;
+import br.unitins.ecommerce.repository.CafeRepository;
 import br.unitins.ecommerce.repository.EnderecoRepository;
 import br.unitins.ecommerce.repository.MunicipioRepository;
 import br.unitins.ecommerce.repository.TelefoneRepository;
@@ -41,6 +44,9 @@ public class UsuarioImplService implements UsuarioService {
     @Inject
     MunicipioRepository municipioRepository;
 
+    @Inject
+    CafeRepository cafeRepository;
+
     @Override
     public List<UsuarioResponseDTO> getAll() {
         
@@ -59,6 +65,17 @@ public class UsuarioImplService implements UsuarioService {
             throw new NotFoundException("Não encontrado");
 
         return new UsuarioResponseDTO(usuario);
+    }
+
+    @Override
+    public ListaDesejoResponseDTO getListaDesejo(Long id) throws NullPointerException {
+        
+        Usuario usuario = usuarioRepository.findById(id);
+
+        if (usuario == null)
+            throw new NullPointerException("usuario não encontrado");
+
+        return new ListaDesejoResponseDTO(usuario);
     }
 
     @Override
@@ -89,6 +106,19 @@ public class UsuarioImplService implements UsuarioService {
     }
 
     @Override
+    public void insertListaDesejo(ListaDesejoDTO listaDto) throws NullPointerException {
+        
+        validar(listaDto);
+
+        Usuario usuario = usuarioRepository.findById(listaDto.idUsuario());
+
+        if (usuario == null)
+            throw new NullPointerException("usuario não encontrado");
+
+        usuario.setProdutos(cafeRepository.findById(listaDto.idProduto()));
+    }
+
+    @Override
     public UsuarioResponseDTO update(Long id, UsuarioDTO usuarioDto) throws ConstraintViolationException, NotFoundException {
         
         validar(usuarioDto);
@@ -106,9 +136,17 @@ public class UsuarioImplService implements UsuarioService {
 
         entity.setCpf(usuarioDto.cpf());
 
+        Long idEndereco = entity.getEndereco().getId();
+
         entity.setEndereco(insertEndereco(usuarioDto.endereco()));
 
+        deleteEndereco(idEndereco);
+
+        Long idTelefone = entity.getTelefonePrincipal().getId();
+
         entity.setTelefonePrincipal(insertTelefone(usuarioDto.telefonePrincipal()));
+
+        deleteTelefone(idTelefone);
 
         if (usuarioDto.telefoneOpcional() != null)
             entity.setTelefoneOpcional(insertTelefone(usuarioDto.telefoneOpcional()));
@@ -135,9 +173,34 @@ public class UsuarioImplService implements UsuarioService {
     }
 
     @Override
+    public void deleteProdutoFromListaDesejo(Long id, Long idProduto) {
+        
+        Usuario usuario = usuarioRepository.findById(id);
+
+        if (usuario == null)
+            return;
+
+        usuario.getProdutos().remove(cafeRepository.findById(idProduto));
+    }
+
+    @Override
     public Long count() {
         
         return usuarioRepository.count();
+    }
+
+    @Override
+    public Integer countListaDesejo(Long id) throws NullPointerException {
+        
+        Usuario usuario = usuarioRepository.findById(id);
+
+        if (usuario == null)
+            throw new NullPointerException("usuario não encontrado");
+
+        if (usuario.getProdutos() == null)
+            return null;
+
+        return usuario.getProdutos().size();
     }
 
     @Override
@@ -167,6 +230,20 @@ public class UsuarioImplService implements UsuarioService {
         return telefone;
     }
 
+    private void deleteTelefone (Long id) throws NotFoundException, IllegalArgumentException {
+
+        if (id == null)
+            throw new IllegalArgumentException("Número inválido");
+
+        Telefone telefone = telefoneRepository.findById(id);
+
+        if (telefoneRepository.isPersistent(telefone))
+            telefoneRepository.delete(telefone);
+
+        else
+            throw new NotFoundException("Nenhum Telefone encontrado");
+    }
+
     private Endereco insertEndereco(EnderecoDTO enderecoDto) throws ConstraintViolationException {
         
         validar(enderecoDto);
@@ -188,6 +265,20 @@ public class UsuarioImplService implements UsuarioService {
         enderecoRepository.persist(endereco);
 
         return endereco;
+    }
+
+    private void deleteEndereco (Long id) throws NotFoundException, IllegalArgumentException {
+
+        if (id == null)
+            throw new IllegalArgumentException("Número inválido");
+
+        Endereco endereco = enderecoRepository.findById(id);
+
+        if (enderecoRepository.isPersistent(endereco))
+            enderecoRepository.delete(endereco);
+
+        else
+            throw new NotFoundException("Nenhum endereço encontrado");
     }
     
     private void validar(UsuarioDTO usuarioDTO) throws ConstraintViolationException {
@@ -211,6 +302,15 @@ public class UsuarioImplService implements UsuarioService {
     private void validar(EnderecoDTO enderecoDTO) throws ConstraintViolationException {
 
         Set<ConstraintViolation<EnderecoDTO>> violations = validator.validate(enderecoDTO);
+
+        if (!violations.isEmpty())
+            throw new ConstraintViolationException(violations);
+
+    }
+
+    private void validar(ListaDesejoDTO listaDto) throws ConstraintViolationException {
+
+        Set<ConstraintViolation<ListaDesejoDTO>> violations = validator.validate(listaDto);
 
         if (!violations.isEmpty())
             throw new ConstraintViolationException(violations);
