@@ -24,7 +24,7 @@ O projeto é um trabalho da matéria tópicos em programação I na Universidade
 
 ## Autores
 
-| [<img src="https://github.com/emannuelop/JavaCoffee-eCommerce/blob/main/images/danilo.png" width=115><br><sub>Danilo Da Silva</sub>](https://github.com/DaniloDaSilvaMoreira) |  [<img src="https://github.com/emannuelop/JavaCoffee-eCommerce/blob/main/images/emannuel.png" width=115><br><sub>Emannuel Oliveira</sub>](https://github.com/emannuelop) |  [<img src="https://github.com/emannuelop/JavaCoffee-eCommerce/blob/main/images/hitalo.jpg" width=115><br><sub>Hítalo Aguiar</sub>](https://github.com/alvesluis311) | [<img src="https://github.com/emannuelop/JavaCoffee-eCommerce/blob/main/images/luis.png" width=115><br><sub>Luis Felipe</sub>](https://github.com/alvesluis311) |
+| [<img src="https://github.com/emannuelop/JavaCoffee-eCommerce/blob/main/images/danilo.png" width=115><br><sub>Danilo Da Silva</sub>](https://github.com/DaniloDaSilvaMoreira) |  [<img src="https://github.com/emannuelop/JavaCoffee-eCommerce/blob/main/images/emannuel.png" width=115><br><sub>Emannuel Oliveira</sub>](https://github.com/emannuelop) |  [<img src="https://github.com/emannuelop/JavaCoffee-eCommerce/blob/main/images/hitalo.jpg" width=115><br><sub>Hítalo Aguiar</sub>](https://github.com/HitaloAguiar) | [<img src="https://github.com/emannuelop/JavaCoffee-eCommerce/blob/main/images/luis.png" width=115><br><sub>Luis Felipe</sub>](https://github.com/alvesluis311) |
 | :---: | :---: | :---: | :---: |
 
 ## 📁 Acesso ao projeto
