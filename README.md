@@ -31,11 +31,11 @@ O projeto é um trabalho da matéria tópicos em programação I na Universidade
 
 # Autores
 
-| [<img src="https://avatars.githubusercontent.com/u/37356058?v=4" width=115><br><sub>Danilo Da Silba</sub>](https://github.com/DaniloDaSilvaMoreira) |  
+| [<img src="https://avatars.githubusercontent.com/u/37356058?v=4" width=115><br><sub>Danilo</sub>](https://github.com/DaniloDaSilvaMoreira) |  
 [<img src="https://avatars.githubusercontent.com/u/30351153?v=4" width=115><br><sub>Emannuel Oliveira</sub>](https://github.com/emannuelop) |  
 [<img src="https://avatars.githubusercontent.com/u/8989346?v=4" width=115><br><sub>Hítalo Aguiar</sub>](https://github.com/HitaloAguiar) |
 [<img src="https://avatars.githubusercontent.com/u/30351153?v=4" width=115><br><sub>Luis Felipe</sub>](https://github.com/alvesluis311) |
-| :---: | :---: | :---: |
+| :---: | :---: | :---: | :---: |
 
 ## 📁 Acesso ao projeto
 Você pode acessar os arquivos do projeto clicando [aqui](https://github.com/emannuelop/JavaCoffee-eCommerce/tree/main/javacoffee).
