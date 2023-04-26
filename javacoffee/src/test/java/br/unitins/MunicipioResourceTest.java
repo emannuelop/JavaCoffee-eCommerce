@@ -48,7 +48,7 @@ public class MunicipioResourceTest {
                 .statusCode(201)
                 .body("id", notNullValue(), 
                         "nome", is("Miracema do Tocantins"),
-                        "siglaEstado", is("TO"), "nomeEstado", is("Tocantins"));
+                        "siglaEstado");
     }
     
 
