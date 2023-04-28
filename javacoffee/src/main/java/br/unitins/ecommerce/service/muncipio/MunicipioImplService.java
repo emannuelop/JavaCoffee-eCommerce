@@ -87,6 +87,7 @@ public class MunicipioImplService implements MunicipioService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) throws IllegalArgumentException, NotFoundException {
         
         if (id == null)

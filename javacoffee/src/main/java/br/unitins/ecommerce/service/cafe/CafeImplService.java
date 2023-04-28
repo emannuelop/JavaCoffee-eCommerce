@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
@@ -59,6 +60,7 @@ public class CafeImplService implements CafeService {
     }
 
     @Override
+    @Transactional
     public CafeResponseDTO insert(CafeDTO cafeDto) throws ConstraintViolationException {
 
         validar(cafeDto);
@@ -87,6 +89,7 @@ public class CafeImplService implements CafeService {
     }
 
     @Override
+    @Transactional
     public CafeResponseDTO update(Long id, CafeDTO cafeDto) throws ConstraintViolationException {
 
         validar(cafeDto);
@@ -113,6 +116,7 @@ public class CafeImplService implements CafeService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) throws IllegalArgumentException, NotFoundException {
 
         if (id == null)

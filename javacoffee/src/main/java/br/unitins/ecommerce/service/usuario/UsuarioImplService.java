@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
@@ -80,6 +81,7 @@ public class UsuarioImplService implements UsuarioService {
     }
 
     @Override
+    @Transactional
     public UsuarioResponseDTO insert(UsuarioDTO usuarioDto) throws ConstraintViolationException {
         
         validar(usuarioDto);
@@ -107,6 +109,7 @@ public class UsuarioImplService implements UsuarioService {
     }
 
     @Override
+    @Transactional
     public void insertListaDesejo(ListaDesejoDTO listaDto) throws NullPointerException {
         
         validar(listaDto);
@@ -120,6 +123,7 @@ public class UsuarioImplService implements UsuarioService {
     }
 
     @Override
+    @Transactional
     public UsuarioResponseDTO update(Long id, UsuarioDTO usuarioDto) throws ConstraintViolationException, NotFoundException {
         
         validar(usuarioDto);
@@ -171,6 +175,7 @@ public class UsuarioImplService implements UsuarioService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) throws IllegalArgumentException, NotFoundException {
         
         if (id == null)
@@ -186,6 +191,7 @@ public class UsuarioImplService implements UsuarioService {
     }
 
     @Override
+    @Transactional
     public void deleteProdutoFromListaDesejo(Long id, Long idProduto) {
         
         Usuario usuario = usuarioRepository.findById(id);
@@ -197,6 +203,7 @@ public class UsuarioImplService implements UsuarioService {
     }
 
     @Override
+    @Transactional
     public void deleteProdutoFromListaDesejo(Produto produto) {
 
         List<Usuario> usuarios = usuarioRepository.findAll().list();
@@ -243,6 +250,7 @@ public class UsuarioImplService implements UsuarioService {
                     .collect(Collectors.toList());
     }
 
+    @Transactional
     private Telefone insertTelefone (TelefoneDTO telefoneDTO) throws ConstraintViolationException {
 
         validar(telefoneDTO);
@@ -257,6 +265,7 @@ public class UsuarioImplService implements UsuarioService {
         return telefone;
     }
 
+    @Transactional
     private void deleteTelefone (Long id) throws NotFoundException, IllegalArgumentException {
 
         if (id == null)
@@ -271,6 +280,7 @@ public class UsuarioImplService implements UsuarioService {
             throw new NotFoundException("Nenhum Telefone encontrado");
     }
 
+    @Transactional
     private Endereco insertEndereco(EnderecoDTO enderecoDto) throws ConstraintViolationException {
         
         validar(enderecoDto);
@@ -294,6 +304,7 @@ public class UsuarioImplService implements UsuarioService {
         return endereco;
     }
 
+    @Transactional
     private void deleteEndereco (Long id) throws NotFoundException, IllegalArgumentException {
 
         if (id == null)

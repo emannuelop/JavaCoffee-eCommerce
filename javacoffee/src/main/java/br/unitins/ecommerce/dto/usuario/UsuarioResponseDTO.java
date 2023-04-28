@@ -42,12 +42,12 @@ public record UsuarioResponseDTO(
 
         Map<String, Object> endereco = new HashMap<>();
 
-        endereco.put("Logradouro", logradouro);
-        endereco.put("Bairro", bairro);
-        endereco.put("Numero", numero);
-        endereco.put("Complemento", complemento);
-        endereco.put("Cep", cep);
-        endereco.put("Municipio", viewMunicipio(municipio.getNome(), municipio.getEstado()));
+        endereco.put("logradouro", logradouro);
+        endereco.put("bairro", bairro);
+        endereco.put("numero", numero);
+        endereco.put("complemento", complemento);
+        endereco.put("cep", cep);
+        endereco.put("municipio", viewMunicipio(municipio.getNome(), municipio.getEstado()));
 
         return endereco;
     }
@@ -66,8 +66,8 @@ public record UsuarioResponseDTO(
 
         Map<String, Object> telefone = new HashMap<>();
 
-        telefone.put("Código de Área", codigoArea);
-        telefone.put("Número", numero);
+        telefone.put("codigo de area", codigoArea);
+        telefone.put("numero", numero);
 
         return telefone;
     }
