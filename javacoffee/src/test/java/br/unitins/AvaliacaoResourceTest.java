@@ -72,18 +72,18 @@ public class AvaliacaoResourceTest {
     public void updateTest() {
 
         AvaliacaoDTO avaliacao = new AvaliacaoDTO(
-                "Ruim",
-                1,
-                2l,
-                3l);
+                "muito bão",
+                5,
+                3l,
+                2l);
 
         Long id = avaliacaoService.insert(avaliacao).id();
 
         AvaliacaoDTO avaliacaoUpdate = new AvaliacaoDTO(
-                "Gostei demais demais",
-                5,
+                "Ruim",
+                1,
                 2l,
-                1l);
+                3l);
 
         given()
                 .contentType(ContentType.JSON)
@@ -94,14 +94,13 @@ public class AvaliacaoResourceTest {
 
         AvaliacaoResponseDTO avaliacaoResponse = avaliacaoService.getById(id);
 
-        assertThat(avaliacaoResponse.id(), is(5l));
-        assertThat(avaliacaoResponse.comentario(), is("Gostei demais demais"));
-        assertThat(avaliacaoResponse.estrela().getLabel(), is("⭐⭐⭐⭐⭐"));
+        assertThat(avaliacaoResponse.comentario(), is("Ruim"));
+        assertThat(avaliacaoResponse.estrela().getLabel(), is("⭐"));
         assertThat(avaliacaoResponse.produto().get("id"), is(2l));
         assertThat(avaliacaoResponse.produto().get("nome"), is("Cafe Fazenda Floresta"));
-        assertThat(avaliacaoResponse.usuario().get("id"), is(1l));
-        assertThat(avaliacaoResponse.usuario().get("nome"), is("João Aguiar"));
-        assertThat(avaliacaoResponse.usuario().get("email"), is("joao_aguia@gmail.com"));
+        assertThat(avaliacaoResponse.usuario().get("id"), is(3l));
+        assertThat(avaliacaoResponse.usuario().get("nome"), is("Paulo Vitor"));
+        assertThat(avaliacaoResponse.usuario().get("email"), is("paulo_gaymer@gmail.com"));
 
     }
 

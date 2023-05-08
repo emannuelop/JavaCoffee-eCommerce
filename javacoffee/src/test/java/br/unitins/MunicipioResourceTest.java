@@ -59,8 +59,8 @@ public class MunicipioResourceTest {
         Long id = municipioService.insert(municipioDto).id();
 
         MunicipioDTO municipioUpdate = new MunicipioDTO(
-            "Goiânia",
-            4l
+            "Rio Verde",
+            3l
         );
 
         given()
@@ -72,7 +72,7 @@ public class MunicipioResourceTest {
 
         MunicipioResponseDTO municipioResponse = municipioService.getById(id);
 
-        assertThat(municipioResponse.nome(), is("Goiânia"));
+        assertThat(municipioResponse.nome(), is("Rio Verde"));
         assertThat(municipioResponse.estado().get("nome"), is("Goiás"));
         assertThat(municipioResponse.estado().get("sigla"), is("GO"));
     }

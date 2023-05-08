@@ -66,7 +66,7 @@ public record UsuarioResponseDTO(
 
         Map<String, Object> telefone = new HashMap<>();
 
-        telefone.put("codigo de area", codigoArea);
+        telefone.put("codigoDeArea", codigoArea);
         telefone.put("numero", numero);
 
         return telefone;

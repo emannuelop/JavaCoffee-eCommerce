@@ -139,7 +139,7 @@ public class CafeResource {
     }
 
     @GET
-    @Path("/filterByEntrePreco/{precoMin}&{precoMax}")
+    @Path("/filterByEntrePreco/{precoMin}/{precoMax}")
     public List<CafeResponseDTO> filterByEntrePreco (@PathParam("precoMin") Double precoMin, @PathParam("precoMax") Double precoMax) {
 
         return cafeService.filterByEntrePreco(precoMin, precoMax);
