@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.Map;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 
 import br.unitins.ecommerce.dto.endereco.EnderecoDTO;
 import br.unitins.ecommerce.dto.telefone.TelefoneDTO;
+import br.unitins.ecommerce.dto.usuario.PessoaFisicaDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioResponseDTO;
 import br.unitins.ecommerce.dto.usuario.listadesejo.ListaDesejoDTO;
@@ -42,6 +43,12 @@ public class UsuarioResourceTest {
     @Test
     public void insertTest() {
 
+        PessoaFisicaDTO pessoaFisicaDTO = new PessoaFisicaDTO(
+            "Danilo Da Silva",
+            "89912376394",
+            "DaniloDaSi@unitins.br",
+            1);
+
         EnderecoDTO enderecoDTO = new EnderecoDTO(
             "Avenida Tocantins",
             "Setor Bueno",
@@ -55,10 +62,9 @@ public class UsuarioResourceTest {
         TelefoneDTO telefoneOpcionalDTO = new TelefoneDTO("067", "4002-8922");
 
         UsuarioDTO usuarioDto = new UsuarioDTO(
-                "Danilo Da Silva",
-                "DaniloDaSi@unitins.br",
+                "Danilo",
                 "senha1234",
-                "89912376394",
+                pessoaFisicaDTO,
                 enderecoDTO,
                 telefonePrincipalDTO,
                 telefoneOpcionalDTO);
@@ -90,6 +96,12 @@ public class UsuarioResourceTest {
     @Test
     public void updateTest() {
 
+        PessoaFisicaDTO pessoaFisicaDTO = new PessoaFisicaDTO(
+            "Danilo Da Silva",
+            "89012376094",
+            "DanilDaSi@unitins.br",
+            1);
+
         EnderecoDTO enderecoDTO = new EnderecoDTO(
             "Avenida Tocantins",
             "Setor Bueno",
@@ -103,15 +115,21 @@ public class UsuarioResourceTest {
         TelefoneDTO telefoneOpcionalDTO = new TelefoneDTO("067", "4002-8922");
 
         UsuarioDTO usuarioDto = new UsuarioDTO(
-                "Danilo Da Silva",
-                "DaniloDaSi@unitins.br",
+                "Danilo",
                 "senha1234",
-                "89012376094",
+                pessoaFisicaDTO,
                 enderecoDTO,
                 telefonePrincipalDTO,
                 telefoneOpcionalDTO);
 
         Long id = usuarioService.insert(usuarioDto).id();
+
+        PessoaFisicaDTO updatePessoaFisicaDTO = new PessoaFisicaDTO(
+            "Erick Santos",
+            "64702973802",
+            "ErickSantos@unitins.br",
+            1);
+
 
         EnderecoDTO updateEnderecoDTO = new EnderecoDTO(
             "Avenida Juscelino Kubistchek",
@@ -126,10 +144,9 @@ public class UsuarioResourceTest {
         TelefoneDTO updateTelefoneOpcionalDTO = new TelefoneDTO("011", "97202-9313");
 
         UsuarioDTO updateUsuarioDto = new UsuarioDTO(
-                "Erick Santos",
-                "ErickSantos@unitins.br",
+                "ErickNicolas",
                 "conteudoA2",
-                "64702973802",
+                updatePessoaFisicaDTO,
                 updateEnderecoDTO,
                 updateTelefonePrincipalDTO,
                 updateTelefoneOpcionalDTO);
@@ -167,6 +184,12 @@ public class UsuarioResourceTest {
     @Test
     public void deleteTest() {
 
+        PessoaFisicaDTO pessoaFisicaDTO = new PessoaFisicaDTO(
+            "Danilo Da Silva",
+            "89042376391",
+            "Danilojasdfns@unitins.br",
+            1);
+
         EnderecoDTO enderecoDTO = new EnderecoDTO(
             "Avenida Tocantins",
             "Setor Bueno",
@@ -180,10 +203,9 @@ public class UsuarioResourceTest {
         TelefoneDTO telefoneOpcionalDTO = new TelefoneDTO("067", "4002-8922");
 
         UsuarioDTO usuarioDto = new UsuarioDTO(
-                "Danilo Da Silva",
-                "Danilojasdfns@unitins.br",
+          "Danilo",
                 "senha1234",
-                "89042376391",
+                pessoaFisicaDTO,
                 enderecoDTO,
                 telefonePrincipalDTO,
                 telefoneOpcionalDTO);
@@ -220,6 +242,12 @@ public class UsuarioResourceTest {
     @Test
     public void getByIdTest() {
 
+        PessoaFisicaDTO pessoaFisicaDTO = new PessoaFisicaDTO(
+            "Danilo Da Silva",
+            "89012376394",
+            "DaniloDaSilva@unitins.br",
+            1);
+
         EnderecoDTO enderecoDTO = new EnderecoDTO(
             "Avenida Tocantins",
             "Setor Bueno",
@@ -233,10 +261,9 @@ public class UsuarioResourceTest {
         TelefoneDTO telefoneOpcionalDTO = new TelefoneDTO("067", "4002-8922");
 
         UsuarioDTO usuarioDto = new UsuarioDTO(
-                "Danilo Da Silva",
-                "DaniloDaSilva@unitins.br",
+          "Danilo",
                 "senha1234",
-                "89012376394",
+                pessoaFisicaDTO,
                 enderecoDTO,
                 telefonePrincipalDTO,
                 telefoneOpcionalDTO);
@@ -252,6 +279,12 @@ public class UsuarioResourceTest {
     @Test
     public void getByNomeTest() {
 
+        PessoaFisicaDTO pessoaFisicaDTO = new PessoaFisicaDTO(
+            "Danilo Da Silva",
+            "89012376794",
+            "DaniloDaSilv@unitins.br",
+            1);
+
         EnderecoDTO enderecoDTO = new EnderecoDTO(
             "Avenida Tocantins",
             "Setor Bueno",
@@ -265,10 +298,9 @@ public class UsuarioResourceTest {
         TelefoneDTO telefoneOpcionalDTO = new TelefoneDTO("067", "4002-8922");
 
         UsuarioDTO usuarioDto = new UsuarioDTO(
-                "Danilo Da Silva",
-                "DaniloDaSilv@unitins.br",
+          "Danilo",
                 "senha1234",
-                "89012376794",
+                pessoaFisicaDTO,
                 enderecoDTO,
                 telefonePrincipalDTO,
                 telefoneOpcionalDTO);
@@ -284,6 +316,12 @@ public class UsuarioResourceTest {
     @Test
     public void getListaDesejoTest() {
 
+        PessoaFisicaDTO pessoaFisicaDTO = new PessoaFisicaDTO(
+            "Danilo Da Silva",
+            "89076237639",
+            "DaniloDaSil@unitins.br",
+            1);
+
         EnderecoDTO enderecoDTO = new EnderecoDTO(
             "Avenida Tocantins",
             "Setor Bueno",
@@ -297,10 +335,9 @@ public class UsuarioResourceTest {
         TelefoneDTO telefoneOpcionalDTO = new TelefoneDTO("067", "4002-8922");
 
         UsuarioDTO usuarioDto = new UsuarioDTO(
-                "Danilo Da Silva",
-                "DaniloDaSil@unitins.br",
+          "Danilo",
                 "senha1234",
-                "89076237639",
+                pessoaFisicaDTO,
                 enderecoDTO,
                 telefonePrincipalDTO,
                 telefoneOpcionalDTO);
@@ -322,6 +359,12 @@ public class UsuarioResourceTest {
     @Test
     public void insertListaDesejoTest() {
 
+        PessoaFisicaDTO pessoaFisicaDTO = new PessoaFisicaDTO(
+            "Danilo Da Silva",
+            "89912376396",
+            "Danilo123@unitins.br",
+            1);
+
         EnderecoDTO enderecoDTO = new EnderecoDTO(
             "Avenida Tocantins",
             "Setor Bueno",
@@ -335,10 +378,9 @@ public class UsuarioResourceTest {
         TelefoneDTO telefoneOpcionalDTO = new TelefoneDTO("067", "4002-8922");
 
         UsuarioDTO usuarioDto = new UsuarioDTO(
-                "Danilo Da Silva",
-                "Danilo123@unitins.br",
+                "Danilo",
                 "senha1234",
-                "89912376396",
+                pessoaFisicaDTO,
                 enderecoDTO,
                 telefonePrincipalDTO,
                 telefoneOpcionalDTO);
@@ -361,11 +403,17 @@ public class UsuarioResourceTest {
         assertThat(listaResponse.usuario().get("email"), is("Danilo123@unitins.br"));
         assertThat(listaResponse.usuario().get("email"), is("Danilo123@unitins.br"));
         assertThat(listaResponse.produtos().get(0).get("id"), is(1l));
-        assertThat(listaResponse.produtos().get(0).get("nome"), is("Cafe Black Tucano"));
+        assertThat(listaResponse.produtos().get(0).get("nome"), is("LG K62"));
     }
 
     @Test
     public void deleteProdutoFromListaDesejoTest() {
+
+        PessoaFisicaDTO pessoaFisicaDTO = new PessoaFisicaDTO(
+            "Danilo Da Silva",
+            "89012376391",
+            "DaniloDaS@unitins.br",
+            1);
 
         EnderecoDTO enderecoDTO = new EnderecoDTO(
             "Avenida Tocantins",
@@ -380,10 +428,9 @@ public class UsuarioResourceTest {
         TelefoneDTO telefoneOpcionalDTO = new TelefoneDTO("067", "4002-8922");
 
         UsuarioDTO usuarioDto = new UsuarioDTO(
-                "Danilo Da Silva",
-                "DaniloDaS@unitins.br",
+                "Danilo",
                 "senha1234",
-                "89012376391",
+                pessoaFisicaDTO,
                 enderecoDTO,
                 telefonePrincipalDTO,
                 telefoneOpcionalDTO);
@@ -423,6 +470,12 @@ public class UsuarioResourceTest {
     @Test
     public void countListaDesejoTest() {
 
+        PessoaFisicaDTO pessoaFisicaDTO = new PessoaFisicaDTO(
+            "Danilo Da Silva",
+            "89012376491",
+            "Danilo098@unitins.br",
+            1);
+
         EnderecoDTO enderecoDTO = new EnderecoDTO(
             "Avenida Tocantins",
             "Setor Bueno",
@@ -436,10 +489,9 @@ public class UsuarioResourceTest {
         TelefoneDTO telefoneOpcionalDTO = new TelefoneDTO("067", "4002-8922");
 
         UsuarioDTO usuarioDto = new UsuarioDTO(
-                "Danilo Da Silva",
-                "Danilo098@unitins.br",
+                "Danilo",
                 "senha1234",
-                "89012376491",
+                pessoaFisicaDTO,
                 enderecoDTO,
                 telefonePrincipalDTO,
                 telefoneOpcionalDTO);

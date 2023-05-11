@@ -2,7 +2,7 @@ package br.unitins.ecommerce.repository;
 
 import java.util.List;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import br.unitins.ecommerce.model.produto.Marca;
 import br.unitins.ecommerce.model.produto.cafe.Cafe;
@@ -17,7 +17,7 @@ public class CafeRepository implements PanacheRepository<Cafe> {
         if (nome == null)
             return null;
 
-        return find("FROM Cafe WHERE UPPER(UNACCENT(nome)) LIKE UNACCENT(?1)", "%" + nome.toUpperCase() + "%").list();
+        return find("FROM Cafe WHERE UNACCENT(UPPER(nome)) LIKE UNACCENT(?1)", "%" + nome.toUpperCase() + "%").list();
     }
 
     public List<Cafe> findByIntensidade (Intensidade intensidade) {

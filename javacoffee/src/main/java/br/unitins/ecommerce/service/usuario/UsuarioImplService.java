@@ -4,22 +4,24 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validator;
-import javax.ws.rs.NotFoundException;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
+import jakarta.ws.rs.NotFoundException;
 
 import br.unitins.ecommerce.dto.endereco.EnderecoDTO;
 import br.unitins.ecommerce.dto.telefone.TelefoneDTO;
+import br.unitins.ecommerce.dto.usuario.PessoaFisicaDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioResponseDTO;
 import br.unitins.ecommerce.dto.usuario.listadesejo.ListaDesejoDTO;
 import br.unitins.ecommerce.dto.usuario.listadesejo.ListaDesejoResponseDTO;
 import br.unitins.ecommerce.model.endereco.Endereco;
 import br.unitins.ecommerce.model.produto.Produto;
+import br.unitins.ecommerce.model.usuario.PessoaFisica;
 import br.unitins.ecommerce.model.usuario.Telefone;
 import br.unitins.ecommerce.model.usuario.Usuario;
 import br.unitins.ecommerce.repository.CafeRepository;
@@ -27,6 +29,7 @@ import br.unitins.ecommerce.repository.EnderecoRepository;
 import br.unitins.ecommerce.repository.MunicipioRepository;
 import br.unitins.ecommerce.repository.TelefoneRepository;
 import br.unitins.ecommerce.repository.UsuarioRepository;
+import br.unitins.ecommerce.service.pessoafisica.PessoaFisicaService;
 
 @ApplicationScoped
 public class UsuarioImplService implements UsuarioService {
@@ -48,6 +51,9 @@ public class UsuarioImplService implements UsuarioService {
 
     @Inject
     CafeRepository cafeRepository;
+
+    @Inject
+    PessoaFisicaService pessoaFisicaService;
 
     @Override
     public List<UsuarioResponseDTO> getAll() {
@@ -88,13 +94,11 @@ public class UsuarioImplService implements UsuarioService {
 
         Usuario entity = new Usuario();
 
-        entity.setNome(usuarioDto.nome());
+        entity.setPessoaFisica(insertPessoaFisica(usuarioDto.pessoaFisicaDto()));
 
-        entity.setEmail(usuarioDto.email());
+        entity.setLogin(usuarioDto.login());
 
         entity.setSenha(usuarioDto.senha());
-
-        entity.setCpf(usuarioDto.cpf());
 
         entity.setEndereco(insertEndereco(usuarioDto.endereco()));
 
@@ -133,13 +137,11 @@ public class UsuarioImplService implements UsuarioService {
         if (entity == null)
             throw new NotFoundException("Número fora das opções disponíveis");
 
-        entity.setNome(usuarioDto.nome());
+        entity.setPessoaFisica(insertPessoaFisica(usuarioDto.pessoaFisicaDto()));
 
-        entity.setEmail(usuarioDto.email());
+        entity.setLogin(usuarioDto.login());
 
         entity.setSenha(usuarioDto.senha());
-
-        entity.setCpf(usuarioDto.cpf());
 
         Long idEndereco = entity.getEndereco().getId();
 
@@ -250,7 +252,17 @@ public class UsuarioImplService implements UsuarioService {
                     .collect(Collectors.toList());
     }
 
-    @Transactional
+    @Override
+    public Usuario getByLoginAndSenha(String login, String senha) {
+
+        return usuarioRepository.findByLoginAndSenha(login, senha);
+    }
+
+    private PessoaFisica insertPessoaFisica (PessoaFisicaDTO pessoaFisicaDTO) throws ConstraintViolationException {
+
+        return pessoaFisicaService.insertPessoaFisica(pessoaFisicaDTO);
+    }
+
     private Telefone insertTelefone (TelefoneDTO telefoneDTO) throws ConstraintViolationException {
 
         validar(telefoneDTO);
@@ -265,7 +277,6 @@ public class UsuarioImplService implements UsuarioService {
         return telefone;
     }
 
-    @Transactional
     private void deleteTelefone (Long id) throws NotFoundException, IllegalArgumentException {
 
         if (id == null)
@@ -280,7 +291,6 @@ public class UsuarioImplService implements UsuarioService {
             throw new NotFoundException("Nenhum Telefone encontrado");
     }
 
-    @Transactional
     private Endereco insertEndereco(EnderecoDTO enderecoDto) throws ConstraintViolationException {
         
         validar(enderecoDto);
@@ -304,7 +314,6 @@ public class UsuarioImplService implements UsuarioService {
         return endereco;
     }
 
-    @Transactional
     private void deleteEndereco (Long id) throws NotFoundException, IllegalArgumentException {
 
         if (id == null)
