@@ -9,11 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.Map;
 
-import jakarta.inject.Inject;
-
-import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.http.ContentType;
-
 import org.junit.jupiter.api.Test;
 
 import br.unitins.ecommerce.dto.endereco.EnderecoDTO;
@@ -24,6 +19,10 @@ import br.unitins.ecommerce.dto.usuario.UsuarioResponseDTO;
 import br.unitins.ecommerce.dto.usuario.listadesejo.ListaDesejoDTO;
 import br.unitins.ecommerce.dto.usuario.listadesejo.ListaDesejoResponseDTO;
 import br.unitins.ecommerce.service.usuario.UsuarioService;
+import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
+import io.restassured.http.ContentType;
+import jakarta.inject.Inject;
 
 @QuarkusTest
 public class UsuarioResourceTest {
@@ -32,6 +31,7 @@ public class UsuarioResourceTest {
     UsuarioService usuarioService;
     
     @Test
+    @TestSecurity(user = "testUser", roles = {"Admin"})
     public void getAllTest() {
 
         given()
@@ -41,6 +41,7 @@ public class UsuarioResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "testUser", roles = {"Admin", "User"})
     public void insertTest() {
 
         PessoaFisicaDTO pessoaFisicaDTO = new PessoaFisicaDTO(

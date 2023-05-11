@@ -64,8 +64,8 @@ public class AvaliacaoResourceTest {
                 .then()
                 .statusCode(201)
                 .body("id", notNullValue(), "comentario", is("Ruim"), "estrela.label", is("⭐"), "produto.id", is(2),
-                        "produto.nome", is("Cafe Fazenda Floresta"), "usuario.id", is(1), "usuario.nome",
-                        is("João Aguiar"), "usuario.email", is("joao_aguia@gmail.com"));
+                        "produto.nome", is("Cafe Fazenda Floresta"), "usuario.id", is(1), "usuario.login",
+                        is("JoaoA"), "usuario.email", is("joao_aguia@gmail.com"));
     }
 
     @Test
@@ -99,7 +99,7 @@ public class AvaliacaoResourceTest {
         assertThat(avaliacaoResponse.produto().get("id"), is(2l));
         assertThat(avaliacaoResponse.produto().get("nome"), is("Cafe Fazenda Floresta"));
         assertThat(avaliacaoResponse.usuario().get("id"), is(3l));
-        assertThat(avaliacaoResponse.usuario().get("nome"), is("Paulo Vitor"));
+        assertThat(avaliacaoResponse.usuario().get("login"), is("PauloVitor"));
         assertThat(avaliacaoResponse.usuario().get("email"), is("paulo_gaymer@gmail.com"));
 
     }

@@ -111,4 +111,9 @@ public class Usuario extends DefaultEntity {
     public Set<Perfil> getPerfis() {
         return perfis;
     }
+
+    public void setPerfis(Set<Perfil> perfis) {
+        this.perfis = perfis;
+    }
+
 }
