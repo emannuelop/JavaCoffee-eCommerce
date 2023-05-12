@@ -7,7 +7,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +20,10 @@ import br.unitins.ecommerce.dto.usuario.UsuarioDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioResponseDTO;
 import br.unitins.ecommerce.dto.usuario.listadesejo.ListaDesejoDTO;
 import br.unitins.ecommerce.dto.usuario.listadesejo.ListaDesejoResponseDTO;
+import br.unitins.ecommerce.model.usuario.Perfil;
+import br.unitins.ecommerce.model.usuario.Usuario;
+import br.unitins.ecommerce.service.hash.HashService;
+import br.unitins.ecommerce.service.token.TokenJwtService;
 import br.unitins.ecommerce.service.usuario.UsuarioService;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
@@ -29,14 +35,59 @@ public class UsuarioResourceTest {
 
     @Inject
     UsuarioService usuarioService;
+
+    @Inject
+    HashService hashService;
+
+    @Inject
+    TokenJwtService tokenJwtService;
     
     @Test
-    @TestSecurity(user = "testUser", roles = {"Admin"})
     public void getAllTest() {
 
+        PessoaFisicaDTO pessoaFisicaDTO = new PessoaFisicaDTO(
+            "Danilo Da Silva",
+            "89912402394",
+            "Danil789@unitins.br",
+            1);
+
+        EnderecoDTO enderecoDTO = new EnderecoDTO(
+            "Avenida Tocantins",
+            "Setor Bueno",
+            "8780",
+            "apto 3",
+            "77780-920",
+            4l);
+
+        TelefoneDTO telefonePrincipalDTO = new TelefoneDTO("067", "98467-8901");
+
+        TelefoneDTO telefoneOpcionalDTO = new TelefoneDTO("067", "4002-8922");
+
+        UsuarioDTO usuarioDto = new UsuarioDTO(
+                "Danilo",
+                "senha1234",
+                pessoaFisicaDTO,
+                enderecoDTO,
+                telefonePrincipalDTO,
+                telefoneOpcionalDTO);
+
+        usuarioService.insert(usuarioDto);    
+
+        Usuario usuario = usuarioService.getByLoginAndSenha("Danilo", "senha1234");
+
+        Set<Perfil> perfis = new HashSet<>();
+
+        perfis.add(Perfil.ADMIN);
+
+        usuario.setPerfis(perfis);
+
+        String token = tokenJwtService.generateJwt(usuario);
+
         given()
-            .when().get("/usuarios")
-            .then()
+            .header("Authorization", "Bearer " + token) // Adiciona o cabeçalho de autenticação
+        .when()
+            .get("/usuarios")
+        .then()
             .statusCode(200);
     }
 
@@ -95,6 +146,7 @@ public class UsuarioResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "testUser", roles = {"Admin", "User"})
     public void updateTest() {
 
         PessoaFisicaDTO pessoaFisicaDTO = new PessoaFisicaDTO(
@@ -183,6 +235,7 @@ public class UsuarioResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "testUser", roles = {"Admin", "User"})
     public void deleteTest() {
 
         PessoaFisicaDTO pessoaFisicaDTO = new PessoaFisicaDTO(
@@ -232,6 +285,7 @@ public class UsuarioResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "testUser", roles = {"Admin", "User"})
     public void countTest() {
 
         given()
@@ -271,7 +325,18 @@ public class UsuarioResourceTest {
 
         Long id = usuarioService.insert(usuarioDto).id();
 
+        Usuario usuario = usuarioService.getByLoginAndSenha("Danilo", "senha1234");
+
+        Set<Perfil> perfis = new HashSet<>();
+
+        perfis.add(Perfil.ADMIN);
+
+        usuario.setPerfis(perfis);
+
+        String token = tokenJwtService.generateJwt(usuario);
+
         given()
+            .header("Authorization", "Bearer " + token)
             .when().get("/usuarios/" + id)
             .then()
                 .statusCode(200);
@@ -308,7 +373,18 @@ public class UsuarioResourceTest {
 
         String nome = usuarioService.insert(usuarioDto).nome();
 
+        Usuario usuario = usuarioService.getByLoginAndSenha("Danilo", "senha1234");
+
+        Set<Perfil> perfis = new HashSet<>();
+
+        perfis.add(Perfil.ADMIN);
+
+        usuario.setPerfis(perfis);
+
+        String token = tokenJwtService.generateJwt(usuario);
+
         given()
+            .header("Authorization", "Bearer " + token)
             .when().get("/usuarios/searchByNome/" + nome)
             .then()
                 .statusCode(200);
@@ -351,7 +427,18 @@ public class UsuarioResourceTest {
         usuarioService.insertListaDesejo(listaDesejoDTO);
         usuarioService.insertListaDesejo(listaDesejoDTO2);
 
+        Usuario usuario = usuarioService.getByLoginAndSenha("Danilo", "senha1234");
+
+        Set<Perfil> perfis = new HashSet<>();
+
+        perfis.add(Perfil.ADMIN);
+
+        usuario.setPerfis(perfis);
+
+        String token = tokenJwtService.generateJwt(usuario);
+
         given()
+            .header("Authorization", "Bearer " + token)
             .when().get("/usuarios/lista_desejo/" + idUsuario)
             .then()
             .statusCode(200);
@@ -390,7 +477,18 @@ public class UsuarioResourceTest {
 
         ListaDesejoDTO listaDesejoDTO = new ListaDesejoDTO(idUsuario, 1l);
 
+        Usuario usuario = usuarioService.getByLoginAndSenha("Danilo", "senha1234");
+
+        Set<Perfil> perfis = new HashSet<>();
+
+        perfis.add(Perfil.ADMIN);
+
+        usuario.setPerfis(perfis);
+
+        String token = tokenJwtService.generateJwt(usuario);
+
         given()
+            .header("Authorization", "Bearer " + token)
             .contentType(ContentType.JSON)
             .body(listaDesejoDTO)
             .when().post("/usuarios/lista_desejo")
@@ -400,11 +498,11 @@ public class UsuarioResourceTest {
         ListaDesejoResponseDTO listaResponse = usuarioService.getListaDesejo(idUsuario);
     
         assertThat(listaResponse.usuario().get("id"), is(idUsuario));
-        assertThat(listaResponse.usuario().get("nome"), is("Danilo Da Silva"));
+        assertThat(listaResponse.usuario().get("login"), is("Danilo"));
         assertThat(listaResponse.usuario().get("email"), is("Danilo123@unitins.br"));
         assertThat(listaResponse.usuario().get("email"), is("Danilo123@unitins.br"));
         assertThat(listaResponse.produtos().get(0).get("id"), is(1l));
-        assertThat(listaResponse.produtos().get(0).get("nome"), is("LG K62"));
+        assertThat(listaResponse.produtos().get(0).get("nome"), is("Cafe Black Tucano"));
     }
 
     @Test
@@ -444,7 +542,18 @@ public class UsuarioResourceTest {
         usuarioService.insertListaDesejo(listaDesejoDTO);
         usuarioService.insertListaDesejo(listaDesejoDTO2);
 
+        Usuario usuario = usuarioService.getByLoginAndSenha("Danilo", "senha1234");
+
+        Set<Perfil> perfis = new HashSet<>();
+
+        perfis.add(Perfil.ADMIN);
+
+        usuario.setPerfis(perfis);
+
+        String token = tokenJwtService.generateJwt(usuario);
+
         given()
+            .header("Authorization", "Bearer " + token)
             .pathParam("idUsuario", idUsuario)
             .pathParam("idProduto", 3l)
           .when().delete("/usuarios/lista_desejo/{idUsuario}/{idProduto}")
@@ -499,7 +608,18 @@ public class UsuarioResourceTest {
 
         Long idUsuario = usuarioService.insert(usuarioDto).id();
 
+        Usuario usuario = usuarioService.getByLoginAndSenha("Danilo", "senha1234");
+
+        Set<Perfil> perfis = new HashSet<>();
+
+        perfis.add(Perfil.ADMIN);
+
+        usuario.setPerfis(perfis);
+
+        String token = tokenJwtService.generateJwt(usuario);
+
         given()
+            .header("Authorization", "Bearer " + token)
             .when().get("/usuarios/lista_desejo/count/" + idUsuario)
             .then()
                 .statusCode(200);
