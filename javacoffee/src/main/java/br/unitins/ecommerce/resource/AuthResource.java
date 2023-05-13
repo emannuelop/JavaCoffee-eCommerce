@@ -1,12 +1,17 @@
 package br.unitins.ecommerce.resource;
 
+import org.eclipse.microprofile.jwt.JsonWebToken;
+
 import br.unitins.ecommerce.dto.usuario.AuthUsuarioDTO;
+import br.unitins.ecommerce.dto.usuario.UsuarioResponseDTO;
 import br.unitins.ecommerce.model.usuario.Usuario;
 import br.unitins.ecommerce.service.hash.HashService;
 import br.unitins.ecommerce.service.token.TokenJwtService;
 import br.unitins.ecommerce.service.usuario.UsuarioService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -15,6 +20,8 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
 @Path("/auth")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.TEXT_PLAIN)
 public class AuthResource {
 
     @Inject
@@ -26,8 +33,10 @@ public class AuthResource {
     @Inject
     TokenJwtService tokenService;
 
+    @Inject
+    JsonWebToken jwt;
+
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public Response login(AuthUsuarioDTO authDTO) {
         
@@ -43,5 +52,17 @@ public class AuthResource {
         return Response.ok()
                     .header("Authorization", tokenService.generateJwt(usuario))
                     .build();
+    }
+
+    @GET
+    @Path("/perfil")
+    @RolesAllowed({"User"})
+    public Response getPerfilUsuario() {
+
+        // Obtendo o login a partir do token
+        String login = jwt.getSubject();
+        UsuarioResponseDTO usuario = usuarioService.getByLogin(login);
+
+        return Response.ok(usuario).build();
     }
 }

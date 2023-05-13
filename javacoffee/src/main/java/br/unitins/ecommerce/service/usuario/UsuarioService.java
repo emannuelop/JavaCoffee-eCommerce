@@ -39,5 +39,7 @@ public interface UsuarioService {
 
     Usuario getByLoginAndSenha(String login, String senha);
 
+    UsuarioResponseDTO getByLogin(String login);
+
     Integer countListaDesejo(Long id);
 }
