@@ -70,8 +70,8 @@ INSERT INTO usuario (id_pessoa_fisica, login, senha, id_endereco, id_telefone_pr
             VALUES (5, 'LucasFerreira', 'Tv7l6PLjIMgRTG8n32VVbtgHZyUj3L9nbtTz77T96tP52xepJQ25AoczGr8MA89dZ8cOErN3WcuGyOurMPCaOA==', 4, 8);
 
 INSERT INTO perfis (id_usuario, perfil) VALUES (1, 'Admin');
-INSERT INTO perfis (id_usuario, perfil) VALUES (2, 'User');
 INSERT INTO perfis (id_usuario, perfil) VALUES (1, 'User');
+INSERT INTO perfis (id_usuario, perfil) VALUES (2, 'User');
 INSERT INTO perfis (id_usuario, perfil) VALUES (3, 'User');
 INSERT INTO perfis (id_usuario, perfil) VALUES (4, 'User');
 INSERT INTO perfis (id_usuario, perfil) VALUES (5, 'Admin');

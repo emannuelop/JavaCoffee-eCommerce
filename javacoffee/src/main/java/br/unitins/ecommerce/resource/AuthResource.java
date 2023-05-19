@@ -3,8 +3,10 @@ package br.unitins.ecommerce.resource;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import br.unitins.ecommerce.dto.usuario.AuthUsuarioDTO;
+import br.unitins.ecommerce.dto.usuario.UsuarioDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioResponseDTO;
 import br.unitins.ecommerce.model.usuario.Usuario;
+import br.unitins.ecommerce.repository.UsuarioRepository;
 import br.unitins.ecommerce.service.hash.HashService;
 import br.unitins.ecommerce.service.token.TokenJwtService;
 import br.unitins.ecommerce.service.usuario.UsuarioService;
@@ -12,6 +14,7 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -35,6 +38,9 @@ public class AuthResource {
 
     @Inject
     JsonWebToken jwt;
+
+    @Inject
+    UsuarioRepository usuarioRepository;
 
     @POST
     @Produces(MediaType.TEXT_PLAIN)
@@ -65,4 +71,33 @@ public class AuthResource {
 
         return Response.ok(usuario).build();
     }
+
+    @PATCH
+    @Path("/perfil/patch")
+    @RolesAllowed({"User"})
+    public Response updateDadosPessoais(UsuarioDTO usuarioDto) {
+        String login = jwt.getSubject();
+
+        UsuarioResponseDTO usuarioAtual = usuarioService.getByLogin(login);
+
+        if (usuarioAtual == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                           .entity("Usuário não encontrado.")
+                           .build();
+        }
+
+        UsuarioDTO usuarioAtualizado = new UsuarioDTO(
+            login,
+            usuarioDto.senha(),
+            usuarioDto.pessoaFisicaDto(),  
+            usuarioDto.endereco(),
+            usuarioDto.telefonePrincipal(),
+            usuarioDto.telefoneOpcional()
+        );
+
+        UsuarioResponseDTO usuarioResponse = usuarioService.update(usuarioAtual.id(), usuarioAtualizado);
+
+        return Response.ok(usuarioResponse).build();
+    }
 }
+
