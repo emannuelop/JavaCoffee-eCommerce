@@ -1,4 +1,4 @@
-package br.unitins.ecommerce.dto.usuario.auth;
+package br.unitins.ecommerce.dto.usuario.dadospessoais;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

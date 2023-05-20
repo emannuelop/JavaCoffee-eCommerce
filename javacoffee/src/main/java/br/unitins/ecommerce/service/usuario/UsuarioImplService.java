@@ -17,11 +17,14 @@ import br.unitins.ecommerce.dto.telefone.TelefoneDTO;
 import br.unitins.ecommerce.dto.usuario.PessoaFisicaDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioResponseDTO;
+import br.unitins.ecommerce.dto.usuario.dadospessoais.DadosPessoaisDTO;
+import br.unitins.ecommerce.dto.usuario.dadospessoais.DadosPessoaisResponseDTO;
 import br.unitins.ecommerce.dto.usuario.listadesejo.ListaDesejoDTO;
 import br.unitins.ecommerce.dto.usuario.listadesejo.ListaDesejoResponseDTO;
 import br.unitins.ecommerce.model.endereco.Endereco;
 import br.unitins.ecommerce.model.produto.Produto;
 import br.unitins.ecommerce.model.usuario.PessoaFisica;
+import br.unitins.ecommerce.model.usuario.Sexo;
 import br.unitins.ecommerce.model.usuario.Telefone;
 import br.unitins.ecommerce.model.usuario.Usuario;
 import br.unitins.ecommerce.repository.CafeRepository;
@@ -254,19 +257,41 @@ public class UsuarioImplService implements UsuarioService {
     }
 
     @Override
-    public UsuarioResponseDTO getByLogin(String login) {
+    public Usuario getByLogin(String login) {
 
-        Usuario usuario = usuarioRepository.getByLogin(login);
+        Usuario usuario = usuarioRepository.findByLogin(login);
+
         if (usuario == null) {
             throw new NullPointerException("usuario não encontrado");
         }
-        return new UsuarioResponseDTO(usuario);
+        return usuario;
     }
 
     @Override
-    public Usuario getByLoginAndSenha(String login, String senha) {
+    public Usuario getByLoginAndSenha(String login, String senha) throws NullPointerException {
 
-        return usuarioRepository.findByLoginAndSenha(login, senha);
+        Usuario usuario = usuarioRepository.findByLoginAndSenha(login, senha);
+
+        if (usuario == null) {
+            throw new NullPointerException("usuario não encontrado");
+        }
+
+        return usuario;
+    }
+
+    @Override
+    @Transactional
+    public DadosPessoaisResponseDTO update(Long id, DadosPessoaisDTO dadosPessoaisDTO) {
+        
+        validar(dadosPessoaisDTO);
+
+        Usuario entity = usuarioRepository.findById(id);
+
+        entity.getPessoaFisica().setEmail(dadosPessoaisDTO.email());
+
+        entity.getPessoaFisica().setSexo(Sexo.valueOf(dadosPessoaisDTO.sexo()));
+
+        return new DadosPessoaisResponseDTO(entity);
     }
 
     private PessoaFisica insertPessoaFisica(PessoaFisicaDTO pessoaFisicaDTO) throws ConstraintViolationException {
@@ -369,6 +394,15 @@ public class UsuarioImplService implements UsuarioService {
     private void validar(ListaDesejoDTO listaDto) throws ConstraintViolationException {
 
         Set<ConstraintViolation<ListaDesejoDTO>> violations = validator.validate(listaDto);
+
+        if (!violations.isEmpty())
+            throw new ConstraintViolationException(violations);
+
+    }
+
+    private void validar(DadosPessoaisDTO dadosPessoaisDTO) throws ConstraintViolationException {
+
+        Set<ConstraintViolation<DadosPessoaisDTO>> violations = validator.validate(dadosPessoaisDTO);
 
         if (!violations.isEmpty())
             throw new ConstraintViolationException(violations);
