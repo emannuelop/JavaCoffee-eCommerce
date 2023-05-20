@@ -57,8 +57,8 @@ INSERT INTO pessoaFisica (cpf, email, sexo, id) VALUES ('92874291092', 'lucas_fe
 INSERT INTO usuario (id_pessoa_fisica, login, senha, id_endereco, id_telefone_principal,
                 id_telefone_opcional) VALUES (1, 'JoaoA', 'ZXChMgzI4VI5Jx+KKCL0AnuRaug9sWorJdV7iCDgWIDNVms7vyhaZeXP+5x26q6uDWKJmyQySZzE8hvoncjgCA==', 1, 2, 1);
 
-INSERT INTO usuario (id_pessoa_fisica, senha, id_endereco, id_telefone_principal)
-            VALUES (2, 'x6JkviFo/CZc/dYoTsn+KjkyXu9rqbOwZ89vC1horO3B+ZT2N9nhquEvkFxm2WZahBpo5wgui91vSF00c1BYPA==', 3, 3);
+INSERT INTO usuario (id_pessoa_fisica, login, senha, id_endereco, id_telefone_principal)
+            VALUES (2, 'maria123', 'x6JkviFo/CZc/dYoTsn+KjkyXu9rqbOwZ89vC1horO3B+ZT2N9nhquEvkFxm2WZahBpo5wgui91vSF00c1BYPA==', 3, 3);
 
 INSERT INTO usuario (id_pessoa_fisica, login, senha, id_endereco, id_telefone_principal,
                 id_telefone_opcional) VALUES (3, 'PauloVitor', 'EDCT26TOqyKJg1i5rpN/tOkmr8RSjKfPP1qdPhjlj+sA3Wd++oZFkG5YChaMMRndKipiyVxfL12CUYWybBk+aA==', 2, 4, 5);

@@ -5,6 +5,7 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import br.unitins.ecommerce.dto.usuario.AuthUsuarioDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioResponseDTO;
+import br.unitins.ecommerce.dto.usuario.auth.UsuarioAuthDTO;
 import br.unitins.ecommerce.model.usuario.Usuario;
 import br.unitins.ecommerce.repository.UsuarioRepository;
 import br.unitins.ecommerce.service.hash.HashService;
@@ -12,6 +13,7 @@ import br.unitins.ecommerce.service.token.TokenJwtService;
 import br.unitins.ecommerce.service.usuario.UsuarioService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
+import jakarta.persistence.Id;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PATCH;
@@ -62,42 +64,14 @@ public class AuthResource {
 
     @GET
     @Path("/perfil")
-    @RolesAllowed({"User"})
-    public Response getPerfilUsuario() {
+    @RolesAllowed({"Admin, User"})
+    public Response getDadosPessoais() {
 
-        // Obtendo o login a partir do token
         String login = jwt.getSubject();
         UsuarioResponseDTO usuario = usuarioService.getByLogin(login);
 
         return Response.ok(usuario).build();
-    }
-
-    @PATCH
-    @Path("/perfil/patch")
-    @RolesAllowed({"User"})
-    public Response updateDadosPessoais(UsuarioDTO usuarioDto) {
-        String login = jwt.getSubject();
-
-        UsuarioResponseDTO usuarioAtual = usuarioService.getByLogin(login);
-
-        if (usuarioAtual == null) {
-            return Response.status(Response.Status.NOT_FOUND)
-                           .entity("Usuário não encontrado.")
-                           .build();
-        }
-
-        UsuarioDTO usuarioAtualizado = new UsuarioDTO(
-            login,
-            usuarioDto.senha(),
-            usuarioDto.pessoaFisicaDto(),  
-            usuarioDto.endereco(),
-            usuarioDto.telefonePrincipal(),
-            usuarioDto.telefoneOpcional()
-        );
-
-        UsuarioResponseDTO usuarioResponse = usuarioService.update(usuarioAtual.id(), usuarioAtualizado);
-
-        return Response.ok(usuarioResponse).build();
+        
     }
 }
 
