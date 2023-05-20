@@ -2,7 +2,9 @@ package br.unitins.ecommerce.resource;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
+import br.unitins.ecommerce.dto.telefone.TelefoneDTO;
 import br.unitins.ecommerce.dto.usuario.AuthUsuarioDTO;
+import br.unitins.ecommerce.dto.usuario.SenhaDTO;
 import br.unitins.ecommerce.dto.usuario.dadospessoais.DadosPessoaisDTO;
 import br.unitins.ecommerce.dto.usuario.dadospessoais.DadosPessoaisResponseDTO;
 import br.unitins.ecommerce.model.usuario.Usuario;
@@ -40,7 +42,7 @@ public class AuthResource {
     @POST
     @Path("/auth")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response login(AuthUsuarioDTO authDTO) throws NullPointerException {
+    public Response login(AuthUsuarioDTO authDTO) {
         
         String hash = hashService.getHashSenha(authDTO.senha());
 
@@ -57,7 +59,7 @@ public class AuthResource {
     }
 
     @GET
-    @Path("/dados-pessoais")
+    @Path("/dados_pessoais")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"User"})
     public Response getDadosPessoais() {
@@ -70,7 +72,7 @@ public class AuthResource {
     }
 
     @PATCH
-    @Path("/dados-pessoais")
+    @Path("/dados_pessoais")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"User"})
     public Response updateDadosPessoais(DadosPessoaisDTO dadosPessoaisDTO) {
@@ -79,9 +81,54 @@ public class AuthResource {
 
         Usuario usuario = usuarioService.getByLogin(login);
 
-        DadosPessoaisResponseDTO DadosResponseDTO = usuarioService.update(usuario.getId(), dadosPessoaisDTO);
+        usuarioService.update(usuario.getId(), dadosPessoaisDTO);
 
-        return Response.status(Status.CREATED).entity(DadosResponseDTO).build();
+        return Response.status(Status.NO_CONTENT).build();
+    }
+
+    @PATCH
+    @Path("/senha")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"User"})
+    public Response updateSenha(SenhaDTO senhaDTO) {
+
+        String login = jwt.getSubject();
+
+        Usuario usuario = usuarioService.getByLogin(login);
+
+        usuarioService.update(usuario.getId(), senhaDTO);
+
+        return Response.status(Status.NO_CONTENT).build();
+    }
+
+    @PATCH
+    @Path("/telefone_principal")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"User"})
+    public Response updateTelefonePrincipal(TelefoneDTO telefonePrincipalDTO) {
+
+        String login = jwt.getSubject();
+
+        Usuario usuario = usuarioService.getByLogin(login);
+
+        usuarioService.updateTelefonePrincipal(usuario.getId(), telefonePrincipalDTO);
+
+        return Response.status(Status.NO_CONTENT).build();
+    }
+
+    @PATCH
+    @Path("/telefone_opcional")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"User"})
+    public Response updateTelefoneOpcional(TelefoneDTO telefoneOpcionalDTO) {
+
+        String login = jwt.getSubject();
+
+        Usuario usuario = usuarioService.getByLogin(login);
+
+        usuarioService.updateTelefoneOpcional(usuario.getId(), telefoneOpcionalDTO);
+
+        return Response.status(Status.NO_CONTENT).build();
     }
 }
 

@@ -10,15 +10,16 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
+import jakarta.ws.rs.NotAuthorizedException;
 import jakarta.ws.rs.NotFoundException;
 
 import br.unitins.ecommerce.dto.endereco.EnderecoDTO;
 import br.unitins.ecommerce.dto.telefone.TelefoneDTO;
 import br.unitins.ecommerce.dto.usuario.PessoaFisicaDTO;
+import br.unitins.ecommerce.dto.usuario.SenhaDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioResponseDTO;
 import br.unitins.ecommerce.dto.usuario.dadospessoais.DadosPessoaisDTO;
-import br.unitins.ecommerce.dto.usuario.dadospessoais.DadosPessoaisResponseDTO;
 import br.unitins.ecommerce.dto.usuario.listadesejo.ListaDesejoDTO;
 import br.unitins.ecommerce.dto.usuario.listadesejo.ListaDesejoResponseDTO;
 import br.unitins.ecommerce.model.endereco.Endereco;
@@ -32,6 +33,7 @@ import br.unitins.ecommerce.repository.EnderecoRepository;
 import br.unitins.ecommerce.repository.MunicipioRepository;
 import br.unitins.ecommerce.repository.TelefoneRepository;
 import br.unitins.ecommerce.repository.UsuarioRepository;
+import br.unitins.ecommerce.service.hash.HashService;
 import br.unitins.ecommerce.service.pessoafisica.PessoaFisicaService;
 
 @ApplicationScoped
@@ -39,6 +41,9 @@ public class UsuarioImplService implements UsuarioService {
 
     @Inject
     Validator validator;
+
+    @Inject
+    HashService hashService;
 
     @Inject
     UsuarioRepository usuarioRepository;
@@ -101,7 +106,7 @@ public class UsuarioImplService implements UsuarioService {
 
         entity.setLogin(usuarioDto.login());
 
-        entity.setSenha(usuarioDto.senha());
+        entity.setSenha(hashService.getHashSenha(usuarioDto.senha()));
 
         entity.setEndereco(insertEndereco(usuarioDto.endereco()));
 
@@ -145,7 +150,7 @@ public class UsuarioImplService implements UsuarioService {
 
         entity.setLogin(usuarioDto.login());
 
-        entity.setSenha(usuarioDto.senha());
+        entity.setSenha(hashService.getHashSenha(usuarioDto.senha()));
 
         Long idEndereco = entity.getEndereco().getId();
 
@@ -268,20 +273,16 @@ public class UsuarioImplService implements UsuarioService {
     }
 
     @Override
-    public Usuario getByLoginAndSenha(String login, String senha) throws NullPointerException {
+    public Usuario getByLoginAndSenha(String login, String senha) {
 
         Usuario usuario = usuarioRepository.findByLoginAndSenha(login, senha);
-
-        if (usuario == null) {
-            throw new NullPointerException("usuario não encontrado");
-        }
 
         return usuario;
     }
 
     @Override
     @Transactional
-    public DadosPessoaisResponseDTO update(Long id, DadosPessoaisDTO dadosPessoaisDTO) {
+    public void update(Long id, DadosPessoaisDTO dadosPessoaisDTO) {
         
         validar(dadosPessoaisDTO);
 
@@ -290,8 +291,64 @@ public class UsuarioImplService implements UsuarioService {
         entity.getPessoaFisica().setEmail(dadosPessoaisDTO.email());
 
         entity.getPessoaFisica().setSexo(Sexo.valueOf(dadosPessoaisDTO.sexo()));
+    }
 
-        return new DadosPessoaisResponseDTO(entity);
+    @Override
+    public void update(Long id, SenhaDTO senhaDTO) {
+        
+        validar(senhaDTO);
+
+        Usuario entity = usuarioRepository.findById(id);
+
+        if (entity.getSenha().equals(hashService.getHashSenha(senhaDTO.senhaAntiga())))
+            entity.setSenha(senhaDTO.senhaNova());
+
+        else
+            throw new NotAuthorizedException("A senha inserida não corresponde à senha atual, acesso negado");
+    }
+
+    @Override
+    @Transactional
+    public void updateTelefonePrincipal(Long id, TelefoneDTO telefonePrincipalDTO) {
+        
+        validar(telefonePrincipalDTO);
+
+        Usuario entity = usuarioRepository.findById(id);
+
+        Long idTelefone = entity.getTelefonePrincipal().getId();
+
+        entity.setTelefonePrincipal(insertTelefone(telefonePrincipalDTO));
+
+        deleteTelefone(idTelefone);
+    }
+
+    @Override
+    @Transactional
+    public void updateTelefoneOpcional(Long id, TelefoneDTO telefoneOpcionalDTO) {
+        
+        validar(telefoneOpcionalDTO);
+
+        Long idTelefone;
+
+        Usuario entity = usuarioRepository.findById(id);
+
+        if (telefoneOpcionalDTO != null) {
+
+            idTelefone = entity.getTelefoneOpcional().getId();
+
+            entity.setTelefoneOpcional(insertTelefone(telefoneOpcionalDTO));
+
+            deleteTelefone(idTelefone);
+        }
+
+        else if (entity.getTelefoneOpcional() != null) {
+
+            idTelefone = entity.getTelefoneOpcional().getId();
+
+            entity.setTelefoneOpcional(null);
+
+            deleteTelefone(idTelefone);
+        }
     }
 
     private PessoaFisica insertPessoaFisica(PessoaFisicaDTO pessoaFisicaDTO) throws ConstraintViolationException {
@@ -403,6 +460,15 @@ public class UsuarioImplService implements UsuarioService {
     private void validar(DadosPessoaisDTO dadosPessoaisDTO) throws ConstraintViolationException {
 
         Set<ConstraintViolation<DadosPessoaisDTO>> violations = validator.validate(dadosPessoaisDTO);
+
+        if (!violations.isEmpty())
+            throw new ConstraintViolationException(violations);
+
+    }
+
+    private void validar(SenhaDTO senhaDTO) throws ConstraintViolationException {
+
+        Set<ConstraintViolation<SenhaDTO>> violations = validator.validate(senhaDTO);
 
         if (!violations.isEmpty())
             throw new ConstraintViolationException(violations);
