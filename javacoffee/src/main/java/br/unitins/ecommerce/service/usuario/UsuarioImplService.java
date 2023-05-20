@@ -164,13 +164,18 @@ public class UsuarioImplService implements UsuarioService {
 
         deleteTelefone(idTelefone);
 
-        if (usuarioDto.telefoneOpcional() != null) {
+        if (usuarioDto.telefoneOpcional() != null && entity.getTelefoneOpcional() != null) {
 
             idTelefone = entity.getTelefoneOpcional().getId();
 
             entity.setTelefoneOpcional(insertTelefone(usuarioDto.telefoneOpcional()));
 
             deleteTelefone(idTelefone);
+        }
+
+        else if (usuarioDto.telefoneOpcional() != null && entity.getTelefoneOpcional() == null) {
+
+            entity.setTelefoneOpcional(insertTelefone(usuarioDto.telefoneOpcional()));
         }
 
         else if (entity.getTelefoneOpcional() != null) {
@@ -294,6 +299,7 @@ public class UsuarioImplService implements UsuarioService {
     }
 
     @Override
+    @Transactional
     public void update(Long id, SenhaDTO senhaDTO) {
         
         validar(senhaDTO);
@@ -301,10 +307,25 @@ public class UsuarioImplService implements UsuarioService {
         Usuario entity = usuarioRepository.findById(id);
 
         if (entity.getSenha().equals(hashService.getHashSenha(senhaDTO.senhaAntiga())))
-            entity.setSenha(senhaDTO.senhaNova());
+            entity.setSenha(hashService.getHashSenha(senhaDTO.senhaNova()));
 
         else
             throw new NotAuthorizedException("A senha inserida não corresponde à senha atual, acesso negado");
+    }
+
+    @Override
+    @Transactional
+    public void update(Long id, EnderecoDTO enderecoDTO) {
+        
+        validar(enderecoDTO);
+
+        Usuario entity = usuarioRepository.findById(id);
+
+        Long idEndereco = entity.getEndereco().getId();
+
+        entity.setEndereco(insertEndereco(enderecoDTO));
+
+        deleteEndereco(idEndereco);
     }
 
     @Override
@@ -332,13 +353,18 @@ public class UsuarioImplService implements UsuarioService {
 
         Usuario entity = usuarioRepository.findById(id);
 
-        if (telefoneOpcionalDTO != null) {
+        if (telefoneOpcionalDTO != null && entity.getTelefoneOpcional() != null) {
 
             idTelefone = entity.getTelefoneOpcional().getId();
 
             entity.setTelefoneOpcional(insertTelefone(telefoneOpcionalDTO));
 
             deleteTelefone(idTelefone);
+        }
+
+        else if (telefoneOpcionalDTO != null && entity.getTelefoneOpcional() == null) {
+
+            entity.setTelefoneOpcional(insertTelefone(telefoneOpcionalDTO));
         }
 
         else if (entity.getTelefoneOpcional() != null) {

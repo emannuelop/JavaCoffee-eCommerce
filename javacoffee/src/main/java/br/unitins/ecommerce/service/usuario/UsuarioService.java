@@ -2,6 +2,7 @@ package br.unitins.ecommerce.service.usuario;
 
 import java.util.List;
 
+import br.unitins.ecommerce.dto.endereco.EnderecoDTO;
 import br.unitins.ecommerce.dto.telefone.TelefoneDTO;
 import br.unitins.ecommerce.dto.usuario.SenhaDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioDTO;
@@ -47,6 +48,8 @@ public interface UsuarioService {
     void update (Long id, DadosPessoaisDTO dadosPessoaisDTO);
 
     void update (Long id, SenhaDTO senhaDTO);
+
+    void update(Long id, EnderecoDTO enderecoDTO);
 
     void updateTelefonePrincipal(Long id, TelefoneDTO telefonePrincipalDTO);
 
