@@ -1,5 +1,6 @@
 package br.unitins.ecommerce.service.compra;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import br.unitins.ecommerce.dto.compra.CompraResponseDTO;
@@ -7,6 +8,7 @@ import br.unitins.ecommerce.dto.compra.ItemCompraDTO;
 import br.unitins.ecommerce.model.compra.Compra;
 import br.unitins.ecommerce.model.compra.ItemCompra;
 import br.unitins.ecommerce.model.produto.Produto;
+import br.unitins.ecommerce.model.usuario.Usuario;
 import br.unitins.ecommerce.repository.CompraRepository;
 import br.unitins.ecommerce.repository.ItemCompraRepository;
 import br.unitins.ecommerce.repository.UsuarioRepository;
@@ -31,19 +33,30 @@ public class CompraImplService implements CompraService {
     PanacheRepository<? extends Produto> produtoRepository;
 
     @Override
-    public CompraResponseDTO getCompra(Long idUsuario) {
+    public List<CompraResponseDTO> getAll(Long idUsuario) {
         
-        Compra compra = compraRepository.findByUsuario(usuarioRepository.findById(idUsuario));
+        List<Compra> list = compraRepository.findByUsuarioWhereIsFinished(usuarioRepository.findById(idUsuario));
+
+        if (list == null)
+            throw new NullPointerException("compra não encontrada");
+
+        return list.stream().map(CompraResponseDTO::new).toList();
+    }
+
+    @Override
+    public CompraResponseDTO getCompraEmAndamento(Long idUsuario) {
+        
+        Compra compra = compraRepository.findByUsuarioWhereIsNotFinished(usuarioRepository.findById(idUsuario));
 
         if (compra == null)
-            throw new NullPointerException("compra não encontrada");
+            throw new NullPointerException("Nenhuma compra em andamento");
 
         return new CompraResponseDTO(compra);
     }
 
     @Override
     @Transactional
-    public void insertIntoCompra(Long idUsuario, ItemCompraDTO itemCompraDTO) throws NullPointerException {
+    public void insertItemIntoCompra(Long idUsuario, ItemCompraDTO itemCompraDTO) throws NullPointerException {
         
         Produto produto = validar(itemCompraDTO);
 
@@ -78,7 +91,7 @@ public class CompraImplService implements CompraService {
     @Transactional
     public void removeItemCompra(Long idUsuario, Long idProduto) {
         
-        Compra compra = compraRepository.findByUsuarioWhereNotFinished(usuarioRepository.findById(idUsuario));
+        Compra compra = compraRepository.findByUsuarioWhereIsNotFinished(usuarioRepository.findById(idUsuario));
 
         if (compra == null)
             throw new NullPointerException("Não há nenhuma compra em andamento");
@@ -88,6 +101,36 @@ public class CompraImplService implements CompraService {
         compra.minusTotalCompra(itemCompra.getPrecoUnitario() * itemCompra.getQuantidade());
 
         compra.getItemCompra().remove(itemCompra);
+    }
+
+    @Override
+    @Transactional
+    public void finishCompra(Long idUsuario) {
+
+        Usuario usuario = usuarioRepository.findById(idUsuario);
+        
+        Compra compra = compraRepository.findByUsuarioWhereIsNotFinished(usuario);
+
+        if (compra == null)
+            throw new NullPointerException("Não há nenhuma compra em andamento");
+
+        if (compra.getItemCompra().size() == 0)
+            throw new NullPointerException("Não há nenhum item dentro do carrinho");
+
+        compra.setDataCompra(LocalDate.now());
+
+        for (ItemCompra itemCompra : compra.getItemCompra()) {
+
+            if (itemCompra.getProduto().getEstoque() < itemCompra.getQuantidade())
+                throw new NullPointerException("quantidade em estoque insuficiente para a quantidade requisitada. Não é possível finalizar a compra");
+
+            else
+                itemCompra.getProduto().minusEstoque(itemCompra.getQuantidade());
+        }
+
+        compra.setEndereco(usuario.getEndereco());
+
+        compra.setIfConcluida(true);
     }
 
     private Integer validar(Produto produto, List<ItemCompra> listaItens) {
@@ -103,7 +146,7 @@ public class CompraImplService implements CompraService {
 
     private Compra validar(Long idUsuario) {
 
-        Compra compra = compraRepository.findByUsuarioWhereNotFinished(usuarioRepository.findById(idUsuario));
+        Compra compra = compraRepository.findByUsuarioWhereIsNotFinished(usuarioRepository.findById(idUsuario));
 
         if (compra == null) {
 

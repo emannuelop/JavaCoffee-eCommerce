@@ -17,6 +17,8 @@ public interface CafeService {
 
     CafeResponseDTO update(Long id, CafeDTO cafeDto);
 
+    void update(Long id, String nomeImagem);
+
     void delete(Long id);
 
     // Metodos extras

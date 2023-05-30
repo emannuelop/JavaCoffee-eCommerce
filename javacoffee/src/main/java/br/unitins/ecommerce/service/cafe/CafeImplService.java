@@ -117,6 +117,18 @@ public class CafeImplService implements CafeService {
 
     @Override
     @Transactional
+    public void update(Long id, String nomeImagem) {
+   
+        Cafe entity = cafeRepository.findById(id);
+
+        if (entity == null)
+            throw new NullPointerException("Nenhum café encontrado");
+        
+        entity.setNomeImagem(nomeImagem);
+    }
+
+    @Override
+    @Transactional
     public void delete(Long id) throws IllegalArgumentException, NotFoundException {
 
         if (id == null)

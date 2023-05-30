@@ -1,13 +1,18 @@
 package br.unitins.ecommerce.resource;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
@@ -15,12 +20,15 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.ResponseBuilder;
 import jakarta.ws.rs.core.Response.Status;
 
 import br.unitins.ecommerce.application.Result;
 import br.unitins.ecommerce.dto.cafe.CafeDTO;
 import br.unitins.ecommerce.dto.cafe.CafeResponseDTO;
+import br.unitins.ecommerce.form.ImageForm;
 import br.unitins.ecommerce.service.cafe.CafeService;
+import br.unitins.ecommerce.service.file.FileService;
 
 @Path("/cafes")
 @Produces(MediaType.APPLICATION_JSON)
@@ -29,6 +37,9 @@ public class CafeResource {
 
     @Inject
     CafeService cafeService;
+
+    @Inject
+    FileService fileService;
 
     @GET
     public List<CafeResponseDTO> getAll() {
@@ -41,6 +52,19 @@ public class CafeResource {
     public CafeResponseDTO getById(@PathParam("id") Long id) throws NotFoundException {
 
         return cafeService.getById(id);
+    }
+
+    @GET
+    @Path("/download/{nomeImagem}")
+    @RolesAllowed({"Admin","User"})
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response download(@PathParam("nomeImagem") String nomeImagem) {
+        
+        ResponseBuilder response = Response.ok(fileService.download(nomeImagem));
+
+        response.header("Content-Disposition", "attachment;filename="+nomeImagem);
+
+        return response.build();
     }
 
     @POST
@@ -83,6 +107,29 @@ public class CafeResource {
                     .entity(result)
                     .build();
         }
+    }
+
+    @PATCH
+    @Path("/atualizar-imagem/{id}")
+    @RolesAllowed({"Admin"})
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response salvarImagem(@MultipartForm ImageForm form, @PathParam("id") Long id){
+
+        String nomeImagem = "";
+
+        try {
+
+            nomeImagem = fileService.salvarImagemUsuario(form.getImagem(), form.getNomeImagem());
+        } catch (IOException e) {
+
+            Result result = new Result(e.getMessage(), false);
+
+            return Response.status(Status.CONFLICT).entity(result).build();
+        }
+
+        cafeService.update(id, nomeImagem);
+
+        return Response.status(Status.NO_CONTENT).build();
     }
 
     @DELETE

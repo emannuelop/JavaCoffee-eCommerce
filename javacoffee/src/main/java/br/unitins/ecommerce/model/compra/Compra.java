@@ -1,7 +1,7 @@
 package br.unitins.ecommerce.model.compra;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -18,7 +18,7 @@ import br.unitins.ecommerce.model.usuario.Usuario;
 @Entity
 public class Compra extends DefaultEntity {
 
-    private Date dataCompra;
+    private LocalDate dataCompra;
 
     private Double totalCompra;
 
@@ -52,11 +52,11 @@ public class Compra extends DefaultEntity {
         
     }
 
-    public Date getDataCompra() {
+    public LocalDate getDataCompra() {
         return dataCompra;
     }
 
-    public void setDataCompra(Date dataDaCompra) {
+    public void setDataCompra(LocalDate dataDaCompra) {
         this.dataCompra = dataDaCompra;
     }
 

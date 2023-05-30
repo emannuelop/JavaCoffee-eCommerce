@@ -72,7 +72,7 @@
     class Compra {
 
         - id: Long
-        - dataCompra: Date
+        - dataCompra: LocalDate
         - totalCompra: Double
         - ifConcluida: Boolean
     }

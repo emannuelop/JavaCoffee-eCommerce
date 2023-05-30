@@ -20,7 +20,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
-@Path("/carrinho")
+@Path("/compras")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class CompraResource {
@@ -35,8 +35,9 @@ public class CompraResource {
     JsonWebToken tokenJwt;
     
     @GET
+    @Path("/historico-compras")
     @RolesAllowed({"User"})
-    public Response getCompra() {
+    public Response getAll() {
 
         String login = tokenJwt.getSubject();
 
@@ -44,7 +45,27 @@ public class CompraResource {
 
         try {
 
-            return Response.ok(compraService.getCompra(usuario.getId())).build();
+            return Response.ok(compraService.getAll(usuario.getId())).build();
+        } catch (NullPointerException e) {
+
+            Result result = new Result(e.getMessage(), false);
+
+            return Response.status(Status.NOT_FOUND).entity(result).build();
+        }
+    }
+
+    @GET
+    @Path("/carrinho")
+    @RolesAllowed({"User"})
+    public Response getCompraEmAndamento() {
+
+        String login = tokenJwt.getSubject();
+
+        Usuario usuario = usuarioService.getByLogin(login);
+
+        try {
+
+            return Response.ok(compraService.getCompraEmAndamento(usuario.getId())).build();
         } catch (NullPointerException e) {
 
             Result result = new Result(e.getMessage(), false);
@@ -54,8 +75,9 @@ public class CompraResource {
     }
 
     @POST
+    @Path("/carrinho/adiconar-item")
     @RolesAllowed({"User"})
-    public Response insertIntoCompra (ItemCompraDTO itemCompraDTO) {
+    public Response insertIntoCarrrinho (ItemCompraDTO itemCompraDTO) {
 
         try {
 
@@ -63,7 +85,7 @@ public class CompraResource {
 
             Usuario usuario = usuarioService.getByLogin(login);
 
-            compraService.insertIntoCompra(usuario.getId(), itemCompraDTO);
+            compraService.insertItemIntoCompra(usuario.getId(), itemCompraDTO);
 
             return Response.status(Status.CREATED).build();
         } catch (NullPointerException e) {
@@ -75,9 +97,9 @@ public class CompraResource {
     }
 
     @PATCH
-    @Path("/{idProduto}")
+    @Path("/carrinho/remover-item/{idProduto}")
     @RolesAllowed({"User"})
-    public Response removeItemCompra (@PathParam("idProduto") Long idProduto) {
+    public Response removeItemFromCarrinho (@PathParam("idProduto") Long idProduto) {
 
         try {
 
@@ -88,6 +110,28 @@ public class CompraResource {
             compraService.removeItemCompra(usuario.getId(), idProduto);
 
             return Response.status(Status.NO_CONTENT).build();
+        } catch (NullPointerException e) {
+
+            Result result = new Result(e.getMessage(), false);
+
+            return Response.status(Status.NOT_FOUND).entity(result).build();
+        }
+    }
+
+    @PATCH
+    @Path("/carrinho/finalizar-compra")
+    @RolesAllowed({"User"})
+    public Response finalizarCompra() {
+
+        try {
+        
+            String login = tokenJwt.getSubject();
+
+            Usuario usuario = usuarioService.getByLogin(login);
+
+            compraService.finishCompra(usuario.getId());
+
+            return Response.status(Status.ACCEPTED).build();
         } catch (NullPointerException e) {
 
             Result result = new Result(e.getMessage(), false);

@@ -1,7 +1,7 @@
 package br.unitins.ecommerce.dto.compra;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +11,7 @@ import br.unitins.ecommerce.model.compra.Compra;
 import br.unitins.ecommerce.model.compra.ItemCompra;
 
 public record CompraResponseDTO(
-    Date dataCompra,
+    LocalDate dataCompra,
     String totalCompra,
     List<Map<String, Object>> itensCompra,
     Map<String, Object> endereco,
