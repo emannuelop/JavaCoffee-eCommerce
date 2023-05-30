@@ -74,13 +74,14 @@
         - id: Long
         - dataCompra: Date
         - totalCompra: Double
+        - ifConcluida: Boolean
     }
 
     class ItemCompra {
 
         - id: Long
         - quantidade: Integer
-        - preco: Double
+        - precoUnitario: Double
     }
 
     class Endereco {
