@@ -21,14 +21,14 @@ public abstract class Pagamento extends DefaultEntity {
 
     private LocalDate dataConfirmacaoPagamento;
 
-    public Pagamento (Double valor) {
+    public Pagamento(Double valor) {
 
         this.valor = valor;
         this.confirmacaoPagamento = true;
         this.dataConfirmacaoPagamento = LocalDate.now();
     }
 
-    public Pagamento () {
+    public Pagamento() {
 
         this.confirmacaoPagamento = false;
     }

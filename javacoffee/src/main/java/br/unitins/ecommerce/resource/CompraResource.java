@@ -36,12 +36,12 @@ public class CompraResource {
 
     @Inject
     JsonWebToken tokenJwt;
-    
+
     private static final Logger LOG = Logger.getLogger(AuthResource.class);
 
     @GET
     @Path("/historico-compras")
-    @RolesAllowed({"User"})
+    @RolesAllowed({ "User" })
     public Response getAll() {
 
         String login = tokenJwt.getSubject();
@@ -61,7 +61,7 @@ public class CompraResource {
 
     @GET
     @Path("/carrinho")
-    @RolesAllowed({"User"})
+    @RolesAllowed({ "User" })
     public Response getCompraEmAndamento() {
 
         String login = tokenJwt.getSubject();
@@ -80,9 +80,9 @@ public class CompraResource {
     }
 
     @POST
-    @Path("/carrinho/adiconar-item")
-    @RolesAllowed({"User"})
-    public Response insertIntoCarrrinho (ItemCompraDTO itemCompraDTO) {
+    @Path("/carrinho/adicionar-item")
+    @RolesAllowed({ "User" })
+    public Response insertIntoCarrrinho(ItemCompraDTO itemCompraDTO) {
 
         try {
 
@@ -103,8 +103,8 @@ public class CompraResource {
 
     @PATCH
     @Path("/carrinho/remover-item/{idProduto}")
-    @RolesAllowed({"User"})
-    public Response removeItemFromCarrinho (@PathParam("idProduto") Long idProduto) {
+    @RolesAllowed({ "User" })
+    public Response removeItemFromCarrinho(@PathParam("idProduto") Long idProduto) {
 
         try {
 
@@ -125,7 +125,7 @@ public class CompraResource {
 
     @PATCH
     @Path("/carrinho/cancelar-compra")
-    @RolesAllowed({"User"})
+    @RolesAllowed({ "User" })
     public Response cancelarCompra() {
 
         try {
@@ -147,11 +147,11 @@ public class CompraResource {
 
     @PATCH
     @Path("/carrinho/pagar-boleto-bancario")
-    @RolesAllowed({"User"})
+    @RolesAllowed({ "User" })
     public Response pagarBoletoBancario() {
 
         try {
-        
+
             String login = tokenJwt.getSubject();
 
             Usuario usuario = usuarioService.getByLogin(login);
@@ -169,11 +169,11 @@ public class CompraResource {
 
     @PATCH
     @Path("/carrinho/pagar-pix")
-    @RolesAllowed({"User"})
+    @RolesAllowed({ "User" })
     public Response pagarPix() {
 
         try {
-        
+
             String login = tokenJwt.getSubject();
 
             Usuario usuario = usuarioService.getByLogin(login);
@@ -191,11 +191,11 @@ public class CompraResource {
 
     @PATCH
     @Path("/carrinho/pagar-cartao-credito")
-    @RolesAllowed({"User"})
+    @RolesAllowed({ "User" })
     public Response pagarCartaoCredito(CartaoCreditoDTO cartaoCreditoDTO) {
 
         try {
-        
+
             String login = tokenJwt.getSubject();
 
             Usuario usuario = usuarioService.getByLogin(login);

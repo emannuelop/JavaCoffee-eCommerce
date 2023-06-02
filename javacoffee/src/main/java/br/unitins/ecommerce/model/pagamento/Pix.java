@@ -18,7 +18,7 @@ public class Pix extends Pagamento {
 
     private LocalDate dataExpiracaoTokenPix;
 
-    public Pix (Double valor, String nome, String cpf) {
+    public Pix(Double valor, String nome, String cpf) {
 
         super(valor);
 
@@ -27,21 +27,30 @@ public class Pix extends Pagamento {
         this.dataExpiracaoTokenPix = LocalDate.now().plusDays(1);
     }
 
+    public Pix() {
+
+    }
+
     public String getCpf() {
         return cpf;
     }
+
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
+
     public String getNome() {
         return nome;
     }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
+
     public LocalDate getDataExpiracaoTokenPix() {
         return dataExpiracaoTokenPix;
     }
+
     public void setDataExpiracaoTokenPix(LocalDate dataExpiracaoTokenPix) {
         this.dataExpiracaoTokenPix = dataExpiracaoTokenPix;
     }

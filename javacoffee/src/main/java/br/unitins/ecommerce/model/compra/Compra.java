@@ -40,7 +40,7 @@ public class Compra extends DefaultEntity {
     @JoinColumn(name = "id_compra")
     private List<ItemCompra> itemCompra;
 
-    public Compra (Usuario usuario) {
+    public Compra(Usuario usuario) {
 
         this.ifConcluida = false;
         this.usuario = usuario;
@@ -49,7 +49,7 @@ public class Compra extends DefaultEntity {
     }
 
     public Compra() {
-        
+
     }
 
     public LocalDate getDataCompra() {
@@ -117,4 +117,9 @@ public class Compra extends DefaultEntity {
     public void setIfConcluida(Boolean ifConcluida) {
         this.ifConcluida = ifConcluida;
     }
+
+    public void setItemCompra(List<ItemCompra> itemCompra) {
+        this.itemCompra = itemCompra;
+    }
+
 }
