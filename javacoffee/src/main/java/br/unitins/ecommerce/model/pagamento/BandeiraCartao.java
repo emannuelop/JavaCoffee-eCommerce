@@ -17,6 +17,10 @@ public enum BandeiraCartao {
         this.label = label;
     }
 
+    BandeiraCartao() {
+        
+    }
+
     public int getId() {
         return id;
     }
