@@ -2,6 +2,8 @@ package br.unitins.ecommerce.resource;
 
 import java.util.List;
 
+import org.jboss.logging.Logger;
+
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
@@ -29,6 +31,8 @@ public class EstadoResource {
     
     @Inject
     EstadoService estadoService;
+
+    private static final Logger LOG = Logger.getLogger(AuthResource.class);
 
     @GET
     public List<EstadoResponseDTO> getAll() {

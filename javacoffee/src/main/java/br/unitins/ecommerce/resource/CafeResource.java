@@ -3,6 +3,8 @@ package br.unitins.ecommerce.resource;
 import java.io.IOException;
 import java.util.List;
 
+import org.jboss.logging.Logger;
+
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -41,79 +43,92 @@ public class CafeResource {
     @Inject
     FileService fileService;
 
+    private static final Logger LOG = Logger.getLogger(AuthResource.class);
+
     @GET
     public List<CafeResponseDTO> getAll() {
-
+        LOG.info("Buscando todas os produtos");
+        LOG.debug("ERRO DE DEBUG.");
         return cafeService.getAll();
     }
 
     @GET
     @Path("/{id}")
     public CafeResponseDTO getById(@PathParam("id") Long id) throws NotFoundException {
-
+        LOG.infof("Buscando produtos por ID. ", id);
+        LOG.debug("ERRO DE DEBUG.");
         return cafeService.getById(id);
     }
 
     @GET
     @Path("/download/{nomeImagem}")
-    @RolesAllowed({"Admin","User"})
+    @RolesAllowed({ "Admin", "User" })
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response download(@PathParam("nomeImagem") String nomeImagem) {
-        
+
         ResponseBuilder response = Response.ok(fileService.download(nomeImagem));
 
-        response.header("Content-Disposition", "attachment;filename="+nomeImagem);
+        response.header("Content-Disposition", "attachment;filename=" + nomeImagem);
 
         return response.build();
     }
 
     @POST
     public Response insert(CafeDTO cafeDto) {
-
+        LOG.infof("Inserindo um produto: %s", cafeDto.nome());
+        Result result = null;
         try {
-
             return Response
                     .status(Status.CREATED) // 201
                     .entity(cafeService.insert(cafeDto))
                     .build();
+
         } catch (ConstraintViolationException e) {
+            LOG.error("Erro ao incluir um produto.");
+            LOG.debug(e.getMessage());
+            result = new Result(e.getConstraintViolations());
 
-            Result result = new Result(e.getConstraintViolations());
+        } catch (Exception e) {
+            LOG.fatal("Erro sem identificacao: " + e.getMessage());
 
-            return Response
-                    .status(Status.NOT_FOUND)
-                    .entity(result)
-                    .build();
+            result = new Result(e.getMessage(), false);
         }
+        return Response.status(Status.NOT_FOUND).entity(result).build();
     }
 
     @PUT
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, CafeDTO cafeDto) {
-
+        Result result = null;
         try {
-
             cafeService.update(id, cafeDto);
-
+            LOG.infof("Produto (%d) atualizado com sucesso.", id);
             return Response
                     .status(Status.NO_CONTENT) // 204
                     .build();
+
         } catch (ConstraintViolationException e) {
+            LOG.errorf("Erro ao atualizar um produto. ", id, e);
+            LOG.debug(e.getMessage());
 
-            Result result = new Result(e.getConstraintViolations());
+            result = new Result(e.getConstraintViolations());
 
-            return Response
-                    .status(Status.NOT_FOUND)
-                    .entity(result)
-                    .build();
+        } catch (Exception e) {
+            LOG.fatal("Erro sem identificacao: " + e.getMessage());
+            result = new Result(e.getMessage(), false);
+
         }
+        return Response
+                .status(Status.NOT_FOUND)
+                .entity(result)
+                .build();
     }
 
     @PATCH
     @Path("/atualizar-imagem/{id}")
-    @RolesAllowed({"Admin"})
+    @RolesAllowed({ "Admin" })
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response salvarImagem(@MultipartForm ImageForm form, @PathParam("id") Long id){
+    public Response salvarImagem(@MultipartForm ImageForm form, @PathParam("id") Long id) {
 
         String nomeImagem = "";
 
@@ -129,66 +144,81 @@ public class CafeResource {
 
         cafeService.update(id, nomeImagem);
 
-        return Response.status(Status.NO_CONTENT).build();
-    }
-
-    @DELETE
-    @Path("/{id}")
-    public Response delete(@PathParam("id") Long id) throws IllegalArgumentException {
-
-        cafeService.delete(id);
-
         return Response
                 .status(Status.NO_CONTENT)
                 .build();
     }
 
+    @DELETE
+    @Path("/{id}")
+    public Response delete(@PathParam("id") Long id) throws IllegalArgumentException {
+        try {
+            cafeService.delete(id);
+            LOG.infof("Produto excluído com sucesso.", id);
+            return Response
+                    .status(Status.NO_CONTENT)
+                    .build();
+        } catch (IllegalArgumentException e) {
+            LOG.error("Erro ao deletar produto: parâmetros inválidos.", e);
+            throw e;
+        }
+    }
+
     @GET
     @Path("/count")
     public Long count() {
-
+        LOG.info("Contando todos os produtos.");
+        LOG.debug("ERRO DE DEBUG.");
         return cafeService.count();
     }
 
     @GET
     @Path("/searchByNome/{nome}")
     public List<CafeResponseDTO> getByNome(@PathParam("nome") String nome) {
-
+        LOG.infof("Buscando pelo  nome. ", nome);
+        LOG.debug("ERRO DE DEBUG.");
         return cafeService.getByNome(nome);
     }
 
     @GET
     @Path("/searchByIntensidade/{intensidade}")
-    public List<CafeResponseDTO> getByIntensidade(@PathParam("intensidade") Integer id) throws IndexOutOfBoundsException {
-
+    public List<CafeResponseDTO> getByIntensidade(@PathParam("intensidade") Integer id)
+            throws IndexOutOfBoundsException {
+        LOG.infof("Buscando pela intensidade. ", id);
+        LOG.debug("ERRO DE DEBUG.");
         return cafeService.getByIntensidade(id);
     }
 
     @GET
     @Path("/searchByMarca/{marca}")
-    public List<CafeResponseDTO> getByMarca (@PathParam("marca") String nomeMarca) {
-
+    public List<CafeResponseDTO> getByMarca(@PathParam("marca") String nomeMarca) {
+        LOG.infof("Buscando pelo nome da marca. ", nomeMarca);
+        LOG.debug("ERRO DE DEBUG.");
         return cafeService.getByMarca(nomeMarca);
     }
 
     @GET
     @Path("/filterByPrecoMin/{precoMin}")
-    public List<CafeResponseDTO> filterByPrecoMin (@PathParam("precoMin") Double preco) {
-
+    public List<CafeResponseDTO> filterByPrecoMin(@PathParam("precoMin") Double preco) {
+        LOG.infof("Filtrando pelo preço mínimo. ", preco);
+        LOG.debug("ERRO DE DEBUG.");
         return cafeService.filterByPrecoMin(preco);
     }
 
     @GET
     @Path("/filterByPrecoMax/{precoMax}")
-    public List<CafeResponseDTO> filterByPrecoMax (@PathParam("precoMax") Double preco) {
-
+    public List<CafeResponseDTO> filterByPrecoMax(@PathParam("precoMax") Double preco) {
+        LOG.infof("Filtrando pelo preço máximo. ", preco);
+        LOG.debug("ERRO DE DEBUG.");
         return cafeService.filterByPrecoMax(preco);
     }
 
     @GET
     @Path("/filterByEntrePreco/{precoMin}/{precoMax}")
-    public List<CafeResponseDTO> filterByEntrePreco (@PathParam("precoMin") Double precoMin, @PathParam("precoMax") Double precoMax) {
-
+    public List<CafeResponseDTO> filterByEntrePreco(@PathParam("precoMin") Double precoMin,
+            @PathParam("precoMax") Double precoMax) {
+        LOG.infof("Filtrando entre os preços mínimo e máximo. ", precoMin, " e ", precoMax);
+        LOG.debug("ERRO DE DEBUG.");
         return cafeService.filterByEntrePreco(precoMin, precoMax);
     }
 }

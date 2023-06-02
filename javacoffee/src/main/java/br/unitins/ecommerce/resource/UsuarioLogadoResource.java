@@ -2,6 +2,8 @@ package br.unitins.ecommerce.resource;
 
 import java.io.IOException;
 
+import org.jboss.logging.Logger;
+
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
@@ -44,6 +46,8 @@ public class UsuarioLogadoResource {
 
     @Inject
     FileService fileService;
+
+    private static final Logger LOG = Logger.getLogger(AuthResource.class);
 
     @GET
     @Path("/dados-pessoais")

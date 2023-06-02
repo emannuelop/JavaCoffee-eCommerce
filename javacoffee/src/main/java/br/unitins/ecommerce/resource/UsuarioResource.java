@@ -2,6 +2,8 @@ package br.unitins.ecommerce.resource;
 
 import java.util.List;
 
+import org.jboss.logging.Logger;
+
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
@@ -32,6 +34,8 @@ public class UsuarioResource {
     
     @Inject
     UsuarioService usuarioService;
+
+    private static final Logger LOG = Logger.getLogger(AuthResource.class);
 
     @GET
     @RolesAllowed({"Admin"})

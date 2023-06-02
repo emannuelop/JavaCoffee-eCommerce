@@ -1,5 +1,7 @@
 package br.unitins.ecommerce.resource;
 
+import org.jboss.logging.Logger;
+
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import br.unitins.ecommerce.application.Result;
@@ -35,6 +37,8 @@ public class CompraResource {
     @Inject
     JsonWebToken tokenJwt;
     
+    private static final Logger LOG = Logger.getLogger(AuthResource.class);
+
     @GET
     @Path("/historico-compras")
     @RolesAllowed({"User"})
