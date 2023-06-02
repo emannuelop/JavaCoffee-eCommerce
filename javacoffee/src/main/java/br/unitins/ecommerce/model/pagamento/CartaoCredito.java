@@ -30,10 +30,6 @@ public class CartaoCredito extends Pagamento {
         this.bandeiraCartao = bandeiraCartao;
     }
 
-    public CartaoCredito () {
-
-    }
-
     public String getNumeroDoCartao() {
         return numeroCartao;
     }

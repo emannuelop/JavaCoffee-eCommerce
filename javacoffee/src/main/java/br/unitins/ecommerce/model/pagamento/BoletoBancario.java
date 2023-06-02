@@ -30,10 +30,6 @@ public class BoletoBancario extends Pagamento {
         this.dataVencimento = LocalDate.now().plusDays(10);
     }
 
-    public BoletoBancario () {
-
-    }
-
     public LocalDate getDataGeracaoBoleto() {
         return dataGeracaoBoleto;
     }

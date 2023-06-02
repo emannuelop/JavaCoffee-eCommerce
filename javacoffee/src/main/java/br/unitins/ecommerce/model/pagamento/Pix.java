@@ -27,10 +27,6 @@ public class Pix extends Pagamento {
         this.dataExpiracaoTokenPix = LocalDate.now().plusDays(1);
     }
 
-    public Pix () {
-
-    }
-
     public String getCpf() {
         return cpf;
     }
