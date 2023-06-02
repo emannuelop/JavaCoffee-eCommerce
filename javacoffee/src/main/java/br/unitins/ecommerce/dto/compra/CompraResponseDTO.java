@@ -15,6 +15,8 @@ public record CompraResponseDTO(
     String totalCompra,
     List<Map<String, Object>> itensCompra,
     Map<String, Object> endereco,
+    String statusPagamento,
+    LocalDate dataPagamento,
     String statusCompra
 ) {
     
@@ -33,6 +35,10 @@ public record CompraResponseDTO(
                                         compra.getEndereco().getCep(),
                                         compra.getEndereco().getMunicipio()) :
                 null,
+                compra.getPagamento().getConfirmacaoPagamento() == true?
+                    "Pagamento efetuado":
+                    "Pagamento não efetuado",
+                compra.getPagamento().getDataConfirmacaoPagamento(),
             compra.getIfConcluida() == true ? "Compra concluída" : "Compra em andamento");
     }
 

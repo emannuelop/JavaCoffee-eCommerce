@@ -3,14 +3,22 @@ package br.unitins.ecommerce.service.compra;
 import java.time.LocalDate;
 import java.util.List;
 
+import br.unitins.ecommerce.dto.compra.CartaoCreditoDTO;
 import br.unitins.ecommerce.dto.compra.CompraResponseDTO;
 import br.unitins.ecommerce.dto.compra.ItemCompraDTO;
 import br.unitins.ecommerce.model.compra.Compra;
 import br.unitins.ecommerce.model.compra.ItemCompra;
+import br.unitins.ecommerce.model.pagamento.BandeiraCartao;
+import br.unitins.ecommerce.model.pagamento.BoletoBancario;
+import br.unitins.ecommerce.model.pagamento.CartaoCredito;
+import br.unitins.ecommerce.model.pagamento.Pix;
 import br.unitins.ecommerce.model.produto.Produto;
 import br.unitins.ecommerce.model.usuario.Usuario;
+import br.unitins.ecommerce.repository.BoletoBancarioRepository;
+import br.unitins.ecommerce.repository.CartaoCreditoRepository;
 import br.unitins.ecommerce.repository.CompraRepository;
 import br.unitins.ecommerce.repository.ItemCompraRepository;
+import br.unitins.ecommerce.repository.PixRepository;
 import br.unitins.ecommerce.repository.UsuarioRepository;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -31,6 +39,15 @@ public class CompraImplService implements CompraService {
 
     @Inject
     PanacheRepository<? extends Produto> produtoRepository;
+
+    @Inject
+    BoletoBancarioRepository boletoBancarioRepository;
+
+    @Inject
+    PixRepository pixRepository;
+
+    @Inject
+    CartaoCreditoRepository cartaoCreditoRepository;
 
     @Override
     public List<CompraResponseDTO> getAll(Long idUsuario) {
@@ -105,17 +122,25 @@ public class CompraImplService implements CompraService {
 
     @Override
     @Transactional
-    public void finishCompra(Long idUsuario) {
-
-        Usuario usuario = usuarioRepository.findById(idUsuario);
+    public void cancelarCompra(Long idUsuario) {
         
-        Compra compra = compraRepository.findByUsuarioWhereIsNotFinished(usuario);
+        Compra compra = compraRepository.findByUsuarioWhereIsNotFinished(usuarioRepository.findById(idUsuario));
 
         if (compra == null)
             throw new NullPointerException("Não há nenhuma compra em andamento");
 
-        if (compra.getItemCompra().size() == 0)
-            throw new NullPointerException("Não há nenhum item dentro do carrinho");
+        for (ItemCompra itemCompra : compra.getItemCompra()) {
+
+            itemCompraRepository.delete(itemCompra);
+        }
+
+        compraRepository.delete(compra);
+    }
+
+    @Override
+    public void finishCompra(Long idCompra) throws NullPointerException {
+
+        Compra compra = compraRepository.findById(idCompra);
 
         compra.setDataCompra(LocalDate.now());
 
@@ -128,9 +153,80 @@ public class CompraImplService implements CompraService {
                 itemCompra.getProduto().minusEstoque(itemCompra.getQuantidade());
         }
 
-        compra.setEndereco(usuario.getEndereco());
+        compra.setEndereco(compra.getUsuario().getEndereco());
 
         compra.setIfConcluida(true);
+    }
+
+    @Override
+    @Transactional
+    public void efetuarPagamentoBoleto(Long idUsuario) throws NullPointerException {
+        
+        Usuario usuario = usuarioRepository.findById(idUsuario);
+        
+        Compra compra = validar(usuario);
+
+        BoletoBancario pagamento = new BoletoBancario(compra.getTotalCompra(), compra.getUsuario().getPessoaFisica().getNome(), compra.getUsuario().getPessoaFisica().getCpf());
+
+        boletoBancarioRepository.persist(pagamento);
+
+        compra.setPagamento(pagamento);
+
+        finishCompra(compra.getId());
+    }
+
+    @Override
+    @Transactional
+    public void efetuarPagamentoPix(Long idUsuario) {
+        
+        Usuario usuario = usuarioRepository.findById(idUsuario);
+        
+        Compra compra = validar(usuario);
+
+        Pix pagamento = new Pix(compra.getTotalCompra(), compra.getUsuario().getPessoaFisica().getNome(), compra.getUsuario().getPessoaFisica().getCpf());
+
+        pixRepository.persist(pagamento);
+
+        compra.setPagamento(pagamento);
+
+        finishCompra(compra.getId());
+    }
+
+    @Override
+    @Transactional
+    public void efetuarPagamentoCartaoCredito(Long idUsuario, CartaoCreditoDTO cartaoCreditoDTO) {
+        
+        Usuario usuario = usuarioRepository.findById(idUsuario);
+        
+        Compra compra = validar(usuario);
+
+        CartaoCredito pagamento = new CartaoCredito(compra.getTotalCompra(),
+                                            cartaoCreditoDTO.numeroCartao(),
+                                            cartaoCreditoDTO.nomeImpressoCartao(),
+                                            usuario.getPessoaFisica().getCpf(),
+                                            BandeiraCartao.valueOf(cartaoCreditoDTO.bandeiraCartao()));
+        
+        cartaoCreditoRepository.persist(pagamento);
+
+        compra.setPagamento(pagamento);
+
+        finishCompra(compra.getId());
+    }
+
+    private Compra validar(Usuario usuario) throws NullPointerException {
+
+        Compra compra = compraRepository.findByUsuarioWhereIsNotFinished(usuario);
+
+        if (compra == null)
+            throw new NullPointerException("Não há nenhuma compra em andamento");
+
+        if (compra.getItemCompra().size() == 0)
+            throw new NullPointerException("Não há nenhum item dentro do carrinho");
+
+        if (compra.getPagamento().getConfirmacaoPagamento() == false)
+            throw new NullPointerException("Não foi efetuado nenhum pagamento");
+
+        return compra;
     }
 
     private Integer validar(Produto produto, List<ItemCompra> listaItens) {

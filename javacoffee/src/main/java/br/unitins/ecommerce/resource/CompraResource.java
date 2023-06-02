@@ -3,6 +3,7 @@ package br.unitins.ecommerce.resource;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import br.unitins.ecommerce.application.Result;
+import br.unitins.ecommerce.dto.compra.CartaoCreditoDTO;
 import br.unitins.ecommerce.dto.compra.ItemCompraDTO;
 import br.unitins.ecommerce.model.usuario.Usuario;
 import br.unitins.ecommerce.service.compra.CompraService;
@@ -119,9 +120,31 @@ public class CompraResource {
     }
 
     @PATCH
-    @Path("/carrinho/finalizar-compra")
+    @Path("/carrinho/cancelar-compra")
     @RolesAllowed({"User"})
-    public Response finalizarCompra() {
+    public Response cancelarCompra() {
+
+        try {
+
+            String login = tokenJwt.getSubject();
+
+            Usuario usuario = usuarioService.getByLogin(login);
+
+            compraService.cancelarCompra(usuario.getId());
+
+            return Response.status(Status.NO_CONTENT).build();
+        } catch (NullPointerException e) {
+
+            Result result = new Result(e.getMessage(), false);
+
+            return Response.status(Status.NOT_FOUND).entity(result).build();
+        }
+    }
+
+    @PATCH
+    @Path("/carrinho/pagar-boleto-bancario")
+    @RolesAllowed({"User"})
+    public Response pagarBoletoBancario() {
 
         try {
         
@@ -129,7 +152,51 @@ public class CompraResource {
 
             Usuario usuario = usuarioService.getByLogin(login);
 
-            compraService.finishCompra(usuario.getId());
+            compraService.efetuarPagamentoBoleto(usuario.getId());
+
+            return Response.status(Status.ACCEPTED).build();
+        } catch (NullPointerException e) {
+
+            Result result = new Result(e.getMessage(), false);
+
+            return Response.status(Status.NOT_FOUND).entity(result).build();
+        }
+    }
+
+    @PATCH
+    @Path("/carrinho/pagar-pix")
+    @RolesAllowed({"User"})
+    public Response pagarPix() {
+
+        try {
+        
+            String login = tokenJwt.getSubject();
+
+            Usuario usuario = usuarioService.getByLogin(login);
+
+            compraService.efetuarPagamentoPix(usuario.getId());
+
+            return Response.status(Status.ACCEPTED).build();
+        } catch (NullPointerException e) {
+
+            Result result = new Result(e.getMessage(), false);
+
+            return Response.status(Status.NOT_FOUND).entity(result).build();
+        }
+    }
+
+    @PATCH
+    @Path("/carrinho/pagar-cartao-credito")
+    @RolesAllowed({"User"})
+    public Response pagarCartaoCredito(CartaoCreditoDTO cartaoCreditoDTO) {
+
+        try {
+        
+            String login = tokenJwt.getSubject();
+
+            Usuario usuario = usuarioService.getByLogin(login);
+
+            compraService.efetuarPagamentoCartaoCredito(usuario.getId(), cartaoCreditoDTO);
 
             return Response.status(Status.ACCEPTED).build();
         } catch (NullPointerException e) {
