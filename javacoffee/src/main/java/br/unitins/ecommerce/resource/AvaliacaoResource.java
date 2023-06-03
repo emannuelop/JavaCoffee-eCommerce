@@ -32,7 +32,7 @@ public class AvaliacaoResource {
     @Inject
     AvaliacaoService avaliacaoService;
 
-    private static final Logger LOG = Logger.getLogger(AuthResource.class);
+    private static final Logger LOG = Logger.getLogger(AvaliacaoResource.class);
 
     @GET
     public List<AvaliacaoResponseDTO> getAll() {
@@ -54,8 +54,7 @@ public class AvaliacaoResource {
         Result result = null;
         try {
             AvaliacaoResponseDTO avaliacao = avaliacaoService.insert(avaliacaoDto);
-
-            LOG.infof("Inserindo uma avaliação.");
+            LOG.infof("Produto inserido na lista Desejo.");
 
             return Response.status(Status.CREATED).entity(avaliacao).build();
 
@@ -98,8 +97,8 @@ public class AvaliacaoResource {
             result = new Result(e.getConstraintViolations());
         }catch (Exception e){
             LOG.fatal("Erro sem identificacao: " + e.getMessage());
-
             result = new Result(e.getMessage(), false);
+
         }
             return Response
                     .status(Status.NOT_FOUND)

@@ -43,7 +43,7 @@ public class CafeResource {
     @Inject
     FileService fileService;
 
-    private static final Logger LOG = Logger.getLogger(AuthResource.class);
+    private static final Logger LOG = Logger.getLogger(CafeResource.class);
 
     @GET
     public List<CafeResponseDTO> getAll() {
@@ -66,11 +66,20 @@ public class CafeResource {
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response download(@PathParam("nomeImagem") String nomeImagem) {
 
-        ResponseBuilder response = Response.ok(fileService.download(nomeImagem));
+        try {
+            ResponseBuilder response = Response.ok(fileService.download(nomeImagem));
 
-        response.header("Content-Disposition", "attachment;filename=" + nomeImagem);
+            response.header("Content-Disposition", "attachment;filename=" + nomeImagem);
+            LOG.infof("Download do arquivo %s concluído com sucesso.", nomeImagem);
 
-        return response.build();
+            return response.build();
+
+        } catch (Exception e) {
+            LOG.errorf("Erro ao realizar o download do arquivo: %s", nomeImagem, e);
+            return Response
+                    .status(Status.INTERNAL_SERVER_ERROR)
+                    .build();
+        }
     }
 
     @POST
@@ -78,6 +87,7 @@ public class CafeResource {
         LOG.infof("Inserindo um produto: %s", cafeDto.nome());
         Result result = null;
         try {
+            LOG.infof("Produto inserido na lista Desejo.");
             return Response
                     .status(Status.CREATED) // 201
                     .entity(cafeService.insert(cafeDto))
@@ -90,10 +100,13 @@ public class CafeResource {
 
         } catch (Exception e) {
             LOG.fatal("Erro sem identificacao: " + e.getMessage());
-
             result = new Result(e.getMessage(), false);
+
         }
-        return Response.status(Status.NOT_FOUND).entity(result).build();
+        return Response
+        .status(Status.NOT_FOUND)
+        .entity(result)
+        .build();
     }
 
     @PUT
@@ -133,10 +146,11 @@ public class CafeResource {
         String nomeImagem = "";
 
         try {
-
             nomeImagem = fileService.salvarImagemUsuario(form.getImagem(), form.getNomeImagem());
-        } catch (IOException e) {
+            LOG.infof("Imagem salva com sucesso: %s", nomeImagem);
 
+        } catch (IOException e) {
+            LOG.error("Erro ao salvar a imagem do produto.", e);
             Result result = new Result(e.getMessage(), false);
 
             return Response.status(Status.CONFLICT).entity(result).build();
@@ -155,9 +169,11 @@ public class CafeResource {
         try {
             cafeService.delete(id);
             LOG.infof("Produto excluído com sucesso.", id);
+
             return Response
                     .status(Status.NO_CONTENT)
                     .build();
+
         } catch (IllegalArgumentException e) {
             LOG.error("Erro ao deletar produto: parâmetros inválidos.", e);
             throw e;
@@ -175,7 +191,7 @@ public class CafeResource {
     @GET
     @Path("/searchByNome/{nome}")
     public List<CafeResponseDTO> getByNome(@PathParam("nome") String nome) {
-        LOG.infof("Buscando pelo  nome. ", nome);
+        LOG.infof("Buscando produto pelo nome. ", nome);
         LOG.debug("ERRO DE DEBUG.");
         return cafeService.getByNome(nome);
     }
