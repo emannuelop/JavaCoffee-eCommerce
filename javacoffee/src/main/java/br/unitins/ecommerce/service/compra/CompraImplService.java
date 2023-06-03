@@ -172,6 +172,9 @@ public class CompraImplService implements CompraService {
 
         compra.setPagamento(pagamento);
 
+        if (compra.getPagamento() == null)
+            throw new NullPointerException("Não foi efetuado nenhum pagamento");
+
         finishCompra(compra.getId());
     }
 
@@ -188,6 +191,9 @@ public class CompraImplService implements CompraService {
         pixRepository.persist(pagamento);
 
         compra.setPagamento(pagamento);
+
+        if (compra.getPagamento() == null)
+            throw new NullPointerException("Não foi efetuado nenhum pagamento");
 
         finishCompra(compra.getId());
     }
@@ -210,6 +216,9 @@ public class CompraImplService implements CompraService {
 
         compra.setPagamento(pagamento);
 
+        if (compra.getPagamento() == null)
+            throw new NullPointerException("Não foi efetuado nenhum pagamento");
+
         finishCompra(compra.getId());
     }
 
@@ -222,9 +231,6 @@ public class CompraImplService implements CompraService {
 
         if (compra.getItemCompra().size() == 0)
             throw new NullPointerException("Não há nenhum item dentro do carrinho");
-
-        if (compra.getPagamento() == null)
-            throw new NullPointerException("Não foi efetuado nenhum pagamento");
 
         return compra;
     }
