@@ -163,27 +163,25 @@ public class CompraResource {
     @Path("/carrinho/pagar-boleto-bancario")
     @RolesAllowed({ "User" })
     public Response pagarBoletoBancario() {
-        Result result = null;
 
-        // try {
+        try {
 
-        String login = tokenJwt.getSubject();
+            String login = tokenJwt.getSubject();
 
-        Usuario usuario = usuarioService.getByLogin(login);
+            Usuario usuario = usuarioService.getByLogin(login);
 
-        compraService.efetuarPagamentoBoleto(usuario.getId());
+            compraService.efetuarPagamentoBoleto(usuario.getId());
 
-        LOG.info("Pagamento com boleto efetuado com sucesso.");
-        return Response.status(Status.ACCEPTED).build();
-    }catch(
+            LOG.info("Pagamento com boleto efetuado com sucesso.");
+            return Response.status(Status.ACCEPTED).build();
+        } catch (
 
-    NullPointerException e)
-    {
+        NullPointerException e) {
 
-        Result result = new Result(e.getMessage(), false);
+            Result result = new Result(e.getMessage(), false);
 
-        return Response.status(Status.NOT_FOUND).entity(result).build();
-    }
+            return Response.status(Status.NOT_FOUND).entity(result).build();
+        }
     }
 
     @PATCH
