@@ -45,7 +45,7 @@ public class CompraResource {
     @RolesAllowed({ "User" })
     public Response getAll() {
         Result result = null;
-        
+
         String login = tokenJwt.getSubject();
 
         Usuario usuario = usuarioService.getByLogin(login);
@@ -67,7 +67,7 @@ public class CompraResource {
     @RolesAllowed({ "User" })
     public Response getCompraEmAndamento() {
         Result result = null;
-        
+
         String login = tokenJwt.getSubject();
 
         Usuario usuario = usuarioService.getByLogin(login);
@@ -89,7 +89,7 @@ public class CompraResource {
     @RolesAllowed({ "User" })
     public Response insertIntoCarrrinho(ItemCompraDTO itemCompraDTO) {
         Result result = null;
-        
+
         try {
 
             String login = tokenJwt.getSubject();
@@ -167,27 +167,23 @@ public class CompraResource {
 
         // try {
 
-            String login = tokenJwt.getSubject();
+        String login = tokenJwt.getSubject();
 
-            Usuario usuario = usuarioService.getByLogin(login);
+        Usuario usuario = usuarioService.getByLogin(login);
 
-            compraService.efetuarPagamentoBoleto(usuario.getId());
+        compraService.efetuarPagamentoBoleto(usuario.getId());
 
-            LOG.info("Pagamento com boleto efetuado com sucesso.");
-            return Response.status(Status.ACCEPTED).build();
-<<<<<<< HEAD
-        // } catch (NullPointerException e) {
+        LOG.info("Pagamento com boleto efetuado com sucesso.");
+        return Response.status(Status.ACCEPTED).build();
+    }catch(
 
-        //     Result result = new Result(e.getMessage(), false);
-=======
-        } catch (NullPointerException e) {
-            LOG.error("Erro ao efetuar o pagamento com boleto.", e);
+    NullPointerException e)
+    {
 
-            result = new Result(e.getMessage(), false);
->>>>>>> c873d3100b3d06379140a3dbd9280d6666d01e5b
+        Result result = new Result(e.getMessage(), false);
 
-        //     return Response.status(Status.NOT_FOUND).entity(result).build();
-        // }
+        return Response.status(Status.NOT_FOUND).entity(result).build();
+    }
     }
 
     @PATCH
