@@ -197,7 +197,7 @@ public class CompraImplService implements CompraService {
     public void efetuarPagamentoCartaoCredito(Long idUsuario, CartaoCreditoDTO cartaoCreditoDTO) {
         
         Usuario usuario = usuarioRepository.findById(idUsuario);
-        
+
         Compra compra = validar(usuario);
 
         CartaoCredito pagamento = new CartaoCredito(compra.getTotalCompra(),
@@ -223,7 +223,7 @@ public class CompraImplService implements CompraService {
         if (compra.getItemCompra().size() == 0)
             throw new NullPointerException("Não há nenhum item dentro do carrinho");
 
-        if (compra.getPagamento().getConfirmacaoPagamento() == false)
+        if (compra.getPagamento() == null)
             throw new NullPointerException("Não foi efetuado nenhum pagamento");
 
         return compra;

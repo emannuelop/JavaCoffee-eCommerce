@@ -13,6 +13,7 @@ import br.unitins.ecommerce.service.usuario.UsuarioService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
@@ -123,7 +124,7 @@ public class CompraResource {
         }
     }
 
-    @PATCH
+    @DELETE
     @Path("/carrinho/cancelar-compra")
     @RolesAllowed({ "User" })
     public Response cancelarCompra() {
@@ -150,7 +151,7 @@ public class CompraResource {
     @RolesAllowed({ "User" })
     public Response pagarBoletoBancario() {
 
-        try {
+        // try {
 
             String login = tokenJwt.getSubject();
 
@@ -159,12 +160,12 @@ public class CompraResource {
             compraService.efetuarPagamentoBoleto(usuario.getId());
 
             return Response.status(Status.ACCEPTED).build();
-        } catch (NullPointerException e) {
+        // } catch (NullPointerException e) {
 
-            Result result = new Result(e.getMessage(), false);
+        //     Result result = new Result(e.getMessage(), false);
 
-            return Response.status(Status.NOT_FOUND).entity(result).build();
-        }
+        //     return Response.status(Status.NOT_FOUND).entity(result).build();
+        // }
     }
 
     @PATCH

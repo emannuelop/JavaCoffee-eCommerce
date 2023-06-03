@@ -35,10 +35,14 @@ public record CompraResponseDTO(
                                         compra.getEndereco().getCep(),
                                         compra.getEndereco().getMunicipio()) :
                 null,
-                compra.getPagamento().getConfirmacaoPagamento() == true?
-                    "Pagamento efetuado":
-                    "Pagamento não efetuado",
-                compra.getPagamento().getDataConfirmacaoPagamento(),
+                compra.getPagamento() != null?
+                    compra.getPagamento().getConfirmacaoPagamento() == true?
+                        "Pagamento efetuado":
+                        "Pagamento não efetuado" :
+                null,
+                compra.getPagamento() != null?
+                    compra.getPagamento().getDataConfirmacaoPagamento() :
+                    null,
             compra.getIfConcluida() == true ? "Compra concluída" : "Compra em andamento");
     }
 
