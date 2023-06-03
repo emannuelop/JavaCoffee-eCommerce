@@ -1,4 +1,4 @@
-![Template Knowledge Seekers](https://github.com/emannuelop/JavaCoffee-eCommerce/blob/main/images/principal.jpg)
+![Template Knowledge Seekers](https://github.com/emannuelop/JavaCoffee-eCommerce/blob/main/images/principal.png)
 
 # Resumo do projeto
 O projeto é um trabalho da matéria tópicos em programação I na Universidade Estadual do Tocantins - UNITINS, onde tínhamos que realizar a criação de um eCommerce, nomeamos o nome do eCommerce de JavaCoffee pois é uma loja que vende cafés. Criamos um UML antes de começar a programação e depois iniciamos a parte de programação. Projeto realizado por integrantes do time Knowledge Seekers, visando a prática com a linguagem Java, e o framework Quarkus e os conceitos do paradigma de orientação a objetos.
