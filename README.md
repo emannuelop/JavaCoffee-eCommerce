@@ -5,7 +5,7 @@ O projeto é um trabalho da matéria tópicos em programação I na Universidade
 
 ## 📝 UML
 
-![UML do JavaCoffee](https://github.com/emannuelop/JavaCoffee-eCommerce/blob/main/images/uml.jpg)
+![UML do JavaCoffee](https://github.com/emannuelop/JavaCoffee-eCommerce/blob/main/images/uml.png)
 
 ## ✔️ Técnicas e tecnologias utilizadas
 
