@@ -4,19 +4,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Validator;
-import jakarta.ws.rs.NotAuthorizedException;
-import jakarta.ws.rs.NotFoundException;
-
 import br.unitins.ecommerce.dto.endereco.EnderecoDTO;
 import br.unitins.ecommerce.dto.telefone.TelefoneDTO;
 import br.unitins.ecommerce.dto.usuario.PessoaFisicaDTO;
 import br.unitins.ecommerce.dto.usuario.SenhaDTO;
+import br.unitins.ecommerce.dto.usuario.UsuarioBasicoDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioResponseDTO;
 import br.unitins.ecommerce.dto.usuario.dadospessoais.DadosPessoaisDTO;
@@ -35,6 +27,14 @@ import br.unitins.ecommerce.repository.TelefoneRepository;
 import br.unitins.ecommerce.repository.UsuarioRepository;
 import br.unitins.ecommerce.service.hash.HashService;
 import br.unitins.ecommerce.service.pessoafisica.PessoaFisicaService;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
+import jakarta.ws.rs.NotAuthorizedException;
+import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
 public class UsuarioImplService implements UsuarioService {
@@ -114,6 +114,25 @@ public class UsuarioImplService implements UsuarioService {
 
         if (usuarioDto.telefoneOpcional() != null)
             entity.setTelefoneOpcional(insertTelefone(usuarioDto.telefoneOpcional()));
+
+        usuarioRepository.persist(entity);
+
+        return new UsuarioResponseDTO(entity);
+    }
+
+    @Override
+    @Transactional
+    public UsuarioResponseDTO insertBasico(UsuarioBasicoDTO usuarioBasicoDto) throws ConstraintViolationException {
+
+        validar(usuarioBasicoDto);
+
+        Usuario entity = new Usuario();
+
+        entity.setPessoaFisica(insertPessoaFisica(usuarioBasicoDto.pessoaFisicaDto()));
+
+        entity.setLogin(usuarioBasicoDto.login());
+
+        entity.setSenha(hashService.getHashSenha(usuarioBasicoDto.senha()));
 
         usuarioRepository.persist(entity);
 
@@ -459,6 +478,15 @@ public class UsuarioImplService implements UsuarioService {
     private void validar(UsuarioDTO usuarioDTO) throws ConstraintViolationException {
 
         Set<ConstraintViolation<UsuarioDTO>> violations = validator.validate(usuarioDTO);
+
+        if (!violations.isEmpty())
+            throw new ConstraintViolationException(violations);
+
+    }
+
+    private void validar(UsuarioBasicoDTO usuarioBasicoDTO) throws ConstraintViolationException {
+
+        Set<ConstraintViolation<UsuarioBasicoDTO>> violations = validator.validate(usuarioBasicoDTO);
 
         if (!violations.isEmpty())
             throw new ConstraintViolationException(violations);
