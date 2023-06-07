@@ -9,6 +9,7 @@ import br.unitins.ecommerce.dto.telefone.TelefoneDTO;
 import br.unitins.ecommerce.dto.usuario.PessoaFisicaDTO;
 import br.unitins.ecommerce.dto.usuario.SenhaDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioBasicoDTO;
+import br.unitins.ecommerce.dto.usuario.UsuarioBasicoResponseDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioResponseDTO;
 import br.unitins.ecommerce.dto.usuario.dadospessoais.DadosPessoaisDTO;
@@ -122,13 +123,13 @@ public class UsuarioImplService implements UsuarioService {
 
     @Override
     @Transactional
-    public UsuarioResponseDTO insertBasico(UsuarioBasicoDTO usuarioBasicoDto) throws ConstraintViolationException {
+    public UsuarioBasicoResponseDTO insert(UsuarioBasicoDTO usuarioBasicoDto) throws ConstraintViolationException {
 
         validar(usuarioBasicoDto);
 
         Usuario entity = new Usuario();
 
-        entity.setPessoaFisica(insertPessoaFisica(usuarioBasicoDto.pessoaFisicaDto()));
+        
 
         entity.setLogin(usuarioBasicoDto.login());
 
@@ -136,7 +137,7 @@ public class UsuarioImplService implements UsuarioService {
 
         usuarioRepository.persist(entity);
 
-        return new UsuarioResponseDTO(entity);
+        return new UsuarioBasicoResponseDTO(entity);
     }
 
     @Override

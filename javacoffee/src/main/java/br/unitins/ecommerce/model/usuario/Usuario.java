@@ -43,11 +43,11 @@ public class Usuario extends DefaultEntity {
     private List<Produto> produtos;
 
     @ManyToOne
-    @JoinColumn(name = "id_endereco")
+    @JoinColumn(name = "id_endereco", nullable = false)
     private Endereco endereco;
 
     @OneToOne
-    @JoinColumn(name = "id_telefone_principal", unique = true)
+    @JoinColumn(name = "id_telefone_principal", unique = true, nullable = false)
     private Telefone telefonePrincipal;
 
     @OneToOne

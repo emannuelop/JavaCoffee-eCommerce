@@ -12,7 +12,10 @@ public record UsuarioBasicoDTO(
     String senha,
 
     @NotNull
-    PessoaFisicaDTO pessoaFisicaDto
+    String nome,
+
+    @NotNull
+    String email
 
 ) {
     
