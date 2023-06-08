@@ -5,6 +5,7 @@ import java.util.List;
 import br.unitins.ecommerce.dto.endereco.EnderecoDTO;
 import br.unitins.ecommerce.dto.telefone.TelefoneDTO;
 import br.unitins.ecommerce.dto.usuario.SenhaDTO;
+import br.unitins.ecommerce.dto.usuario.UpgradeUsuarioDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioBasicoDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioBasicoResponseDTO;
 import br.unitins.ecommerce.dto.usuario.UsuarioDTO;
@@ -65,5 +66,5 @@ public interface UsuarioService {
 
     UsuarioBasicoResponseDTO insert(UsuarioBasicoDTO usuarioBasicoDto);
 
-    void upgrade(Long id, UsuarioDTO usuarioDto);
+    UsuarioResponseDTO upgrade(Long id, UpgradeUsuarioDTO usuarioDto);
 }

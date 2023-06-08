@@ -46,6 +46,7 @@ public class CafeResource {
     private static final Logger LOG = Logger.getLogger(CafeResource.class);
 
     @GET
+    @RolesAllowed({ "User", "User_Basic" })
     public List<CafeResponseDTO> getAll() {
         LOG.info("Buscando todas os produtos");
         LOG.debug("ERRO DE DEBUG.");
