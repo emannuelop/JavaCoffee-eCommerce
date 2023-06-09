@@ -7,6 +7,7 @@ import org.jboss.logging.Logger;
 
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
+import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
@@ -46,7 +47,7 @@ public class CafeResource {
     private static final Logger LOG = Logger.getLogger(CafeResource.class);
 
     @GET
-    @RolesAllowed({ "User", "User_Basic" })
+    @PermitAll
     public List<CafeResponseDTO> getAll() {
         LOG.info("Buscando todas os produtos");
         LOG.debug("ERRO DE DEBUG.");
@@ -55,6 +56,7 @@ public class CafeResource {
 
     @GET
     @Path("/{id}")
+    @PermitAll
     public CafeResponseDTO getById(@PathParam("id") Long id) throws NotFoundException {
         LOG.infof("Buscando produtos por ID. ", id);
         LOG.debug("ERRO DE DEBUG.");
@@ -84,6 +86,7 @@ public class CafeResource {
     }
 
     @POST
+    @RolesAllowed({"Admin"})
     public Response insert(CafeDTO cafeDto) {
         LOG.infof("Inserindo um produto: %s", cafeDto.nome());
         Result result = null;
@@ -112,6 +115,7 @@ public class CafeResource {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({"Admin"})
     public Response update(@PathParam("id") Long id, CafeDTO cafeDto) {
         Result result = null;
         try {
@@ -166,6 +170,7 @@ public class CafeResource {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({"Admin"})
     public Response delete(@PathParam("id") Long id) throws IllegalArgumentException {
         try {
             cafeService.delete(id);
@@ -183,6 +188,7 @@ public class CafeResource {
 
     @GET
     @Path("/count")
+    @RolesAllowed({"Admin"})
     public Long count() {
         LOG.info("Contando todos os produtos.");
         LOG.debug("ERRO DE DEBUG.");
@@ -191,6 +197,7 @@ public class CafeResource {
 
     @GET
     @Path("/searchByNome/{nome}")
+    @PermitAll
     public List<CafeResponseDTO> getByNome(@PathParam("nome") String nome) {
         LOG.infof("Buscando produto pelo nome. ", nome);
         LOG.debug("ERRO DE DEBUG.");
@@ -199,6 +206,7 @@ public class CafeResource {
 
     @GET
     @Path("/searchByIntensidade/{intensidade}")
+    @PermitAll
     public List<CafeResponseDTO> getByIntensidade(@PathParam("intensidade") Integer id)
             throws IndexOutOfBoundsException {
         LOG.infof("Buscando pela intensidade. ", id);
@@ -208,6 +216,7 @@ public class CafeResource {
 
     @GET
     @Path("/searchByMarca/{marca}")
+    @PermitAll
     public List<CafeResponseDTO> getByMarca(@PathParam("marca") String nomeMarca) {
         LOG.infof("Buscando pelo nome da marca. ", nomeMarca);
         LOG.debug("ERRO DE DEBUG.");
@@ -216,6 +225,7 @@ public class CafeResource {
 
     @GET
     @Path("/filterByPrecoMin/{precoMin}")
+    @PermitAll
     public List<CafeResponseDTO> filterByPrecoMin(@PathParam("precoMin") Double preco) {
         LOG.infof("Filtrando pelo preço mínimo. ", preco);
         LOG.debug("ERRO DE DEBUG.");
@@ -224,6 +234,7 @@ public class CafeResource {
 
     @GET
     @Path("/filterByPrecoMax/{precoMax}")
+    @PermitAll
     public List<CafeResponseDTO> filterByPrecoMax(@PathParam("precoMax") Double preco) {
         LOG.infof("Filtrando pelo preço máximo. ", preco);
         LOG.debug("ERRO DE DEBUG.");
@@ -232,6 +243,7 @@ public class CafeResource {
 
     @GET
     @Path("/filterByEntrePreco/{precoMin}/{precoMax}")
+    @PermitAll
     public List<CafeResponseDTO> filterByEntrePreco(@PathParam("precoMin") Double precoMin,
             @PathParam("precoMax") Double precoMax) {
         LOG.infof("Filtrando entre os preços mínimo e máximo. ", precoMin, " e ", precoMax);

@@ -17,6 +17,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
@@ -66,7 +67,7 @@ public class UsuarioResource {
     }
 
     @POST
-    @RolesAllowed({ "Admin", "User" })
+    @RolesAllowed({ "Admin" })
     public Response insert(UsuarioDTO usuarioDto) {
         Result result = null;
         try {
@@ -93,7 +94,7 @@ public class UsuarioResource {
 
     }
 
-    @POST
+    @PATCH
     @Path("/lista_desejo")
     @RolesAllowed({ "Admin", "User" })
     public Response insertListaDesejo(ListaDesejoDTO listaDto) {
@@ -123,7 +124,7 @@ public class UsuarioResource {
 
     @PUT
     @Path("/{id}")
-    @RolesAllowed({ "Admin", "User" })
+    @RolesAllowed({ "Admin" })
     public Response update(@PathParam("id") Long id, UsuarioDTO usuarioDto) {
         Result result = null;
         try {
@@ -152,7 +153,7 @@ public class UsuarioResource {
 
     @DELETE
     @Path("/{id}")
-    @RolesAllowed({ "Admin", "User" })
+    @RolesAllowed({ "Admin" })
     public Response delete(@PathParam("id") Long id) throws IllegalArgumentException, NotFoundException {
         try {
             usuarioService.delete(id);
@@ -167,7 +168,7 @@ public class UsuarioResource {
         }
     }
 
-    @DELETE
+    @PATCH
     @Path("/lista_desejo/{idUsuario}/{idProduto}")
     @RolesAllowed({ "Admin", "User" })
     public Response deleteProdutoFromListaDesejo(@PathParam("idUsuario") Long idUsuario,
