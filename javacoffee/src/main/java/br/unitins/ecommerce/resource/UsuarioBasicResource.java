@@ -28,8 +28,8 @@ public class UsuarioBasicResource {
     @Inject
     JsonWebToken tokenJwt;
 
-    private static final Logger LOG = Logger.getLogger(UsuarioResource.class);
-    
+    private static final Logger LOG = Logger.getLogger(UsuarioBasicResource.class);
+
     @POST
     @Path("/usuarioBasico/")
     public Response insertBasico(UsuarioBasicoDTO usuarioBasicoDto) {
@@ -76,11 +76,20 @@ public class UsuarioBasicResource {
     @PATCH
     @RolesAllowed({ "User_Basic" })
     public Response upgradeUsuario(UpgradeUsuarioDTO usuarioDTO) {
-
         String login = tokenJwt.getSubject();
+        LOG.info("Usuário " + login + " solicitando upgrade de conta.");
 
         Usuario usuario = usuarioService.getByLogin(login);
-
-        return Response.status(Status.CREATED).entity(usuarioService.upgrade(usuario.getId(), usuarioDTO)).build();
+        try {
+             LOG.info("Usuário atualizado com sucesso.");
+            return Response.status(Status.CREATED)
+                    .entity(usuarioService.upgrade(usuario.getId(), usuarioDTO))
+                    .build();
+        } catch (Exception e) {
+            LOG.error("Erro ao fazer o upgrade de conta para o usuário " + login, e);
+            return Response.status(Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao fazer o upgrade de conta.")
+                    .build();
+        }
     }
 }
