@@ -14,6 +14,7 @@ import br.unitins.ecommerce.dto.cafe.CafeDTO;
 import br.unitins.ecommerce.dto.cafe.CafeResponseDTO;
 import br.unitins.ecommerce.service.cafe.CafeService;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 
 @QuarkusTest
@@ -34,25 +35,14 @@ public class CafeResourceTest {
     @Test
     public void getByIdTest() {
 
-        CafeDTO cafe = new CafeDTO(
-                "Cafe Black Tucano",
-                "Muito Zica",
-                2l,
-                34.95,
-                10,
-                "Esquenta ele",
-                "Tipo 1",
-                1);
-
-        Long id = cafeService.insert(cafe).id();
-
         given()
-                .when().get("/cafes/" + id)
+                .when().get("/cafes/" + 1)
                 .then()
                 .statusCode(200);
     }
 
     @Test
+    @TestSecurity(user = "testUser", roles = {"Admin"})
     public void insertTest() {
 
         CafeDTO cafe = new CafeDTO(
@@ -82,6 +72,50 @@ public class CafeResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "testUser", roles = {"User"})
+    public void insertForbiddenTest() {
+
+        CafeDTO cafe = new CafeDTO(
+                "Cafe Black Tucano",
+                "Muito Zica",
+                2l,
+                34.95,
+                10,
+                "Esquenta ele",
+                "Tipo 1",
+                1);
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(cafe)
+                .when().post("/cafes")
+                .then()
+                .statusCode(403);
+    }
+
+    @Test
+    public void insertUnauthorizedTest() {
+
+        CafeDTO cafe = new CafeDTO(
+                "Cafe Black Tucano",
+                "Muito Zica",
+                2l,
+                34.95,
+                10,
+                "Esquenta ele",
+                "Tipo 1",
+                1);
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(cafe)
+                .when().post("/cafes")
+                .then()
+                .statusCode(401);
+    }
+
+    @Test
+    @TestSecurity(user = "testUser", roles = {"Admin"})
     public void updateTest() {
 
         CafeDTO cafe = new CafeDTO(
@@ -127,6 +161,7 @@ public class CafeResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "testUser", roles = {"Admin"})
     public void deleteTest() {
 
         CafeDTO cafe = new CafeDTO(
@@ -159,6 +194,7 @@ public class CafeResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "testUser", roles = {"Admin"})
     public void countTest() {
 
         given()
@@ -170,20 +206,8 @@ public class CafeResourceTest {
     @Test
     public void getByNomeTest() {
 
-        CafeDTO cafe = new CafeDTO(
-                "Cafe Black Tucano",
-                "Muito Zica",
-                2l,
-                34.95,
-                10,
-                "Esquenta ele",
-                "Tipo 1",
-                1);
-
-        String nome = cafeService.insert(cafe).nome();
-
         given()
-                .when().get("/cafes/searchByNome/" + nome)
+                .when().get("/cafes/searchByNome/" + "cafe")
                 .then()
                 .statusCode(200);
     }
@@ -191,19 +215,8 @@ public class CafeResourceTest {
     @Test
     public void getByIntensidadeTest() {
 
-        CafeDTO cafe = new CafeDTO(
-                "Cafe Black Tucano",
-                "Muito Zica",
-                2l,
-                34.95,
-                10,
-                "Esquenta ele",
-                "Tipo 1",
-                1);
-        Integer intensidade = cafeService.insert(cafe).intensidade().getId();
-
         given()
-                .when().get("/cafes/searchByIntensidade/" + intensidade)
+                .when().get("/cafes/searchByIntensidade/" + 1)
                 .then()
                 .statusCode(200);
     }
@@ -211,20 +224,8 @@ public class CafeResourceTest {
     @Test
     public void getByMarcaTest() {
 
-        CafeDTO cafe = new CafeDTO(
-                "Cafe Black Tucano",
-                "Muito Zica",
-                2l,
-                34.95,
-                10,
-                "Esquenta ele",
-                "Tipo 1",
-                1);
-
-        String marca = cafeService.insert(cafe).nomeMarca();
-
         given()
-                .when().get("/cafes/searchByMarca/" + marca)
+                .when().get("/cafes/searchByMarca/" + "Nestle")
                 .then()
                 .statusCode(200);
     }
@@ -232,10 +233,8 @@ public class CafeResourceTest {
     @Test
     public void filterByPrecoMinTest() {
 
-        Double precoMinimo = 60.0;
-
         given()
-                .when().get("/cafes/filterByPrecoMin/" + precoMinimo)
+                .when().get("/cafes/filterByPrecoMin/" + 60.0)
                 .then()
                 .statusCode(200);
 
@@ -244,10 +243,8 @@ public class CafeResourceTest {
     @Test
     public void filterByPrecoMaxTest() {
 
-        Double precoMaximo = 160.0;
-
         given()
-                .when().get("/cafes/filterByPrecoMax/" + precoMaximo)
+                .when().get("/cafes/filterByPrecoMax/" + 160.0)
                 .then()
                 .statusCode(200);
 
@@ -256,14 +253,10 @@ public class CafeResourceTest {
     @Test
     public void filterByEntrePrecoTest() {
 
-        Double precoMaximo = 160.0;
-        Double precoMinimo = 60.0;
-
         given()
-                .when().get("/cafes/filterByEntrePreco/" + precoMaximo + "/" + precoMinimo)
+                .when().get("/cafes/filterByEntrePreco/" + 160.0 + "/" + 60.0)
                 .then()
                 .statusCode(200);
 
     }
-
 }
